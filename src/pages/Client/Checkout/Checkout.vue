@@ -16,8 +16,10 @@ import { ref } from "vue";
     })
 
     const handleOrder = () =>{
-        console.log();
-        
+        console.log({
+            "delivery" : delivery.value,
+            "product" : store.dataAll.data
+        });
     }
 
 </script>

@@ -30,7 +30,7 @@ import { getProductList } from '../../../service/productsService';
             <article class="relative text-center px-4 pt-5 pb-10 max-w-[300px] mx-auto z-10 product">
                 <div class="transition-all duration-200 ease-in-out">
                     <div class="min-h-[200px] flex items-end justify-center">
-                        <img :src="product.image"  alt="" class="w-[152px] h-[160px]">
+                        <img :src="product.thumbnail"  alt="" class="w-[152px] h-[160px]">
                     </div>
                     <div class="mt-5">
                         <RouterLink :to="`/product/${product.id}`" class="font-medium text-lg text-color-1 hover:text-color-2 transition-all duration-200 ease-in-out">{{ product.title }}</RouterLink>
