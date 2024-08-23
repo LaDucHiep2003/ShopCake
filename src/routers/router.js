@@ -39,6 +39,7 @@ import OtpPassword from "../pages/Client/Auth/OtpPassword.vue";
 import ResetPassword from "../pages/Client/Auth/ResetPassword.vue";
 
 import TableOrder from "../pages/Admin/Order/TableOrder.vue"
+import OrderConfirmed from "../pages/Admin/Order/Confirmed.vue";
 
 import { addCart } from "../service/cartService";
 
@@ -289,6 +290,15 @@ const routes = [
           path: 'order',
           component: TableOrder,
           name: 'order',
+          meta: {
+            layout: 'admin',
+            needsAuth : true
+          }
+        },
+        {
+          path: 'order/confirmed',
+          component: OrderConfirmed,
+          name: 'order-confirmed',
           meta: {
             layout: 'admin',
             needsAuth : true

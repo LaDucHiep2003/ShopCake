@@ -85,7 +85,7 @@
                         <RouterLink :to="{ name : 'order'}" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Danh sách đơn hàng</RouterLink>
                     </li> 
                     <li class="mb-4" v-if="checkPermissions('product_create')">
-                        <RouterLink :to="{name : 'create'}" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Đơn hàng đã xác nhận</RouterLink>
+                        <RouterLink :to="{name : 'order-confirmed'}" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Đơn hàng đã xác nhận</RouterLink>
                     </li> 
                     <li class="mb-4">
                         <RouterLink :to="{ name : 'deleted-product'}" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Đơn hàng đã hủy</RouterLink>

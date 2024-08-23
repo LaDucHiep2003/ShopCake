@@ -3,7 +3,7 @@
     import { ElTable } from 'element-plus'
     import { RouterLink } from 'vue-router';
     import { deleteCategory, getCategoryList, getCategoryListSort, changeStatus } from '../../../service/categoryService';
-    import { confirmOrder, getOrderList } from '../../../service/orderService';
+    import { confirmOrder, getOrderList, getOrderListConfirmed } from '../../../service/orderService';
 
     interface Data {
         firstName : "",
@@ -19,7 +19,7 @@
 
     const fetchData = () => {
         const fetchApi = async () => {
-            const result = await getOrderList()
+            const result = await getOrderListConfirmed()
             data.value = result;
         }
         fetchApi();
@@ -59,7 +59,7 @@
 <template>
     <div class="p-10">
         <div class="text-[50px] text-color-2 font-great text-center">
-            Danh sách đơn hàng
+            Đơn hàng đã xác nhận
         </div>
         <div class="pt-8">
             <el-table :data="filterTableData">
@@ -76,7 +76,7 @@
                     </template>
                     <template #default="scope">
                     <el-button size="small" @click="handleConfirm(scope.row.id)">
-                        Xác nhận
+                        Hoàn đơn
                     </el-button>
                     <el-button
                         size="small"
