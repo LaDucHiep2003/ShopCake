@@ -15,6 +15,11 @@ export const getProductDetail = async (id) => {
     return result;
 }
 
+export const getProductCategory = async (id) => {
+    const result = await get(`products/listProductCategory.php?id=${id}`);
+    return result;
+}
+
 export const deleteProduct = async (option) => {
     const result = patch(`products/delete.php`, option)
     return result;

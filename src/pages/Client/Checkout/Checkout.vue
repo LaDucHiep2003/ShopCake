@@ -2,8 +2,10 @@
     import TableCart from "../Cart/TableCart.vue"
     import { useProduct } from '../../../stores/local';
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
     const store = useProduct();
+    const router = useRouter()
 
     const delivery = ref({
         "first_name" : "",
@@ -20,6 +22,8 @@ import { ref } from "vue";
             "delivery" : delivery.value,
             "product" : store.dataAll.data
         });
+
+        router.replace({name : 'success'})
     }
 
 </script>

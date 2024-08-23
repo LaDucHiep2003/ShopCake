@@ -38,6 +38,8 @@ import ForgotPassword from "../pages/Client/Auth/ForgotPassword.vue";
 import OtpPassword from "../pages/Client/Auth/OtpPassword.vue";
 import ResetPassword from "../pages/Client/Auth/ResetPassword.vue";
 
+import TableOrder from "../pages/Admin/Order/TableOrder.vue"
+
 import { addCart } from "../service/cartService";
 
 import { DetailUser } from "../service/userService";
@@ -278,6 +280,15 @@ const routes = [
           path: 'edit-accounts/:id',
           component: EditAccount,
           name: 'edit-accounts',
+          meta: {
+            layout: 'admin',
+            needsAuth : true
+          }
+        },
+        {
+          path: 'order',
+          component: TableOrder,
+          name: 'order',
           meta: {
             layout: 'admin',
             needsAuth : true

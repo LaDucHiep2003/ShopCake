@@ -6,12 +6,14 @@
     import { changeQuantity } from '../../../service/cartService';
     import { useInfoUser, useProduct } from '../../../stores/local';
     import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { getCategoryList } from '../../../service/categoryService';
 
     const active = ref(false)
     const cartId = localStorage.getItem("cartId")
     const store = useProduct();
     const storeUser = useInfoUser()
     const router = useRouter();
+    const ListCategory = ref([])
 
     const fetchApi = async ()=>{
         const result = await getCart(cartId)
@@ -20,7 +22,17 @@
             store.dataAll = result
         }
     }
-    onMounted(fetchApi)
+
+    const fetchListCategory = async () =>{
+        const result = await getCategoryList()
+        if(result){
+            ListCategory.value = result;
+        }
+    }
+    onMounted(() => {
+        fetchApi();
+        fetchListCategory();
+    })
     
 
     const handleIncre = async (index) => {
@@ -160,18 +172,10 @@
                             >
                         GALLERY </RouterLink>
                         <ul class="navbar absolute p-[30px] ml-[-30px] w-[250px] bg-color-white z-[5] text-left block opacity-0 invisible">
-                            <li class="inline-block py-3">
-                                <a href="#" class="text-sm text-color-4 leading-[1.2] font-medium py-3 tracking-wider">GRID GALLERY</a>
+                            <li class="block py-3" v-for="item in ListCategory">
+                                <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>
                             </li>
-                            <li class="inline-block py-3">
-                                <a href="#" class="text-sm text-color-4 leading-[1.2] font-medium py-3 tracking-wider">GRID GALLERY</a>
-                            </li>
-                            <li class="inline-block py-3">
-                                <a href="#" class="text-sm text-color-4 leading-[1.2] font-medium py-3 tracking-wider">GRID GALLERY</a>
-                            </li>
-                            <li class="inline-block py-3">
-                                <a href="#" class="text-sm text-color-4 leading-[1.2] font-medium py-3 tracking-wider">GRID GALLERY</a>
-                            </li>
+                            
                         </ul>
                     </li>
                     <li class="ml-10 ">
