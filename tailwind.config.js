@@ -20,6 +20,17 @@ export default {
         "color-11":"#ebebeb",
         "color-12":"rgba(21, 21, 21, 0.5)",
         "color-13":"rgb(75 213 156)",
+        "color-primary" : 'var(--color-primary)',
+        "color-info-dark" : 'var(--color-info-dark)',
+        "color-danger" : 'var(--color-danger)',
+        "color-success" : 'var(--color-success)',
+        "color-warning" : 'var(--color-warning)',
+        "color-info-light" : 'var(--color-info-light)',
+        "color-dark" : 'var(--color-dark)',
+        "color-light" : 'var(--color-light)',
+        "color-primary-variant" : 'var(--color-primary-variant)',
+        "color-background" : 'var(--color-background)',
+        "color-white-2" : "var(--color-white)"
       },
       backgroundImage:{
         "background-image-1": "url('https://res.cloudinary.com/dsxkwbfyq/image/upload/v1722092181/bg-img-1_lfsz8d.jpg')",
@@ -35,7 +46,9 @@ export default {
         "spacing-2": "0.075em"
       },
       borderRadius:{
-        "radius-1": "50%"
+        "radius-1": "50%",
+        "border-radius-1" : 'var(--border-radius-1)',
+        "card-border-radius" : 'var(--card-border-radius)'
       },
       borderColor:{
         "border-color-1": "#f3f7f8",
@@ -44,7 +57,10 @@ export default {
       },
       boxShadow:{
         "shadow-1":"0 5px 16px 0 rgba(0, 0, 0, 0.15)",
-        "shadow-2":"0px 3px 8px rgba(0, 0, 0, 0.24)"
+        "shadow-2":"0px 3px 8px rgba(0, 0, 0, 0.24)",
+        "shadow-3" : "1rem 3rem 4rem var(--color-light)",
+        "shadow-4" : "0 1rem 1rem var(--color-light)",
+        "shadow-5" : 'var(--box-shadow)'
       },
       fontSize:{
         "font-15": ['15px','25px']
@@ -52,8 +68,12 @@ export default {
       flex :{
         "flex-1":"0 0 auto"
       },
-      boxShadow:{
-        "shadow-1":"0 1px 18px 0 rgba(0, 0, 0, 0.09)"
+      gridTemplateColumns:{
+        "grid-template-col" : "14rem auto 23rem",
+        "grid-template-col-lg" : "7rem auto 23rem"
+      },
+      spacing:{
+        "card-padding" : "var(--card-padding)"
       }
     },
   },

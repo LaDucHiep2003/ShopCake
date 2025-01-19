@@ -43,6 +43,8 @@ import OrderConfirmed from "../pages/Admin/Order/Confirmed.vue";
 
 import { addCart } from "../service/cartService";
 
+import Test from "../pages/Admin/test.vue";
+
 import { DetailUser } from "../service/userService";
 import { useInfoUser } from "../stores/local";
 const routes = [
@@ -51,6 +53,14 @@ const routes = [
         component: Home,
         name : "Home",
     },
+  {
+    path :"/test",
+    component: Test,
+    name : "test",
+    meta : {
+      layout : 'test'
+    }
+  },
     {
       path :"/auth/login",
       component: LoginClient,
@@ -156,8 +166,7 @@ const routes = [
           name : "dashboard",
           component : Dashboard,
           meta : {
-            layout : "admin",
-            needsAuth : true
+            layout : "test",
           }
         },
         {
@@ -165,8 +174,7 @@ const routes = [
           name: "product",
           component : Products,
           meta : {
-            layout : "admin",
-            needsAuth : true
+            layout : "test",
           },
         },
         {
@@ -306,6 +314,7 @@ const routes = [
         },
       ]
   },
+
     {
       path : "/:pathMath(.*)*",
       component: Page404

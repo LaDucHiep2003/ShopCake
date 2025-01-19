@@ -1,90 +1,3 @@
-<script setup>
-    import { computed, onMounted } from 'vue';
-    import { RouterLink, useRoute, useRouter } from 'vue-router';
-    import { ref } from 'vue'
-    import { getCart } from '@/service/cartService';
-    import { changeQuantity } from '../../../service/cartService';
-    import { useInfoUser, useProduct } from '../../../stores/local';
-    import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { getCategoryList } from '../../../service/categoryService';
-
-    const active = ref(false)
-    const cartId = localStorage.getItem("cartId")
-    const store = useProduct();
-    const storeUser = useInfoUser()
-    const router = useRouter();
-    const ListCategory = ref([])
-
-    const fetchApi = async ()=>{
-        const result = await getCart(cartId)
-        if(result){
-            store.data = result['data']
-            store.dataAll = result
-        }
-    }
-
-    const fetchListCategory = async () =>{
-        const result = await getCategoryList()
-        if(result){
-            ListCategory.value = result;
-        }
-    }
-    onMounted(() => {
-        fetchApi();
-        fetchListCategory();
-    })
-    
-
-    const handleIncre = async (index) => {
-        store.dataAll.data[index].quantity++;
-        store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
-        store.dataAll.totalPrice += store.dataAll.data[index].price;
-        store.dataAll.quantity++;
-
-        const result = await changeQuantity({
-            "product_id" : store.dataAll.data[index].id,
-            "quantity": store.dataAll.data[index].quantity,
-            "cartId": cartId
-        });
-        if(result){
-            console.log("ok");
-        }
-    };
-
-    const handleDecre = async (index) => {
-        if(store.dataAll.data[index].quantity > 0){
-            store.dataAll.data[index].quantity--;
-            store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
-            store.dataAll.totalPrice -= store.dataAll.data[index].price;
-            store.dataAll.quantity--;
-        }
-        else{
-            store.dataAll.data[index].quantity = 0
-            store.dataAll.data[index].totalPrice = 0;
-        }
-        const result = await changeQuantity({
-            "product_id" : store.dataAll.data[index].id,
-            "quantity": store.dataAll.data[index].quantity,
-            "cartId": cartId
-        });
-        if(result){
-            console.log("ok");
-        }
-    };
-    const route = useRoute();
-    const BreakCurmp = computed(() => {
-        return route.name ? route.name.toUpperCase() : '';
-    });
-    const activeCard = () =>{
-        active.value = !active.value;
-    }
-
-    const logout = () =>{
-        localStorage.removeItem("tokenUser");
-        store.useInfoUser = []
-    }
-</script>
-
 
 <template>
     <header class="border-b border-[#ddd]">
@@ -98,7 +11,7 @@ import { getCategoryList } from '../../../service/categoryService';
                     </div>
                 </div>
                 <div>
-                    <img src="@/assets/images/logo.png" alt="Logo">
+                    <img src="https://ld-wt73.template-help.com/wt_prod-23024/images/logo-default-231x49.png" alt="Logo">
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="flex items-center gap-2 border-[2px] border-color-2  py-3 px-8  text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
@@ -258,3 +171,90 @@ import { getCategoryList } from '../../../service/categoryService';
     </div>
     
 </template>
+
+<script setup>
+import { computed, onMounted } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue'
+import { getCart } from '@/service/cartService';
+import { changeQuantity } from '../../../service/cartService';
+import { useInfoUser, useProduct } from '../../../stores/local';
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { getCategoryList } from '../../../service/categoryService';
+
+const active = ref(false)
+const cartId = localStorage.getItem("cartId")
+const store = useProduct();
+const storeUser = useInfoUser()
+const router = useRouter();
+const ListCategory = ref([])
+
+const fetchApi = async ()=>{
+  const result = await getCart(cartId)
+  if(result){
+    store.data = result['data']
+    store.dataAll = result
+  }
+}
+
+const fetchListCategory = async () =>{
+  const result = await getCategoryList()
+  if(result){
+    ListCategory.value = result;
+  }
+}
+onMounted(() => {
+  fetchApi();
+  fetchListCategory();
+})
+
+
+const handleIncre = async (index) => {
+  store.dataAll.data[index].quantity++;
+  store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
+  store.dataAll.totalPrice += store.dataAll.data[index].price;
+  store.dataAll.quantity++;
+
+  const result = await changeQuantity({
+    "product_id" : store.dataAll.data[index].id,
+    "quantity": store.dataAll.data[index].quantity,
+    "cartId": cartId
+  });
+  if(result){
+    console.log("ok");
+  }
+};
+
+const handleDecre = async (index) => {
+  if(store.dataAll.data[index].quantity > 0){
+    store.dataAll.data[index].quantity--;
+    store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
+    store.dataAll.totalPrice -= store.dataAll.data[index].price;
+    store.dataAll.quantity--;
+  }
+  else{
+    store.dataAll.data[index].quantity = 0
+    store.dataAll.data[index].totalPrice = 0;
+  }
+  const result = await changeQuantity({
+    "product_id" : store.dataAll.data[index].id,
+    "quantity": store.dataAll.data[index].quantity,
+    "cartId": cartId
+  });
+  if(result){
+    console.log("ok");
+  }
+};
+const route = useRoute();
+const BreakCurmp = computed(() => {
+  return route.name ? route.name.toUpperCase() : '';
+});
+const activeCard = () =>{
+  active.value = !active.value;
+}
+
+const logout = () =>{
+  localStorage.removeItem("tokenUser");
+  store.useInfoUser = []
+}
+</script>
