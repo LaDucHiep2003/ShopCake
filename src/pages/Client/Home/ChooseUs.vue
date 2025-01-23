@@ -11,7 +11,7 @@
                         <v-icon name="gi-cake-slice" class="text-color-2 h-[50px] w-[50px]"/>
                       </div>
                       <div class="order-1">
-                            <div class="text-[22px] font-semibold tracking-spacing-2 text-color-1 hover:text-color-2 text-right max-lg:text-xl">QUALITY PRODUCTS</div>
+                            <div class="text-[22px] font-semibold tracking-spacing-2 text-color-1 hover:text-color-2 text-right max-lg:text-xl max-lg:text-center">QUALITY PRODUCTS</div>
                             <p class="text-font-15 text-color-4 text-right mt-5 max-lg:text-center">We guarantee the quality of all the cakes we provide as they are baked using the freshest ingredients.</p>
                         </div>
                     </div>

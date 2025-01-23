@@ -1,11 +1,11 @@
 
 <template>
-    <div class="bg-background-image-1 bg-cover bg-center py-16 min-h-[33.59375vw]">
+    <div class="bg-background-image-1 bg-cover bg-center py-16 min-h-[33.59375vw] delicious">
        <div class="container mx-auto">
-            <p class="text-[100px] text-color-2 font-great max-lg:text-7xl">Delicious</p>
-            <p class="text-[36px] text-color-1 tracking-spacing-1 font-bold">CAKES FOR YOU</p>
-            <p class="text-color-4 text-2xl max-w-[480px] mt-5 tracking-widest">Sweet Bakery offers the best cakes and sweets for you.</p>
-            <button class="text-sm font-bold text-color-white py-5 px-12 bg-color-2 rounded-lg hover:bg-color-6 mt-6 max-lg:py-4 max-lg:px-11 tracking-wide">SHOP NOW</button>
+            <p class="text-[100px] text-color-2 font-great max-lg:text-7xl max-md:text-5xl">Delicious</p>
+            <p class="text-[36px] text-color-1 tracking-spacing-1 font-bold max-md:text-xl">CAKES FOR YOU</p>
+            <p class="text-color-4 text-2xl max-w-[480px] mt-5 tracking-widest max-md:text-lg">Sweet Bakery offers the best cakes and sweets for you.</p>
+            <button class="text-sm font-bold text-color-white py-5 px-12 bg-color-2 rounded-lg hover:bg-color-6 mt-6 max-lg:py-4 max-lg:px-11 tracking-wide max-md:py-3 max-md:px-5 max-md:text-xs">SHOP NOW</button>
         </div>
     </div>
     <div class="container mx-auto mt-[-30px]">

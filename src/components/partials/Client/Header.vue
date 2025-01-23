@@ -11,7 +11,8 @@
                     </div>
                 </div>
                 <div class="flex gap-2 items-center">
-                    <span class="material-icons-sharp text-4xl lg:hidden">menu</span>
+                    <span v-if="!opensidebar" @click="handleOpenSidebar" class="material-icons-sharp text-4xl lg:hidden cursor-pointer transition-all duration-400 ease-in-out ">menu</span>
+                    <span v-else @click="handleOpenSidebar" class="material-icons-sharp text-4xl lg:hidden cursor-pointer transition-all duration-400 ease-in-out">close</span>
                     <img src="https://ld-wt73.template-help.com/wt_prod-23024/images/logo-default-231x49.png" alt="Logo" class="max-lg:max-h-[40px] max-lg:max-w-[200px]">
                 </div>
               <div class="flex gap-3 items-center lg:hidden">
@@ -24,9 +25,9 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-2 max-lg:hidden">
-                    <div class="flex items-center gap-2 border-[2px] border-color-2  py-3 px-8  text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
+                    <div class="flex items-center gap-2 border-[2px] border-color-2 h-11  py-3 px-8  text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
                         <Message class="h-5 w-auto"/>
-                        <p class="text-xs font-bol  d tracking-wider">GET IN TOUCH</p>
+                        <p class="text-xs font-bold tracking-wider">GET IN TOUCH</p>
                     </div>
                     <div class="text-right z-[10000]" v-if="storeUser.user" >
                         <Menu as="div" class="relative inline-block text-left">
@@ -67,66 +68,110 @@
                             </transition>
                         </Menu>
                     </div>
-                    <RouterLink v-else :to="{ name : 'loginClient'}" class="border-[2px] border-color-2  py-3 px-8 text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
+                    <RouterLink v-else :to="{ name : 'loginClient'}" class="border-[2px] flex justify-center items-center border-color-2 h-11 py-3 px-8 text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
                         <p class="text-xs font-bold tracking-wider">Login</p>
+                    </RouterLink>
+                    <RouterLink :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
+                      <span class="material-icons-sharp">leaderboard</span>
                     </RouterLink>
                 </div>
             </div>
-            
         </div>
     </header>
+  <div :class="{
+      'hidden': !opensidebar,
+      'block': opensidebar,
+      'fixed left-[-100%] w-[18rem] bg-color-white pt-4 h-screen' : true}" class="sidebarclient lg:hidden">
+    <ul class="text-color-1 text-xs font-semibold" >
+      <li class="hover:bg-color-2 mb-1 hover:text-color-white" :class=" BreakCurmp === 'HOME' ? 'bg-color-2 text-color-white' : ''">
+        <RouterLink :to="{ name : 'Home'}" class="py-3 inline-block tracking-widest relative ml-3">HOME </RouterLink>
+      </li>
+      <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
+          :class=" BreakCurmp === 'Gallery' ? 'bg-color-2 text-color-white' : ''">
+        <RouterLink :to="{ name: 'Gallery' }" class="py-3 inline-block tracking-widest relative ml-3"
+        >
+          GALLERY </RouterLink>
+        <ul class="navbar absolute p-[30px] ml-[-30px] w-[250px] bg-color-white z-[5] text-left block opacity-0 invisible">
+          <li class="block py-3" v-for="item in ListCategory">
+            <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>
+          </li>
+        </ul>
+      </li>
+      <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
+          :class=" BreakCurmp === 'Shop' ? 'bg-color-2 text-color-white' : ''">
+        <RouterLink :to="{ name: 'Shop' }" class="py-3 inline-block tracking-widest relative ml-3">
+          SHOP </RouterLink>
+      </li>
+      <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
+          :class=" BreakCurmp === 'blog' ? 'bg-color-2 text-color-white' : ''">
+        <RouterLink :to="{ name : 'blog'}" class="py-3 inline-block tracking-widest relative ml-3">
+          BLOG </RouterLink>
+      </li>
+      <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
+          :class=" BreakCurmp === 'Shop' ? 'bg-color-2 text-color-white' : ''">
+        <RouterLink to="#" class="py-3 inline-block tracking-widest relative ml-3">PAGES </RouterLink>
+      </li>
+      <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
+          :class=" BreakCurmp === 'Shop' ? 'bg-color-2 text-color-white' : ''">
+        <RouterLink to="#" class="py-3 inline-block tracking-widest relative ml-3">ELEMENTS </RouterLink>
+      </li>
+      <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
+          :class=" BreakCurmp === 'Shop' ? 'bg-color-2 text-color-white' : ''">
+        <RouterLink to="#" class="py-3 inline-block tracking-widest relative ml-3">CONTACT US </RouterLink>
+      </li>
+    </ul>
+  </div>
 
     <div class="sticky top-0 left-0 bg-color-white z-[1000] shadow-shadow-1 max-lg:hidden">
         <div class="container mx-auto">
             <div class="flex justify-between items-center">
                 <ul class="flex items-center justify-start text-color-1 text-sm font-semibold">
                     <li class="hover:text-color-2">
-                        <RouterLink :to="{ name : 'Home'}" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2 
-                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2 
+                        <RouterLink :to="{ name : 'Home'}" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2
+                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2
                             before:-translate-y-1/2 before:transition-all before:duration-200 before:ease-linear"
-                            :class=" BreakCurmp === 'HOME' ? 'before:bg-color-2 before:w-full' : ''" 
+                            :class=" BreakCurmp === 'HOME' ? 'before:bg-color-2 before:w-full' : ''"
                             >HOME </RouterLink>
                     </li>
                     <li class="ml-10 galleery-header">
-                        <RouterLink :to="{ name: 'Gallery' }" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2 
-                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2 
+                        <RouterLink :to="{ name: 'Gallery' }" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2
+                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2
                             before:-translate-y-1/2 before:transition-all before:duration-200 before:ease-linear before:hover:bg-color-2 before:hover:w-full"
-                            :class=" BreakCurmp === 'GALLERY' ? 'before:bg-color-2 before:w-full' : ''"  
+                            :class=" BreakCurmp === 'GALLERY' ? 'before:bg-color-2 before:w-full' : ''"
                             >
                         GALLERY </RouterLink>
                         <ul class="navbar absolute p-[30px] ml-[-30px] w-[250px] bg-color-white z-[5] text-left block opacity-0 invisible">
                             <li class="block py-3" v-for="item in ListCategory">
                                 <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>
                             </li>
-                            
                         </ul>
                     </li>
                     <li class="ml-10 ">
-                        <RouterLink :to="{ name: 'Shop' }" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2 
-                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2 
+                        <RouterLink :to="{ name: 'Shop' }" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2
+                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2
                             before:-translate-y-1/2 before:transition-all before:duration-200 before:ease-linear before:hover:bg-color-2 before:hover:w-full"
-                            :class=" BreakCurmp === 'SHOP' ? 'before:bg-color-2 before:w-full' : ''" 
+                            :class=" BreakCurmp === 'SHOP' ? 'before:bg-color-2 before:w-full' : ''"
                             >
                         SHOP </RouterLink>
                     </li>
                     <li class="ml-10">
-                        <RouterLink :to="{ name : 'blog'}" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2 
-                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2 
+                        <RouterLink :to="{ name : 'blog'}" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2
+                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2
                             before:-translate-y-1/2 before:transition-all before:duration-200 before:ease-linear before:hover:bg-color-2 before:hover:w-full"
-                            :class=" BreakCurmp === 'BLOG' ? 'before:bg-color-2 before:w-full' : ''" 
+                            :class=" BreakCurmp === 'BLOG' ? 'before:bg-color-2 before:w-full' : ''"
                             >
                         BLOG </RouterLink>
                     </li>
                     <li class="ml-10">
-                        <RouterLink to="#" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2 
-                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2 
+                        <RouterLink to="#" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2
+                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2
                             before:-translate-y-1/2 before:transition-all before:duration-200 before:ease-linear before:hover:bg-color-2 before:hover:w-full"
-                            :class=" BreakCurmp === 'PAGES' ? 'before:bg-color-2 before:w-full' : ''" 
+                            :class=" BreakCurmp === 'PAGES' ? 'before:bg-color-2 before:w-full' : ''"
                             >PAGES </RouterLink>
                     </li>
                     <li class="ml-10">
-                        <RouterLink to="#" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2 
-                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2 
+                        <RouterLink to="#" class="py-6 inline-block tracking-widest relative before:content-[''] before:absolute before:top-0 before:left-1/2
+                            before:h-2 before:w-[140%] before:transform before:-translate-x-1/2
                             before:-translate-y-1/2 before:transition-all before:duration-200 before:ease-linear before:hover:bg-color-2 before:hover:w-full">ELEMENTS </RouterLink>
                     </li>
                     <li class="ml-10">
@@ -179,7 +224,7 @@
             </div>
         </div>
     </div>
-    
+
 </template>
 
 <script setup>
@@ -199,7 +244,11 @@ const store = useProduct();
 const storeUser = useUserStore()
 const router = useRouter();
 const ListCategory = ref([])
+const opensidebar = ref(false);
 
+const handleOpenSidebar = () =>{
+  opensidebar.value = !opensidebar.value;
+}
 
 const fetchApi = async ()=>{
   const result = await getCart(cartId)
