@@ -1,31 +1,4 @@
 
-<script setup>
-import { ref } from 'vue';
-import { login } from '../../../service/auth';
-import { useRouter } from 'vue-router';
-
-    const router = useRouter();
-    const data = ref(
-        {
-            "email": "",
-            "password": "",
-        }
-    )
-    
-    const handleSubmit = async () =>{
-        const result = await login(data.value)
-        if(result.message == "Success"){
-            localStorage.token = result.info.token;
-            router.replace({name : 'dashboard'})
-        }else{
-            alert('Tài khoản không đúng hoặc sai mật khẩu')
-        }
-        
-    }
-    
-    
-</script>
-
 <template>
     <div>
         <div class="bg-slate-800 border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
@@ -48,3 +21,31 @@ import { useRouter } from 'vue-router';
         </div>
     </div>
 </template>
+
+
+<script setup>
+import { ref } from 'vue';
+import { login } from '../../../service/auth';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const data = ref(
+    {
+      "email": "",
+      "password": "",
+    }
+)
+
+const handleSubmit = async () =>{
+  const result = await login(data.value)
+  if(result.message == "Success"){
+    localStorage.token = result.info.token;
+    router.replace({name : 'dashboard'})
+  }else{
+    alert('Tài khoản không đúng hoặc sai mật khẩu')
+  }
+
+}
+
+
+</script>

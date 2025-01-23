@@ -1,30 +1,40 @@
 
 <template>
-    <header class="border-b border-[#ddd]">
+    <header class="border-b border-[#ddd] max-lg:bg-color-white max-lg:shadow-shadow-1 max-lg:sticky max-lg:top-0 max-lg:left-0 ">
         <div class="container mx-auto">
-            <div class="flex justify-between items-center py-10">
-                <div class="flex gap-2 items-center">
+            <div class="flex justify-between items-center py-10 max-lg:py-2">
+                <div class="flex gap-2 items-center max-lg:hidden">
                     <Location class="h-12 w-auto text-color-2"/>
                     <div class="text-sm text-color-1 hover:text-color-2 font-lato tracking-wider">
                         <p>523 Sylvan Ave</p>
                         <p>Mountain View, CA 94041 USA</p>
                     </div>
                 </div>
-                <div>
-                    <img src="https://ld-wt73.template-help.com/wt_prod-23024/images/logo-default-231x49.png" alt="Logo">
+                <div class="flex gap-2 items-center">
+                    <span class="material-icons-sharp text-4xl lg:hidden">menu</span>
+                    <img src="https://ld-wt73.template-help.com/wt_prod-23024/images/logo-default-231x49.png" alt="Logo" class="max-lg:max-h-[40px] max-lg:max-w-[200px]">
                 </div>
-                <div class="flex items-center gap-2">
+              <div class="flex gap-3 items-center lg:hidden">
+                <Search class="h-7 w-auto"/>
+                  <div class="relative cursor-pointer">
+                    <div class="flex items-start gap-1" @click="activeCard">
+                      <ShoppingCart class="h-7 w-auto"/>
+                      <p class="text-xs text-color-2 font-medium"> {{ store.dataAll.quantity }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 max-lg:hidden">
                     <div class="flex items-center gap-2 border-[2px] border-color-2  py-3 px-8  text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
                         <Message class="h-5 w-auto"/>
-                        <p class="text-xs font-bold tracking-wider">GET IN TOUCH</p>
+                        <p class="text-xs font-bol  d tracking-wider">GET IN TOUCH</p>
                     </div>
-                    <div class="text-right z-[10000]" v-if="storeUser.data.username" >
+                    <div class="text-right z-[10000]" v-if="storeUser.user" >
                         <Menu as="div" class="relative inline-block text-left">
                             <div>
                                 <MenuButton
                                 class="inline-flex w-full justify-between  cursor-pointer border-[2px] border-color-2 py-3 px-8 rounded-lg hover:bg-color-2 text-color-1 hover:text-color-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
                                 >
-                                <p class="text-sm font-bold tracking-wider">Hi <span class="text-color-2">{{ storeUser.data.username }}</span></p>
+                                <p class="text-sm font-bold tracking-wider">Hi <span class="text-color-2">{{ storeUser.user.fullName }}</span></p>
                                 <el-icon><ArrowDownBold class="text-color-2 text-xs"/></el-icon>
                                 </MenuButton>
                             </div>
@@ -66,7 +76,7 @@
         </div>
     </header>
 
-    <div class="sticky top-0 left-0 bg-color-white z-[1000] shadow-shadow-1">
+    <div class="sticky top-0 left-0 bg-color-white z-[1000] shadow-shadow-1 max-lg:hidden">
         <div class="container mx-auto">
             <div class="flex justify-between items-center">
                 <ul class="flex items-center justify-start text-color-1 text-sm font-semibold">
@@ -177,17 +187,19 @@ import { computed, onMounted } from 'vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue'
 import { getCart } from '@/service/cartService';
-import { changeQuantity } from '../../../service/cartService';
-import { useInfoUser, useProduct } from '../../../stores/local';
+import { changeQuantity } from '@/service/cartService';
+import { useUserStore, useProduct } from '@/stores/local';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { getCategoryList } from '../../../service/categoryService';
+import { getCategoryList } from '@/service/categoryService';
+import Cookies from "js-cookie";
 
 const active = ref(false)
 const cartId = localStorage.getItem("cartId")
 const store = useProduct();
-const storeUser = useInfoUser()
+const storeUser = useUserStore()
 const router = useRouter();
 const ListCategory = ref([])
+
 
 const fetchApi = async ()=>{
   const result = await getCart(cartId)
@@ -206,8 +218,29 @@ const fetchListCategory = async () =>{
 onMounted(() => {
   fetchApi();
   fetchListCategory();
+  loadUser();
 })
 
+const token = Cookies.get("token");
+
+const loadUser = async () =>{
+  try {
+    const response = await fetch('http://localhost:3000/getUser', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      storeUser.setUser(data.user);
+    } else {
+      const error = await response.json();
+    }
+  } catch (error) {
+    console.error('Lỗi:', error);
+  }
+}
 
 const handleIncre = async (index) => {
   store.dataAll.data[index].quantity++;
@@ -254,7 +287,7 @@ const activeCard = () =>{
 }
 
 const logout = () =>{
-  localStorage.removeItem("tokenUser");
+  Cookies.remove("token");
   store.useInfoUser = []
 }
 </script>

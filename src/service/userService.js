@@ -6,7 +6,7 @@ export const Register = async (option) => {
 }
 
 export const Login = async (option) => {
-    const result = await post("authClient/login.php", option);
+    const result = await post("login.php", option);
     return result;
 }
 

@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Cookies from 'js-cookie';
+
 import Home from "../pages/Client/Home/Home.vue"
 import Page404 from "../pages/404.vue"
 
@@ -42,25 +44,13 @@ import TableOrder from "../pages/Admin/Order/TableOrder.vue"
 import OrderConfirmed from "../pages/Admin/Order/Confirmed.vue";
 
 import { addCart } from "../service/cartService";
-
-import Test from "../pages/Admin/test.vue";
-
-import { DetailUser } from "../service/userService";
-import { useInfoUser } from "../stores/local";
+import { useUserStore } from "../stores/local";
 const routes = [
     {
-        path :"/home",
+        path :"/",
         component: Home,
         name : "Home",
     },
-  {
-    path :"/test",
-    component: Test,
-    name : "test",
-    meta : {
-      layout : 'test'
-    }
-  },
     {
       path :"/auth/login",
       component: LoginClient,
@@ -102,7 +92,7 @@ const routes = [
       }
     },
     {
-      path : "",
+      path : "/",
       name : "BreadCrumb",
       component : BreadCrumb,
       children : [
@@ -166,7 +156,8 @@ const routes = [
           name : "dashboard",
           component : Dashboard,
           meta : {
-            layout : "test",
+            layout : "admin",
+            needsAuth : true
           }
         },
         {
@@ -174,7 +165,8 @@ const routes = [
           name: "product",
           component : Products,
           meta : {
-            layout : "test",
+            layout : "admin",
+            needsAuth : true
           },
         },
         {
@@ -333,9 +325,8 @@ const router = createRouter({
     },
 });
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
-  const tokenUser = localStorage.getItem("tokenUser");
-  const store = useInfoUser()
+  const token = Cookies.get('token');
+  const store = useUserStore();
   if(to.meta.needsAuth && !token){
     next("/admin/auth/login");
   }else{
@@ -344,16 +335,6 @@ router.beforeEach((to, from, next) => {
         const result = await addCart()
         if(result){
           localStorage.setItem("cartId",result.id);
-          next();
-        }
-      } 
-      fetchApi();
-    }
-    if(tokenUser){
-      const fetchApi = async () => {
-        const result = await DetailUser({"tokenUser" : tokenUser})
-        if(result){
-          store.data = result;
           next();
         }
       } 

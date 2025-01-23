@@ -1,31 +1,4 @@
 
-<script setup>
-import { ref } from 'vue';
-import { Login } from '@/service/userService';
-import { RouterLink, useRouter } from 'vue-router';
-
-    const router = useRouter();
-    const data = ref(
-        {
-            "email": "",
-            "password": "",
-        }
-    )
-    
-    const handleSubmit = async () =>{
-        const result = await Login(data.value)
-        if(result.message == "Success"){
-            localStorage.tokenUser = result.info.tokenUser;
-            router.replace({name : 'Home'})
-        }else{
-            alert('Tài khoản không đúng hoặc sai mật khẩu')
-        }
-        
-    }
-    
-    
-</script>
-
 <template>
     <div class="text-color-white h-[100vh] flex justify-center items-center bg-contain bg-background-image-7">
         <div class="bg-slate-900 border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
@@ -58,3 +31,38 @@ import { RouterLink, useRouter } from 'vue-router';
         </div>
     </div>
 </template>
+
+
+<script>
+import { login } from '@/service/auth.js';
+import Cookies from 'js-cookie';
+
+export default {
+  data() {
+    return {
+      data: {
+        email: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    async handleSubmit() {
+      try {
+        const result = await login(this.data);
+        if (result.message === "success") {
+          Cookies.set("token", result.jwt);
+          this.$router.push({ name: 'Home' });
+        } else {
+          alert('Tài khoản không đúng hoặc sai mật khẩu');
+        }
+        console.log(this.data)
+      } catch (error) {
+        console.error('Đã xảy ra lỗi:', error);
+        alert('Đã xảy ra lỗi, vui lòng thử lại.');
+      }
+    },
+  },
+};
+</script>
+

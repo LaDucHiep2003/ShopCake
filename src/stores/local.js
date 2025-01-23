@@ -9,8 +9,13 @@ export const useProduct = defineStore('product', ()=> {
     return { data , dataAll} ;
 });
 
-export const useInfoUser = defineStore('info', ()=> {
-    const data = ref([])
-
-    return { data } ;
+export const useUserStore = defineStore('userStore', {
+    state: () => ({
+        user: null,
+    }),
+    actions: {
+        setUser(userData) {
+            this.user = userData;
+        },
+    },
 });

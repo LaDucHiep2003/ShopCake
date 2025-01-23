@@ -1,13 +1,3 @@
-<script setup>
-    import { computed } from 'vue';
-    import { useRoute } from 'vue-router';
-
-    const route = useRoute();
-    const BreadCrumb = computed(() => {
-        return route.name.toUpperCase()
-    });
-</script>
-
 
 <template>
     <div class="bg-background-image-4 bg-center bg-cover min-h-[24.84375vw] overflow-hidden relative">
@@ -27,4 +17,15 @@
     <RouterView></RouterView>
 
 </template>
+
+<script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const BreadCrumb = computed(() => {
+  return route.name.toUpperCase()
+});
+</script>
+
 
