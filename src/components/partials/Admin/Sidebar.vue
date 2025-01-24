@@ -2,14 +2,14 @@
   <aside :class="{
       'max-md:hidden': !openSidebar,
       'max-md:block': openSidebar,
-      'fixed top-0 left-0 md:pl-5 w-[14rem] max-md:left-[-100%] max-md:bg-white max-md:w-[18rem] max-md:z-[3] max-md:shadow-shadow-3 max-md:pr-card-padding': true
+      'fixed top-0 left-0 md:pl-5 w-[14rem] max-md:left-[-100%] max-md:bg-color-background max-md:w-[18rem] max-md:z-[3] max-md:shadow-shadow-3 max-md:pr-card-padding': true
     }">
     <div class="flex item-center justify-between mt-6">
       <div class="flex gap-3 max-md:ml-4 ">
         <img src="@/assets/images/logo.png" alt="Logo" class="w-8 h-8">
-        <div class="text-lg font-bold max-lg:hidden max-md:inline">EGA<span>TOR</span></div>
+        <div class="text-lg font-bold max-lg:hidden max-md:inline text-color-dark">EGA<span>TOR</span></div>
       </div>
-      <div @click="toggleSidebar" class="hidden max-md:inline-block cursor-pointer">
+      <div @click="toggleSidebar" class="hidden max-md:inline-block cursor-pointer text-color-dark">
         <span class="material-icons-sharp">close</span>
       </div>
     </div>
