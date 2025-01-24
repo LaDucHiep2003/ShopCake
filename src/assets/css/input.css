@@ -261,3 +261,7 @@ h3{
         display: block;
     }
 }
+
+.product table tbody tr:last-child td{
+    border: none;
+}

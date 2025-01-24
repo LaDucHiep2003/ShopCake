@@ -15,14 +15,17 @@
                     <span v-else @click="handleOpenSidebar" class="material-icons-sharp text-4xl lg:hidden cursor-pointer transition-all duration-400 ease-in-out">close</span>
                     <img src="https://ld-wt73.template-help.com/wt_prod-23024/images/logo-default-231x49.png" alt="Logo" class="max-lg:max-h-[40px] max-lg:max-w-[200px]">
                 </div>
-              <div class="flex gap-3 items-center lg:hidden">
-                <Search class="h-7 w-auto"/>
+              <div class="flex gap-2 items-center lg:hidden">
+                  <Search class="h-7 w-auto"/>
                   <div class="relative cursor-pointer">
                     <div class="flex items-start gap-1" @click="activeCard">
                       <ShoppingCart class="h-7 w-auto"/>
                       <p class="text-xs text-color-2 font-medium"> {{ store.dataAll.quantity }}</p>
                     </div>
                   </div>
+                <RouterLink :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-8 flex justify-center items-center py-1 px-2 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
+                  <span class="material-icons-sharp">leaderboard</span>
+                </RouterLink>
                 </div>
                 <div class="flex items-center gap-2 max-lg:hidden">
                     <div class="flex items-center gap-2 border-[2px] border-color-2 h-11  py-3 px-8  text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
@@ -86,14 +89,21 @@
       <li class="hover:bg-color-2 mb-1 hover:text-color-white" :class=" BreakCurmp === 'HOME' ? 'bg-color-2 text-color-white' : ''">
         <RouterLink :to="{ name : 'Home'}" class="py-3 inline-block tracking-widest relative ml-3">HOME </RouterLink>
       </li>
-      <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
+      <li @click="handleOpenDropdown" class="transition-all duration-300 ease-in-out cursor-pointer"
           :class=" BreakCurmp === 'Gallery' ? 'bg-color-2 text-color-white' : ''">
-        <RouterLink :to="{ name: 'Gallery' }" class="py-3 inline-block tracking-widest relative ml-3"
-        >
-          GALLERY </RouterLink>
-        <ul class="navbar absolute p-[30px] ml-[-30px] w-[250px] bg-color-white z-[5] text-left block opacity-0 invisible">
-          <li class="block py-3" v-for="item in ListCategory">
-            <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>
+        <div class="flex justify-between items-center hover:bg-color-2 mb-1 hover:text-color-white ">
+          <RouterLink :to="{ name: 'Gallery' }" class="py-3 inline-block tracking-widest relative text-xs ml-3">GALLERY</RouterLink>
+          <span class="material-icons-sharp mr-3 text-base " :class="{'rotate-180' : openDropdown}">expand_more</span>
+        </div>
+        <ul :class="{
+          'hidden': !openDropdown,
+          'block': openDropdown
+        }" class="w-full bg-color-white z-[5] text-left">
+<!--          <li class="block" v-for="item in ListCategory">-->
+<!--            <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>-->
+<!--          </li>-->
+          <li class="hover:text-color-white hover:bg-color-2 py-3 pl-5 text-color-4">
+            <RouterLink to="/" class="text-xs leading-[1.2] font-medium tracking-wider">Grid Gallery</RouterLink>
           </li>
         </ul>
       </li>
@@ -245,9 +255,14 @@ const storeUser = useUserStore()
 const router = useRouter();
 const ListCategory = ref([])
 const opensidebar = ref(false);
+const openDropdown = ref(false);
 
 const handleOpenSidebar = () =>{
   opensidebar.value = !opensidebar.value;
+}
+
+const handleOpenDropdown = () =>{
+  openDropdown.value = !openDropdown.value;
 }
 
 const fetchApi = async ()=>{

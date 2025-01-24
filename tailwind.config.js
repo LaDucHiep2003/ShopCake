@@ -69,7 +69,7 @@ export default {
         "flex-1":"0 0 auto"
       },
       gridTemplateColumns:{
-        "grid-template-col" : "14rem auto 23rem",
+        "grid-template-col" : "14rem auto",
         "grid-template-col-lg" : "7rem auto 23rem"
       },
       spacing:{

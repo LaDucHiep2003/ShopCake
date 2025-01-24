@@ -157,7 +157,7 @@ const routes = [
           component : Dashboard,
           meta : {
             layout : "admin",
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
@@ -166,7 +166,7 @@ const routes = [
           component : Products,
           meta : {
             layout : "admin",
-            needsAuth : true
+            // needsAuth : true
           },
         },
         {

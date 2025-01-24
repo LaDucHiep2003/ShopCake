@@ -1,7 +1,7 @@
 import { get, patch, post } from "../utils/request";
 
-export const getProductList = async (page) => {
-    const result = await get(`products/read.php?page=${page}`);
+export const getProductList = async () => {
+    const result = await get(`products`);
     return result;
 }
 
