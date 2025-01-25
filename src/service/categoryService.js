@@ -1,7 +1,7 @@
 import { get, patch, post } from "../utils/request";
 
 export const getCategoryList = async () => {
-    const result = await get("category/read.php");
+    const result = await get("getProductCategory");
     return result;
 }
 

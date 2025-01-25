@@ -193,7 +193,7 @@ const routes = [
           name: 'edit',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {

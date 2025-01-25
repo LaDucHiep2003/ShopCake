@@ -11,7 +11,7 @@ export const getProductListDeleted = async (page) => {
 }
 
 export const getProductDetail = async (id) => {
-    const result = await get(`products/detail.php?id=${id}`);
+    const result = await get(`products/${id}`);
     return result;
 }
 
@@ -40,7 +40,7 @@ export const changeStatus = async (id, option) => {
 }
 
 export const createProduct = async (option) => {
-    const result = await post("products/create.php",option);
+    const result = await post("create/product",option);
     return result;
 }
 

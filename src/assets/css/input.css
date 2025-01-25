@@ -270,11 +270,10 @@ h3{
     .responsive-form .el-form-item__label-wrap{
         margin-left: 0 !important;
     }
-    /*.responsive-form .el-form-item {*/
-    /*    display: flex;*/
-    /*    flex-direction: column; !* Mặc định: label trên input *!*/
-    /*}*/
-
+    .responsive-form .el-form-item {
+        display: flex;
+        flex-direction: column; /* Mặc định: label trên input */
+    }
 }
 
 

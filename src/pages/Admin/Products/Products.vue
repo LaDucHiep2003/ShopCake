@@ -44,7 +44,9 @@
                     class="px-4 py-1 text-color-white rounded-lg text-base font-semibold max-md:text-xs max-md:px-2">{{ item.status }}</button>
               </td>
               <td class="h-10 border-b border-color-light text-color-dark whitespace-nowrap">
-                <button class="px-5 font-semibold py-1 bg-color-13 text-color-white rounded-lg max-md:text-xs max-md:px-2 whitespace-nowrap">Sửa</button>
+                <RouterLink :to="`/admin/edit-product/${item.id}`">
+                  <button class="px-5 font-semibold py-1 bg-color-13 text-color-white rounded-lg max-md:text-xs max-md:px-2 whitespace-nowrap">Sửa</button>
+                </RouterLink>
                 <button class="px-5 font-semibold py-1 bg-color-2 ml-1 text-color-white rounded-lg max-md:text-xs max-md:px-2 whitespace-nowrap">Xóa</button>
               </td>
             </tr>

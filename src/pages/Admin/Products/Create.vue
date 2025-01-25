@@ -67,7 +67,6 @@
     import { useRouter } from 'vue-router';
     import { createProduct } from '@/service/productsService';
     import { getCategoryList } from '@/service/categoryService';
-    import { userInfo } from '@/service/accountService'
     import Editor from '@tinymce/tinymce-vue'
 
     const widget = window.cloudinary.createUploadWidget(
@@ -80,20 +79,6 @@
         }
     )
 
-    const data = ref({ permissions: [] });
-
-    const fetAPi = async () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const result = await userInfo({ token });
-            data.value = result;
-        }
-    };
-
-    const checkPermissions = (permission) => {
-        return data.value.permissions.includes(permission);
-    };
-
   const router = useRouter()
 
     const openUploadWidget = () =>{
@@ -105,13 +90,13 @@
     const fetchCategorys = () => {
         const fetchApi = async () => {
             const result = await getCategoryList()
-            options.value = result.map(item => ({ value: item.id, label: item.title }));
+          console.log(result)
+            options.value = result.data.data.map(item => ({ value: item.id, label: item.title }));
         }
         fetchApi();
     };    
 
     onMounted(() => {
-        fetAPi()
         fetchCategorys()
     });
 
@@ -127,16 +112,16 @@
     parentId : '',
   })
 
-
-  function  onSubmit() {
-    const fetchApi = async () => {
-        const result = await createProduct(sizeForm)
-        if(result){
-            console.log("Success");
-            router.replace({name : 'product'})
-        }        
-    } 
-    fetchApi();
+  function onSubmit() {
+    // const fetchApi = async () => {
+    //     const result = await createProduct(sizeForm)
+    //     if(result){
+    //         console.log("Success");
+    //         router.replace({name : 'product'})
+    //     }
+    // }
+    // fetchApi();
+    console.log(sizeForm)
 }
 </script>
 
