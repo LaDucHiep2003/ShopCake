@@ -12,7 +12,7 @@ import Sidebar from '@/components/partials/Admin/Sidebar.vue';
     data(){
       return{
         openSidebar : false,
-        light : true
+        light : false
       }
     },
     components:{

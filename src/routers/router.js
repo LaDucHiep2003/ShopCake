@@ -172,10 +172,10 @@ const routes = [
         {
           path: 'create-product',
           component: CreateProduct,
-          name: 'create',
+          name: 'create-product',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {

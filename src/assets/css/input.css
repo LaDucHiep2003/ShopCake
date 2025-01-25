@@ -265,3 +265,16 @@ h3{
 .product table tbody tr:last-child td{
     border: none;
 }
+
+@media (max-width: 768px) {
+    .responsive-form .el-form-item__label-wrap{
+        margin-left: 0 !important;
+    }
+    /*.responsive-form .el-form-item {*/
+    /*    display: flex;*/
+    /*    flex-direction: column; !* Mặc định: label trên input *!*/
+    /*}*/
+
+}
+
+

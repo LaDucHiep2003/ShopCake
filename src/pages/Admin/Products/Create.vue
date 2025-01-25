@@ -1,16 +1,15 @@
 <template>
-    
-    <div class="mx-auto container bg-color-white" v-if="checkPermissions('product_create')"> 
-        <div class="text-[50px] text-color-2 font-great text-center">
+    <div class="mx-auto container mt-8 max-md:mt-3">
+        <div class="text-[50px] text-color-2 font-great text-center max-md:text-2xl">
             Thêm sản phẩm
         </div>
         <el-form
-            class="w-full p-3"
+            class="w-full p-3 responsive-form"
             :model="sizeForm"
             label-width="auto"
             size="large"
         >
-        <el-form-item label="Title">
+        <el-form-item label="Title" class="ml-0">
             <el-input v-model="sizeForm.title" />
         </el-form-item>
         <el-form-item label="Danh mục cha">
@@ -37,9 +36,8 @@
                 }"
             />
         </el-form-item>
-        
         <el-form-item label="Giá">
-            <el-input v-model.number="sizeForm.price" />
+          <el-input v-model.number="sizeForm.price" class="responsive-input" />
         </el-form-item>
         <el-form-item label="Giá cũ">
             <el-input v-model.number="sizeForm.oldPrice" />
@@ -56,7 +54,7 @@
             <el-radio border value="inactive">Dừng hoạt động</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="flex justify-center">
             <el-button type="primary" @click="onSubmit">Create</el-button>
             <el-button>Cancel</el-button>
         </el-form-item>
@@ -65,7 +63,6 @@
   </template>
   
 <script setup>
-
     import { onMounted, reactive, ref } from 'vue'
     import { useRouter } from 'vue-router';
     import { createProduct } from '@/service/productsService';
