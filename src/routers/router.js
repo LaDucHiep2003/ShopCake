@@ -202,7 +202,7 @@ const routes = [
           name: 'category',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
@@ -211,25 +211,25 @@ const routes = [
           name: 'create-category',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
           path: 'edit-category/:id',
           component: EditCategory,
-          name: 'edit/category',
+          name: 'edit-category',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
           path: 'roles',
           component: Roles,
-          name: 'role',
+          name: 'roles',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
@@ -238,7 +238,7 @@ const routes = [
           name: 'create-role',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {

@@ -1,58 +1,66 @@
 <template>
-    
-    <div class="mx-auto container bg-color-white"> 
-        <div class="text-[50px] text-color-2 font-great text-center">
-            Thêm Danh mục
-        </div>
-        <el-form
-            class="w-full p-3"
-            :model="sizeForm"
-            label-width="auto"
-            size="large"
-        >
-        <el-form-item label="Title">
-            <el-input v-model="sizeForm.title" />
-        </el-form-item>
-        <el-form-item label="Danh mục cha">
-            <el-select
-                v-model="sizeForm.parentId"
-                clearable
-                placeholder="Select"
-                style="width: 240px"
-            >
-                <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                />
-            </el-select>
-        </el-form-item>
-        <el-form-item label="Description">
-            <el-input v-model="sizeForm.description" type="textarea" />
-        </el-form-item>
-        <el-form-item label="Vị trí">
-            <el-input v-model.number="sizeForm.position" />
-        </el-form-item>
-        <el-form-item label="Status">
-            <el-radio-group v-model="sizeForm.status">
-            <el-radio border value="active">Hoạt động</el-radio>
-            <el-radio border value="inactive">Dừng hoạt động</el-radio>
-            </el-radio-group>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="onSubmit">Create</el-button>
-            <el-button>Cancel</el-button>
-        </el-form-item>
-        </el-form>
+  <div class="mx-auto container mt-8 max-md:mt-3">
+    <div class="text-[50px] text-color-2 font-great text-center max-md:text-2xl">
+      Thêm danh mục sản phẩm
     </div>
-  </template>
-  
-<script setup>
+    <el-form
+        class="w-full p-3 responsive-form"
+        :model="sizeForm"
+        label-width="auto"
+        size="large"
+    >
+      <el-form-item label="Title">
+        <el-input v-model="sizeForm.title" class="bg-color-white-2" />
+      </el-form-item>
+      <el-form-item label="Danh mục cha">
+        <el-select
+            v-model="sizeForm.parentId"
+            clearable
+            placeholder="Select"
+            style="width: 240px"
+        >
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="Description" class="desciption-create-product">
+        <Editor
+            v-model="sizeForm.description"
+            api-key="5igfhdajsjjgz97l6dnw1fg7u9pn6192n0tewmq3kx1shkg2"
+            :init="{
+                    plugins: 'lists link image table code help wordcount'
+                }"
+        />
+      </el-form-item>
+      <el-form-item label="Ảnh">
+        <el-button size="small" type="primary" @click="openUploadWidget()">Chọn ảnh</el-button>
+      </el-form-item>
+      <el-form-item label="Vị trí">
+        <el-input v-model.number="sizeForm.position" />
+      </el-form-item>
+      <el-form-item label="Status">
+        <el-radio-group v-model="sizeForm.status">
+          <el-radio border value="active">Hoạt động</el-radio>
+          <el-radio border value="inactive">Dừng hoạt động</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item class="flex justify-center">
+        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button>Cancel</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
 
+<script setup>
     import { onMounted, reactive, ref } from 'vue'
     import { useRouter } from 'vue-router';
-    import { createCategory, getCategoryList } from '../../../service/categoryService';
+    import { createCategory, getCategoryList } from '@/service/categoryService';
+    import Editor from "@tinymce/tinymce-vue";
 
     const router = useRouter()
     const options = ref([])
@@ -72,7 +80,21 @@
     status: '',
     position : '',
     parentId : '',
+    thumbnail : ''
   })
+  const widget = window.cloudinary.createUploadWidget(
+      { cloud_name : "dsxkwbfyq", upload_preset : "upload"},
+      (error, result) =>{
+        if(!error && result && result.event === "success"){
+          console.log("OK ... ", result.info.url);
+          sizeForm.thumbnail = result.info.url
+        }
+      }
+  )
+
+  const openUploadWidget = () =>{
+    widget.open()
+  }
 
   const onSubmit = () => {
     const fetchApi = async () => {

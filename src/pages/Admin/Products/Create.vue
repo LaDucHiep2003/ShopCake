@@ -9,8 +9,8 @@
             label-width="auto"
             size="large"
         >
-        <el-form-item label="Title" class="ml-0">
-            <el-input v-model="sizeForm.title" />
+        <el-form-item label="Title">
+            <el-input v-model="sizeForm.title" class="bg-color-white-2" />
         </el-form-item>
         <el-form-item label="Danh mục cha">
             <el-select
