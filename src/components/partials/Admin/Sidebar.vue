@@ -31,13 +31,13 @@
         <span class="material-icons-sharp text-xl transition-all duration-300 ease-out">category</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Danh mục</h3>
       </RouterLink>
-      <RouterLink to="/admin/category" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
-              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14" :class="{ active: $route.name === 'roles' }">
+      <RouterLink :to="{ name : 'roles'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14" :class="{ active: $route.name === 'roles' || $route.name === 'create-role' || $route.name === 'edit-role' }">
         <span class="material-icons-sharp text-xl transition-all duration-300 ease-out">account_tree</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Nhóm quyền</h3>
       </RouterLink>
-      <RouterLink to="/admin/category" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
-              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14" :class="{ active: $route.path === '/admin/role' }">
+      <RouterLink :to="{ name : 'permissions'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14" :class="{ active: $route.name === 'permissions' }">
         <span class="material-icons-sharp text-xl transition-all duration-300 ease-out">account_tree</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Phân quyền</h3>
       </RouterLink>

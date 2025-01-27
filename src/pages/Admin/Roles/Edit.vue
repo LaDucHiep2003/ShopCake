@@ -1,11 +1,11 @@
 <template>
     
-    <div class="mx-auto container bg-color-white"> 
-        <div class="text-[50px] text-color-2 font-great text-center">
+    <div class="mx-auto container">
+        <div class="text-[50px] text-color-2 font-great text-center max-md:text-3xl">
             Chỉnh sửa nhóm quyền
         </div>
         <el-form
-            class="w-full p-3"
+            class="w-full p-3 responsive-form"
             :model="sizeForm"
             label-width="auto"
             size="large"
@@ -17,8 +17,8 @@
             <el-input v-model="sizeForm.description" type="textarea" />
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">Update</el-button>
-            <el-button>Cancel</el-button>
+            <el-button type="primary" @click="onSubmit">Cập nhật</el-button>
+            <el-button>Hủy</el-button>
         </el-form-item>
         </el-form>
     </div>

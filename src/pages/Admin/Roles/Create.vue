@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto container mt-8 max-md:mt-3">
-    <div class="text-[50px] text-color-2 font-great text-center max-md:text-2xl">
-      Thêm danh mục sản phẩm
+    <div class="text-[50px] text-color-2 font-great text-center max-md:text-3xl">
+      Thêm nhóm quyền
     </div>
     <el-form
         class="w-full p-3 responsive-form"
@@ -9,21 +9,15 @@
         label-width="auto"
         size="large"
     >
-      <el-form-item label="Title">
+      <el-form-item label="Tiêu đề">
         <el-input v-model="sizeForm.title" class="bg-color-white-2" />
       </el-form-item>
-      <el-form-item label="Description" class="desciption-create-product">
-        <Editor
-            v-model="sizeForm.description"
-            api-key="5igfhdajsjjgz97l6dnw1fg7u9pn6192n0tewmq3kx1shkg2"
-            :init="{
-                    plugins: 'lists link image table code help wordcount'
-                }"
-        />
+      <el-form-item label="Mô tả">
+        <el-input v-model="sizeForm.description" type="textarea" class="bg-color-white-2" />
       </el-form-item>
       <el-form-item class="flex justify-center">
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button>Cancel</el-button>
+        <el-button type="primary" @click="onSubmit">Tạo</el-button>
+        <el-button>Huỷ</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -32,9 +26,8 @@
     import {reactive } from 'vue'
     import { useRouter } from 'vue-router';
     import { createRole } from '@/service/roleService';
-    import Editor from "@tinymce/tinymce-vue";
 
-  const router = useRouter()
+    const router = useRouter()
 
   
   const sizeForm = reactive({
@@ -48,7 +41,7 @@
         console.log("Success");
         router.replace({name : 'role'})
     }
-}
+  }
 </script>
 
   

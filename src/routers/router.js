@@ -247,7 +247,7 @@ const routes = [
           name: 'edit-role',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
@@ -256,7 +256,7 @@ const routes = [
           name: 'permissions',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {

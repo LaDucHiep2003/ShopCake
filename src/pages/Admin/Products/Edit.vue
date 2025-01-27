@@ -27,14 +27,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="Description" class="desciption-create-product">
-        <Editor
-            v-model="sizeForm.description"
-            api-key="5igfhdajsjjgz97l6dnw1fg7u9pn6192n0tewmq3kx1shkg2"
-            :init="{
-                    plugins: 'lists link image table code help wordcount'
-                }"
-        />
+      <el-form-item label="Description">
+        <el-input v-model="sizeForm.description" type="textarea" class="bg-color-white-2" />
       </el-form-item>
       <el-form-item label="Giá">
         <el-input v-model.number="sizeForm.price" class="responsive-input" />
@@ -55,8 +49,8 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item class="flex justify-center">
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button>Cancel</el-button>
+        <el-button type="primary" @click="onSubmit">Cập nhật</el-button>
+        <el-button>Hủy</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -67,26 +61,10 @@ import { onMounted, reactive, ref } from 'vue'
 import {useRoute, useRouter} from 'vue-router';
 import {createProduct, getProductDetail} from '@/service/productsService';
 import { getCategoryList } from '@/service/categoryService';
-import Editor from '@tinymce/tinymce-vue'
-
-
-const widget = window.cloudinary.createUploadWidget(
-    { cloud_name : "dsxkwbfyq", upload_preset : "upload"},
-    (error, result) =>{
-      if(!error && result && result.event === "success"){
-        console.log("OK ... ", result.info.url);
-        sizeForm.image = result.info.url
-      }
-    }
-)
 
 const router = useRouter()
 const route = useRoute()
 const id = route.params.id;
-
-const openUploadWidget = () =>{
-  widget.open()
-}
 
 const options = ref([])
 
