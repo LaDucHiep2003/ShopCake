@@ -265,7 +265,7 @@ const routes = [
           name: 'accounts',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
@@ -274,7 +274,7 @@ const routes = [
           name: 'create-accounts',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {
@@ -283,7 +283,7 @@ const routes = [
           name: 'edit-accounts',
           meta: {
             layout: 'admin',
-            needsAuth : true
+            // needsAuth : true
           }
         },
         {

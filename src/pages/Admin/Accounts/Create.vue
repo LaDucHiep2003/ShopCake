@@ -1,16 +1,15 @@
 <template>
-    
-    <div class="mx-auto container bg-color-white"> 
+    <div class="mx-auto container">
         <div class="text-[50px] text-color-2 font-great text-center">
             Thêm tài khoản admin
         </div>
         <el-form
-            class="w-full p-3"
+            class="w-full p-3 responsive-form"
             :model="sizeForm"
             label-width="auto"
             size="large"
         >
-        <el-form-item label="FullName">
+        <el-form-item label="Họ tên">
             <el-input v-model="sizeForm.fullName" />
         </el-form-item>
         <el-form-item label="Nhóm quyền">
@@ -31,24 +30,24 @@
         <el-form-item label="Email">
             <el-input v-model="sizeForm.email" />
         </el-form-item>
-        <el-form-item label="Password">
+        <el-form-item label="Mật khẩu">
             <el-input v-model="sizeForm.password" />
         </el-form-item>
-        <el-form-item label="Phone">
+        <el-form-item label="Số điện thoại">
             <el-input v-model="sizeForm.phone" />
         </el-form-item>
-        <el-form-item label="Avatar">
-            <el-input v-model="sizeForm.avatar" />
-        </el-form-item>
-        <el-form-item label="Status">
+<!--        <el-form-item label="Ảnh">-->
+<!--            <el-input v-model="sizeForm.avatar" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="Trạng thái">
             <el-radio-group v-model="sizeForm.status">
             <el-radio border value="active">Hoạt động</el-radio>
             <el-radio border value="inactive">Dừng hoạt động</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">Create</el-button>
-            <el-button>Cancel</el-button>
+            <el-button type="primary" @click="onSubmit">Tạo</el-button>
+            <el-button>Hủy</el-button>
         </el-form-item>
         </el-form>
     </div>

@@ -1,11 +1,12 @@
 
 <template>
-  <h1 class="text-2xl font-bold">Sản phẩm</h1>
+  <h1 class="text-2xl font-bold text-color-dark max-md:text-xl max-lg:text-center">Sản phẩm</h1>
   <div class="mt-8 md:container max-md:px-2 mx-auto product">
     <RouterLink :to="{ name : 'create-product'}">
       <button class="px-5 font-semibold py-2 bg-color-13 text-sm text-color-white rounded-lg max-md:px-3">Thêm sản phẩm</button>
     </RouterLink>
-    <div class="bg-color-white-2 mt-10 rounded-lg max-md:rounded-lg text-center shadow-shadow-5 transition-all duration-300 ease-in-out hover:shadow-none max-md:px-2">
+    <div class="bg-color-white-2 mt-10 rounded-lg max-md:rounded-lg text-center shadow-shadow-5 transition-all duration-300
+      ease-in-out hover:shadow-none max-md:px-2">
       <form class="py-5 pl-3 max-lg:py-3 max-md:pl-1">
         <div class="h-10 relative border pl-3 border-color-light w-1/2 rounded-lg flex justify-between items-center max-md:h-8">
           <input placeholder="Nhập từ khóa..." type="search" class="w-full bg-color-white-2 outline-none text-color-9 text-base max-md:text-xs">

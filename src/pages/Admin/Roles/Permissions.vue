@@ -8,19 +8,51 @@
             <el-button type="primary" plain @click="handleUpdate">Cập nhật</el-button>
         </div>
         
-        <el-table :data="tableData" class="w-full px-5">
-            <el-table-column
-                v-for="(item, index) in data"
-                :key="index"
-                :label="item.title"
-                width="200"
-                class="text-center"
-            >
-                <template #default="scope">
-                    <el-checkbox :label="scope.row.title" size="large" @change="handleClick(item.id, scope.row, $event)" :checked="isChecked(item.id, scope.row)"/>
-                </template>
-            </el-table-column>  
-        </el-table>
+<!--        <el-table :data="tableData" class="w-full px-5">-->
+<!--            <el-table-column-->
+<!--                v-for="(item, index) in data"-->
+<!--                :key="index"-->
+<!--                :label="item.title"-->
+<!--                width="200"-->
+<!--                class="text-center"-->
+<!--            >-->
+<!--                <template #default="scope">-->
+<!--                    <el-checkbox :label="scope.row.title" size="large" @change="handleClick(item.id, scope.row, $event)" :checked="isChecked(item.id, scope.row)"/>-->
+<!--                </template>-->
+<!--            </el-table-column>  -->
+<!--        </el-table>-->
+      <div class="bg-color-white-2 mt-10 rounded-lg max-md:rounded-lg text-center shadow-shadow-5 transition-all duration-300
+                ease-in-out hover:shadow-none max-md:px-2">
+        <div class="overflow-x-auto w-full max-md:my-0 max-md:mx-auto">
+          <table class="w-full border-collapse min-w-[600px]">
+            <thead>
+            <tr class="border-b border-color-light">
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-1 text-color-dark whitespace-nowrap">Quyền </th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-1 text-color-dark whitespace-nowrap">Hình ảnh</th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Tên sản phẩm</th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Giá</th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-1 text-color-dark whitespace-nowrap">Vị trí</th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Trạng thái</th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Hành động</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in tableData">
+                <td class="h-10 border-b border-color-light max-md:text-xs whitespace-nowrap text-center font-medium text-color-info-dark">{{ item.title }}</td>
+                <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap text-center">
+                  <label class="flex justify-center items-center cursor-pointer text-lg w-full py-2 px-3 rounded-md relative">
+                    <input type="checkbox" class="hidden peer">
+                    <span class="w-6 h-6 border-[3px] border-gray-300 rounded-lg flex items-center justify-center
+                        peer-checked:border-blue-500 transition-colors relative"></span>
+                    <span class="w-2.5 h-2.5 bg-blue-500 rounded-full peer-checked:inline-block hidden absolute left-[76px]"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     
 </template>
