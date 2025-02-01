@@ -26,6 +26,7 @@
     import {reactive } from 'vue'
     import { useRouter } from 'vue-router';
     import { createRole } from '@/service/roleService';
+    import {ElNotification} from "element-plus";
 
     const router = useRouter()
 
@@ -36,10 +37,30 @@
   })
 
   const onSubmit = async () => {
+    const errorMessages = {
+      title: 'Vui lòng nhập tiêu đề',
+      description: 'Vui lòng nhập mô tả',
+    };
+
+    // Kiểm tra từng thuộc tính của sizeForm
+    for (const key in sizeForm) {
+      if (sizeForm[key] === '' || sizeForm[key] === null || sizeForm[key] === undefined) {
+        ElNotification({
+          title: 'Warning',
+          message: errorMessages[key], // Hiển thị thông báo tương ứng
+          type: 'warning',
+        });
+        return; // Dừng lại nếu có lỗi
+      }
+    }
     const result = await createRole(sizeForm)
     if(result){
-        console.log("Success");
-        router.replace({name : 'role'})
+      ElNotification({
+        title: 'Success',
+        message: 'Tạo thành công',
+        type: 'success',
+      })
+        router.replace({name : 'roles'})
     }
   }
 </script>

@@ -12,21 +12,6 @@
       <el-form-item label="Title">
         <el-input v-model="sizeForm.title" class="bg-color-white-2" />
       </el-form-item>
-      <el-form-item label="Danh mục cha">
-        <el-select
-            v-model="sizeForm.parentId"
-            clearable
-            placeholder="Select"
-            style="width: 240px"
-        >
-          <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="Description">
         <el-input v-model="sizeForm.description" type="textarea" class="bg-color-white-2" />
       </el-form-item>
@@ -51,28 +36,18 @@
 </template>
 
 <script setup>
-    import { onMounted, reactive, ref } from 'vue'
+    import { reactive, ref } from 'vue'
     import { useRouter } from 'vue-router';
-    import { createCategory, getCategoryList } from '@/service/categoryService';
+    import { createCategory } from '@/service/categoryService';
+    import {ElNotification} from "element-plus";
 
     const router = useRouter()
-    const options = ref([])
-    
-    const fetchCategorys = () => {
-        const fetchApi = async () => {
-            const result = await getCategoryList()
-            options.value = result.map(item => ({ value: item.id, label: item.title }));
-        }
-        fetchApi();
-    };    
-    onMounted(async () => await fetchCategorys());
 
   const sizeForm = reactive({
     title: '',
     description: '',
     status: '',
     position : '',
-    parentId : '',
     thumbnail : ''
   })
   const widget = window.cloudinary.createUploadWidget(
@@ -90,15 +65,37 @@
   }
 
   const onSubmit = () => {
+    const errorMessages = {
+      title: 'Vui lòng nhập tiêu đề',
+      description: 'Vui lòng nhập mô tả',
+      image: 'Vui lòng tải lên hình ảnh',
+      status: 'Vui lòng chọn trạng thái',
+      position: 'Vui lòng nhập vị trí',
+    };
+
+    // Kiểm tra từng thuộc tính của sizeForm
+    for (const key in sizeForm) {
+      if (sizeForm[key] === '' || sizeForm[key] === null || sizeForm[key] === undefined) {
+        ElNotification({
+          title: 'Warning',
+          message: errorMessages[key], // Hiển thị thông báo tương ứng
+          type: 'warning',
+        });
+        return; // Dừng lại nếu có lỗi
+      }
+    }
     const fetchApi = async () => {
         const result = await createCategory(sizeForm)
         if(result){
-            console.log("Success");
+          ElNotification({
+            title: 'Success',
+            message: 'Tạo thành công',
+            type: 'success',
+          })
             router.replace({name : 'category'})
         }
     } 
     fetchApi();
-    console.log(sizeForm);
 }
 </script>
 

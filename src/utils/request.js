@@ -26,6 +26,14 @@ export const del = async (patch) => {
     return result
 }
 
+export const update = async (patch) => {
+    const response = await fetch(API_DOMAIN + patch, {
+        method: "UPDATE",
+    });
+    const result = response.json()
+    return result
+}
+
 export const patch = async (patch, option) => {
     const response = await fetch(API_DOMAIN + patch, {
         method: "PATCH",

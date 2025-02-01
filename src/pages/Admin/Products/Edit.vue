@@ -59,8 +59,9 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
 import {useRoute, useRouter} from 'vue-router';
-import {createProduct, getProductDetail} from '@/service/productsService';
+import {createProduct, editProduct, getProductDetail} from '@/service/productsService';
 import { getCategoryList } from '@/service/categoryService';
+import {ElNotification} from "element-plus";
 
 const router = useRouter()
 const route = useRoute()
@@ -80,7 +81,7 @@ const fetchCategorys = () => {
 const loadProductDetail = async () =>{
   const result = await getProductDetail(id);
   if(result){
-    sizeForm = result.detail;
+    Object.assign(sizeForm, result.detail);
   }
 }
 
@@ -102,15 +103,18 @@ let sizeForm = reactive({
 })
 
 function onSubmit() {
-  // const fetchApi = async () => {
-  //     const result = await createProduct(sizeForm)
-  //     if(result){
-  //         console.log("Success");
-  //         router.replace({name : 'product'})
-  //     }
-  // }
-  // fetchApi();
-  console.log(sizeForm)
+  const fetchApi = async () => {
+      const result = await editProduct(sizeForm, id)
+      if(result){
+        ElNotification({
+          title: 'Success',
+          message: 'Cập nhật thành công',
+          type: 'success',
+        })
+          router.replace({name : 'product'})
+      }
+  }
+  fetchApi();
 }
 </script>
 

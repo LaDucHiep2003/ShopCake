@@ -1,17 +1,17 @@
 import { get, patch, post } from "../utils/request";
 
 export const getCategoryList = async () => {
-    const result = await get("getProductCategory");
+    const result = await get(`category`);
     return result;
 }
 
 export const getCategoryDetail = async (id) => {
-    const result = await get(`category/detail.php?id=${id}`);
+    const result = await get(`category/${id}`);
     return result;
 }
 
 export const editCategory = async (id,option) => {
-    const result = await post(`category/edit.php?id=${id}`, option);
+    const result = await patch(`edit/category/${id}`, option);
     return result;
 }
 
@@ -20,8 +20,8 @@ export const getCategoryListSort = async (sort, value) => {
     return result;
 }
 
-export const deleteCategory = async (option) => {
-    const result = patch(`category/delete.php`, option)
+export const deleteCategory = async (id) => {
+    const result = patch(`delete/category/${id}`)
     return result;
 }
 
@@ -31,6 +31,6 @@ export const changeStatus = async (id, option) => {
 }
 
 export const createCategory = async (option) => {
-    const result = await post("category/create.php",option);
+    const result = await post("create/category",option);
     return result;
 }

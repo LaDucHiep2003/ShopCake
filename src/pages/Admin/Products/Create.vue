@@ -27,7 +27,7 @@
                 />
             </el-select>
         </el-form-item>
-          <el-form-item label="Description">
+          <el-form-item label="Mô tả">
             <el-input v-model="sizeForm.description" type="textarea" class="bg-color-white-2" />
           </el-form-item>
         <el-form-item label="Giá">
@@ -42,7 +42,7 @@
         <el-form-item label="Vị trí">
             <el-input v-model.number="sizeForm.position" />
         </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item label="Trạng thái">
             <el-radio-group v-model="sizeForm.status">
             <el-radio border value="active">Hoạt động</el-radio>
             <el-radio border value="inactive">Dừng hoạt động</el-radio>
@@ -62,6 +62,7 @@
     import { createProduct } from '@/service/productsService';
     import { getCategoryList } from '@/service/categoryService';
     import Editor from '@tinymce/tinymce-vue'
+    import { ElNotification } from 'element-plus'
 
     const widget = window.cloudinary.createUploadWidget(
         { cloud_name : "dsxkwbfyq", upload_preset : "upload"},
@@ -106,16 +107,42 @@
     parentId : '',
   })
 
+
   function onSubmit() {
-    // const fetchApi = async () => {
-    //     const result = await createProduct(sizeForm)
-    //     if(result){
-    //         console.log("Success");
-    //         router.replace({name : 'product'})
-    //     }
-    // }
-    // fetchApi();
-    console.log(sizeForm)
+    const errorMessages = {
+      title: 'Vui lòng nhập tiêu đề',
+      description: 'Vui lòng nhập mô tả',
+      image: 'Vui lòng tải lên hình ảnh',
+      price: 'Vui lòng nhập giá',
+      status: 'Vui lòng chọn trạng thái',
+      position: 'Vui lòng nhập vị trí',
+      oldPrice: 'Vui lòng nhập giá cũ',
+      parentId: 'Vui lòng chọn danh mục cha',
+    };
+
+    // Kiểm tra từng thuộc tính của sizeForm
+    for (const key in sizeForm) {
+      if (sizeForm[key] === '' || sizeForm[key] === null || sizeForm[key] === undefined) {
+        ElNotification({
+          title: 'Warning',
+          message: errorMessages[key], // Hiển thị thông báo tương ứng
+          type: 'warning',
+        });
+        return; // Dừng lại nếu có lỗi
+      }
+    }
+    const fetchApi = async () => {
+        const result = await createProduct(sizeForm)
+        if(result){
+          ElNotification({
+            title: 'Success',
+            message: 'Tạo thành công',
+            type: 'success',
+          })
+            router.replace({name : 'product'})
+        }
+    }
+    fetchApi();
 }
 </script>
 

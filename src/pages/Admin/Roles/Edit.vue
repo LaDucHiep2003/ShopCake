@@ -23,41 +23,48 @@
         </el-form>
     </div>
   </template>
-  
-<script>
-    import { useRoute} from 'vue-router';
-    export default{
-        data(){
-            return{
-                products : [],
-                sizeForm: {
-                    title: '',
-                    description: '',
-                }
-            };
-        },
-        created() {
-            const route = useRoute();
-            const id = route.params.id;
-            fetch(`http://localhost/php/shop_online/be/api/roles/detail.php?id=${id}`)
-            .then((response) => response.json())
-            .then((data) => this.sizeForm = data)
-        },
-        methods:{
-            onSubmit(){
-                const id = this.$route.params.id;
-                fetch(`http://localhost/php/shop_online/be/api/roles/update.php?id=${id}`,{
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.sizeForm)
-                })
-                    .then(response => response.json());
-                this.$router.push({name : 'role'})
-            }
-        }
+
+<script setup>
+import { onMounted, reactive } from 'vue'
+import {useRoute, useRouter} from 'vue-router';
+import {ElNotification} from "element-plus";
+import {editRole, getRoleDetail} from "@/service/roleService.js";
+
+const router = useRouter()
+const route = useRoute()
+const id = route.params.id;
+
+const loadRoleDetail = async () =>{
+  const result = await getRoleDetail(id);
+  if(result){
+    Object.assign(sizeForm, result.detail);
+  }
+}
+
+onMounted(() => {
+  loadRoleDetail();
+});
+
+
+let sizeForm = reactive({
+  title: '',
+  description: '',
+})
+
+function onSubmit() {
+  const fetchApi = async () => {
+    const result = await editRole(id, sizeForm)
+    if(result){
+      ElNotification({
+        title: 'Success',
+        message: 'Cập nhật thành công',
+        type: 'success',
+      })
+      router.replace({name : 'roles'})
     }
-
-
+  }
+  fetchApi();
+}
 </script>
 
   

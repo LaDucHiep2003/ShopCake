@@ -2,12 +2,12 @@ import { get, patch, post } from "../utils/request";
 
 
 export const createAccount = async (option) => {
-    const result = await post("account/create.php",option);
+    const result = await post("create/account",option);
     return result;
 }
 
 export const getAccountList = async () => {
-    const result = await get("account/read.php");
+    const result = await get("accounts");
     return result;
 }
 
@@ -16,8 +16,8 @@ export const getAccountDetail = async (id) => {
     return result;
 }
 
-export const deleteAccount = async (option) => {
-    const result = patch(`account/delete.php`, option)
+export const deleteAccount = async (id) => {
+    const result = patch(`delete/account/${id}`)
     return result;
 }
 

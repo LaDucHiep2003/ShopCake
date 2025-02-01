@@ -190,7 +190,7 @@ const routes = [
         {
           path: 'edit-product/:id',
           component: EditProduct,
-          name: 'edit',
+          name: 'edit-product',
           meta: {
             layout: 'admin',
             // needsAuth : true

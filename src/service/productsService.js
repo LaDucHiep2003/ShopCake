@@ -1,4 +1,4 @@
-import { get, patch, post } from "../utils/request";
+import {get, patch, post} from "../utils/request";
 
 export const getProductList = async () => {
     const result = await get(`products`);
@@ -20,8 +20,8 @@ export const getProductCategory = async (id) => {
     return result;
 }
 
-export const deleteProduct = async (option) => {
-    const result = patch(`products/delete.php`, option)
+export const deleteProduct = async (id) => {
+    const result = patch(`delete/product/${id}`)
     return result;
 }
 export const deletePermanently = async (option) => {
@@ -43,6 +43,25 @@ export const createProduct = async (option) => {
     const result = await post("create/product",option);
     return result;
 }
+export const editProduct = async (option, id) => {
+    const result = await post(`edit/product/${id}`,option);
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const getProductListSort = async (sort, value) => {
     const result = await get(`products/read.php?sort=${sort}&value=${value}`);

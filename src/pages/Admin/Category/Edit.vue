@@ -12,21 +12,6 @@
       <el-form-item label="Title">
         <el-input v-model="sizeForm.title" class="bg-color-white-2" />
       </el-form-item>
-      <el-form-item label="Danh mục cha">
-        <el-select
-            v-model="sizeForm.parentId"
-            clearable
-            placeholder="Select"
-            style="width: 240px"
-        >
-          <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="Description">
         <el-input v-model="sizeForm.description" type="textarea" class="bg-color-white-2" />
       </el-form-item>
@@ -52,11 +37,13 @@
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router';
-import { createCategory, getCategoryList } from '@/service/categoryService';
+import { useRouter,useRoute } from 'vue-router';
+import { editCategory, getCategoryDetail } from '@/service/categoryService';
+import {ElNotification} from "element-plus";
 
 const router = useRouter()
-const options = ref([])
+const route = useRoute()
+const id = route.params.id;
 
 const openUploadWidget = () =>{
   widget.open()
@@ -72,34 +59,39 @@ const widget = window.cloudinary.createUploadWidget(
     }
 )
 
-const fetchCategorys = () => {
-  const fetchApi = async () => {
-    const result = await getCategoryList()
-    options.value = result.map(item => ({ value: item.id, label: item.title }));
+const loadCategoryDetail = async () =>{
+  const result = await getCategoryDetail(id);
+  if(result){
+    console.log(result)
+    Object.assign(sizeForm, result.detail);
   }
-  fetchApi();
-};
-onMounted(async () => await fetchCategorys());
+}
+
+onMounted(async () => {
+  await loadCategoryDetail(id);
+});
 
 const sizeForm = reactive({
   title: '',
   description: '',
   status: '',
   position : '',
-  parentId : '',
   thumbnail : ''
 })
 
 const onSubmit = () => {
   const fetchApi = async () => {
-    const result = await createCategory(sizeForm)
+    const result = await editCategory(id, sizeForm)
     if(result){
-      console.log("Success");
+      ElNotification({
+        title: 'Success',
+        message: 'Cập nhật thành công',
+        type: 'success',
+      })
       router.replace({name : 'category'})
     }
   }
   fetchApi();
-  console.log(sizeForm);
 }
 </script>
 
