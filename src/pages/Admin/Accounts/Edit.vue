@@ -59,14 +59,15 @@
     import { useRoute, useRouter } from 'vue-router';
     import { getRoleList } from '@/service/roleService';
     import { createAccount, getAccountDetail } from '@/service/accountService';
-    import { editAccount } from '../../../service/accountService';
+    import { editAccount } from '@/service/accountService';
+    import {ElNotification} from "element-plus";
 
     const router = useRouter()
     const options = ref([])
     const route = useRoute();
     const id = route.params.id;
 
-    const sizeForm = ref({
+    const sizeForm = reactive({
         fullName: '',
         email: '',
         password: '',
@@ -79,35 +80,35 @@
     const fetchCategorys = () => {
         const fetchApi = async () => {
             const result = await getRoleList()
-            options.value = result.map(item => ({ value: item.id, label: item.title }));
+            options.value = result.data.data.map(item => ({ value: item.id, label: item.title }));
         }
         fetchApi();
     };    
 
-    const fetchData = () =>{
-        const fetchApi = async () => {
-            const result = await getAccountDetail(id)
-            if(result){
-                sizeForm.value = result
-            }
-        }
-        fetchApi();
+    const fetchData = async () =>{
+      const result = await getAccountDetail(id)
+      if(result){
+        Object.assign(sizeForm, result.detail);
+      }
     }
-    onMounted(() => {
-        fetchCategorys();
-        fetchData();
+    onMounted(async () => {
+        await fetchCategorys();
+        await fetchData();
     });
 
   const onSubmit = () => {
     const fetchApi = async () => {
-        const result = await editAccount(id,sizeForm.value)
+        const result = await editAccount(id,sizeForm)
         if(result){
-            console.log("Success");
+          ElNotification({
+            title: 'Success',
+            message: 'Cập nhật thành công',
+            type: 'success',
+          })
             router.replace({name : 'accounts'})
         }
     } 
     fetchApi();
-    console.log(sizeForm);
 }
 </script>
 

@@ -40,9 +40,9 @@
                     }"
                   class="px-4 py-1 text-color-white rounded-lg text-base font-semibold max-md:text-xs max-md:px-2">{{ item.status }}</button>
             </td>
-            <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap" >{{ item.roleId }}</td>
+            <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap" >{{ getRoleName(item.roleId) }}</td>
             <td class="h-10 border-b border-color-light text-color-dark whitespace-nowrap">
-              <RouterLink :to="`/admin/edit-product/${item.id}`">
+              <RouterLink :to="`/admin/edit-accounts/${item.id}`">
                 <button class="px-5 font-semibold py-1 bg-color-13 text-color-white rounded-lg max-md:text-xs max-md:px-2 whitespace-nowrap">Sửa</button>
               </RouterLink>
               <button @click="handleDelete(item.id)" class="px-5 font-semibold py-1 bg-color-2 ml-1 text-color-white rounded-lg max-md:text-xs max-md:px-2 whitespace-nowrap">Xóa</button>
@@ -58,6 +58,7 @@
 <script>
 import { ElNotification } from 'element-plus';
 import {deleteAccount, getAccountList} from "@/service/accountService.js";
+import {getRoleList} from "@/service/roleService.js";
 
 export default {
   data(){
@@ -65,6 +66,7 @@ export default {
       accounts : [],
       searchQuery: "",
       allAccounts: [],
+      roles : []
     }
   },
   methods:{
@@ -82,8 +84,10 @@ export default {
     async loadAccount() {
       try {
         const result = await getAccountList();
+        const roleResult = await getRoleList();
         this.accounts = result.data.data;
         this.allAccounts = result.data.data;
+        this.roles = roleResult.data.data;
       } catch (err) {
         console.log("Lỗi khi lấy danh sách tài khoản sản phẩm");
       }
@@ -96,6 +100,10 @@ export default {
             account.email.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       }
+    },
+    getRoleName(roleId) {
+      const role = this.roles.find((r) => r.id == roleId);
+      return role ? role.title : "Không xác định"; // Trả về tên role hoặc "Không xác định"
     },
   },
   async created(){

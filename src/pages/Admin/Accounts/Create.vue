@@ -36,9 +36,9 @@
         <el-form-item label="Số điện thoại">
             <el-input v-model="sizeForm.phone" />
         </el-form-item>
-<!--        <el-form-item label="Ảnh">-->
-<!--            <el-input v-model="sizeForm.avatar" />-->
-<!--        </el-form-item>-->
+        <el-form-item label="Ảnh">
+            <el-input v-model="sizeForm.avatar" />
+        </el-form-item>
         <el-form-item label="Trạng thái">
             <el-radio-group v-model="sizeForm.status">
             <el-radio border value="active">Hoạt động</el-radio>
@@ -57,20 +57,23 @@
 
     import { onMounted, reactive, ref } from 'vue'
     import { useRouter } from 'vue-router';
-    import { getRoleList } from '../../../service/roleService';
-import { createAccount } from '../../../service/accountService';
+    import { getRoleList } from '@/service/roleService';
+    import { createAccount } from '@/service/accountService';
+    import {ElNotification} from "element-plus";
 
     const router = useRouter()
     const options = ref([])
     
-    const fetchCategorys = () => {
+    const fetchRoles = () => {
         const fetchApi = async () => {
             const result = await getRoleList()
-            options.value = result.map(item => ({ value: item.id, label: item.title }));
+            options.value = result.data.data.map(item => ({ value: item.id, label: item.title }));
         }
         fetchApi();
     };    
-    onMounted(async () => await fetchCategorys());
+    onMounted(async () => {
+      await fetchRoles()
+    });
 
   const sizeForm = reactive({
     fullName: '',
@@ -83,10 +86,35 @@ import { createAccount } from '../../../service/accountService';
   })
 
   const onSubmit = () => {
+    const errorMessages = {
+      fullName: 'Vui lòng nhập họ tên',
+      email: 'Vui lòng nhập email',
+      password: 'Vui lòng nhập mật khẩu',
+      phone: 'Vui lòng nhập số điện thoại',
+      avatar: 'Vui lòng tải lên avatar',
+      roleId: 'Vui lòng nhập nhóm quyền',
+      status: 'Vui lòng chọn trạng thái',
+    };
+
+    // Kiểm tra từng thuộc tính của sizeForm
+    for (const key in sizeForm) {
+      if (sizeForm[key] === '' || sizeForm[key] === null || sizeForm[key] === undefined) {
+        ElNotification({
+          title: 'Warning',
+          message: errorMessages[key], // Hiển thị thông báo tương ứng
+          type: 'warning',
+        });
+        return; // Dừng lại nếu có lỗi
+      }
+    }
     const fetchApi = async () => {
         const result = await createAccount(sizeForm)
         if(result){
-            console.log("Success");
+          ElNotification({
+            title: 'Success',
+            message: 'Tạo thành công',
+            type: 'success',
+          })
             router.replace({name : 'accounts'})
         }
     } 

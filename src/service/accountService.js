@@ -12,7 +12,7 @@ export const getAccountList = async () => {
 }
 
 export const getAccountDetail = async (id) => {
-    const result = await get(`account/detail.php?id=${id}`);
+    const result = await get(`accounts/${id}`);
     return result;
 }
 
@@ -22,7 +22,7 @@ export const deleteAccount = async (id) => {
 }
 
 export const editAccount = async (id, option) => {
-    const result = patch(`account/edit.php?id=${id}`, option)
+    const result = patch(`edit/account/${id}`, option)
     return result;
 }
 

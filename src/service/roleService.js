@@ -22,6 +22,6 @@ export const deleteRole = async (id) => {
 }
 
 export const UpdatePermissions = async (option) => {
-    const result = patch(`roles/permissions.php`, option)
+    const result = patch(`role/permissions`, option)
     return result;
 }
