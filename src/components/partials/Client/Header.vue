@@ -74,7 +74,7 @@
                     <RouterLink v-else :to="{ name : 'loginClient'}" class="border-[2px] flex justify-center items-center border-color-2 h-11 py-3 px-8 text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
                         <p class="text-xs font-bold tracking-wider">Login</p>
                     </RouterLink>
-                    <RouterLink :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
+                    <RouterLink v-if="dataUser.role === 'admin'" :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
                       <span class="material-icons-sharp">leaderboard</span>
                     </RouterLink>
                 </div>
@@ -256,6 +256,7 @@ const router = useRouter();
 const ListCategory = ref([])
 const opensidebar = ref(false);
 const openDropdown = ref(false);
+const dataUser = ref([]);
 
 const handleOpenSidebar = () =>{
   opensidebar.value = !opensidebar.value;
@@ -298,6 +299,7 @@ const loadUser = async () =>{
     if (response.ok) {
       const data = await response.json();
       storeUser.setUser(data.user);
+      dataUser.value = data.user;
     } else {
       const error = await response.json();
     }
@@ -352,6 +354,6 @@ const activeCard = () =>{
 
 const logout = () =>{
   Cookies.remove("token");
-  store.useInfoUser = []
+  storeUser.logout();
 }
 </script>

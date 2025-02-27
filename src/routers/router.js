@@ -157,7 +157,7 @@ const routes = [
           component : Dashboard,
           meta : {
             layout : "admin",
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -166,7 +166,7 @@ const routes = [
           component : Products,
           meta : {
             layout : "admin",
-            // needsAuth : true
+            needsAuth : true
           },
         },
         {
@@ -175,7 +175,7 @@ const routes = [
           name: 'create-product',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -193,7 +193,7 @@ const routes = [
           name: 'edit-product',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -202,7 +202,7 @@ const routes = [
           name: 'category',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -211,7 +211,7 @@ const routes = [
           name: 'create-category',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -220,7 +220,7 @@ const routes = [
           name: 'edit-category',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -229,7 +229,7 @@ const routes = [
           name: 'roles',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -238,7 +238,7 @@ const routes = [
           name: 'create-role',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -247,7 +247,7 @@ const routes = [
           name: 'edit-role',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -256,7 +256,7 @@ const routes = [
           name: 'permissions',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -265,7 +265,7 @@ const routes = [
           name: 'accounts',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -274,7 +274,7 @@ const routes = [
           name: 'create-accounts',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -283,7 +283,7 @@ const routes = [
           name: 'edit-accounts',
           meta: {
             layout: 'admin',
-            // needsAuth : true
+            needsAuth : true
           }
         },
         {
@@ -326,8 +326,9 @@ const router = createRouter({
 });
 router.beforeEach((to, from, next) => {
   const token = Cookies.get('token');
-  const store = useUserStore();
-  if(to.meta.needsAuth && !token){
+  const storeUser = useUserStore()
+      console.log(storeUser.$state.user)
+  if(to.meta.needsAuth && storeUser.$state.user.role !== "admin"){
     next("/admin/auth/login");
   }else{
     if(!localStorage.getItem('cartId')){
