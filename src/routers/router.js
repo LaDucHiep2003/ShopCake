@@ -335,7 +335,8 @@ router.beforeEach((to, from, next) => {
       const fetchApi = async () => {
         const result = await addCart()
         if(result){
-          localStorage.setItem("cartId",result.id);
+          console.log(result)
+          localStorage.setItem("cartId",result.cart.id);
           next();
         }
       } 

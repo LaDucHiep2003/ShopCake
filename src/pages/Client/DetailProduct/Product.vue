@@ -1,59 +1,4 @@
-<script setup>
-    import { computed, onMounted, ref } from 'vue'
-    import { useRoute } from 'vue-router';
-    import { getCart } from '@/service/cartService';
-    import { getProductDetail } from '../../../service/productsService';
-    import { addProduct } from '../../../service/cartService';
-    import { useProduct } from '../../../stores/local';
 
-    const num = ref(1)
-    const cartId = localStorage.getItem("cartId")
-
-    const store = useProduct();
-
-    const handleIncre = () =>{
-        num.value++;
-    }
-    const handleDecre = () =>{
-        if(num.value > 1){
-            num.value--;
-        }
-    }
-    
-
-    const route = useRoute();
-    const id = route.params.id;
-    const products = ref([]);
-    const fetchApi = () => {
-        const fetchApi = async () => {
-            const result = await getProductDetail(id)
-            products.value = result;
-        }
-        fetchApi();
-        
-    };
-    onMounted(fetchApi);
-    const addtoCart = async () =>{
-        const result = await addProduct({
-            "cartId" : cartId,
-            "product_id": products.value.id,
-            "quantity" : num.value
-        })
-        if(result){
-            const index = store.data.findIndex((item) => item.id == products.value.id)
-            store.dataAll.data[index].quantity = num.value
-            store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
-            store.dataAll.totalPrice -= store.dataAll.data[index].price * num.value;
-            store.dataAll.totalPrice = store.dataAll.data.reduce((total, item) => {
-                return total + item.totalPrice;
-            }, 0);
-            store.dataAll.quantity = store.dataAll.data.reduce((total, item) => {
-                return total + item.quantity;
-            }, 0);
-
-        } 
-    }
-</script>
 <template>
         <div class="container mx-auto py-10">
             <div class="grid grid-cols-2">
@@ -97,3 +42,54 @@
             </div>
         </div>
 </template>
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router';
+import { getCart } from '@/service/cartService';
+import { getProductDetail } from '../../../service/productsService';
+import { addProduct } from '../../../service/cartService';
+import { useProduct } from '../../../stores/local';
+
+const num = ref(1)
+const cartId = localStorage.getItem("cartId")
+
+const store = useProduct();
+
+const handleIncre = () =>{
+  num.value++;
+}
+const handleDecre = () =>{
+  if(num.value > 1){
+    num.value--;
+  }
+}
+
+
+const route = useRoute();
+const id = route.params.id;
+const products = ref([]);
+const fetchApi = async () => {
+  const result = await getProductDetail(id)
+  products.value = result.detail;
+};
+onMounted(fetchApi);
+const addtoCart = async () =>{
+  const result = await addProduct({
+    "cartId" : cartId,
+    "product_id": products.value.id,
+    "quantity" : num.value
+  })
+  if(result){
+    const index = store.data.findIndex((item) => item.id == products.value.id)
+    store.dataAll.data[index].quantity = num.value
+    store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
+    store.dataAll.totalPrice -= store.dataAll.data[index].price * num.value;
+    store.dataAll.totalPrice = store.dataAll.data.reduce((total, item) => {
+      return total + item.totalPrice;
+    }, 0);
+    store.dataAll.quantity = store.dataAll.data.reduce((total, item) => {
+      return total + item.quantity;
+    }, 0);
+  }
+}
+</script>

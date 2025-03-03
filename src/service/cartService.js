@@ -2,12 +2,12 @@ import { get, patch, post } from "../utils/request";
 
 
 export const addCart = async () => {
-    const result = await post("cart/addCart.php");
+    const result = await post("cart/add");
     return result;
 }
 
 export const addProduct = async (option) => {
-    const result = await post("cart/addProduct.php", option);
+    const result = await post("cart/addProduct", option);
     return result;
 }
 
@@ -16,14 +16,13 @@ export const deleteProduct = async (option) => {
     return result;
 }
 
-
-export const getCart = async (id) => {
-    const result = await get(`cart/detail.php?cartId=${id}`);
+export const getCart = async (option) => {
+    const result = await post(`cart/getCart`, option);
     return result;
 }
 
 
 export const changeQuantity = async (option) => {
-    const result = patch("cart/change-quantity.php", option)
+    const result = patch("cart/changeQuantity", option)
     return result;
 }

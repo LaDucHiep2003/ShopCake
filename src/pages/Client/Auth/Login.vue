@@ -36,6 +36,7 @@
 <script>
 import { login } from '@/service/auth.js';
 import Cookies from 'js-cookie';
+import {useUserStore} from "@/stores/local.js";
 
 export default {
   data() {
@@ -46,12 +47,14 @@ export default {
       },
     };
   },
+
   methods: {
     async handleSubmit() {
       try {
         const result = await login(this.data);
         if (result.message === "success") {
           Cookies.set("token", result.jwt);
+          await this.getUser(result.jwt);
           this.$router.push({ name: 'Home' });
         } else {
           alert('Tài khoản không đúng hoặc sai mật khẩu');
@@ -62,6 +65,25 @@ export default {
         alert('Đã xảy ra lỗi, vui lòng thử lại.');
       }
     },
+    async getUser(token){
+      try {
+        const response = await fetch('http://localhost:3000/getUser', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const userStore = useUserStore(); // Lấy store từ Pinia
+          userStore.setUser(data.user);
+        } else {
+          const error = await response.json();
+        }
+      } catch (error) {
+        console.error('Lỗi:', error);
+      }
+    }
   },
 };
 </script>

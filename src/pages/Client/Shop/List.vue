@@ -1,27 +1,3 @@
-<script setup>
-import { onMounted, ref } from 'vue';
-import { getProductList } from '../../../service/productsService';
-
-    const products = ref([]);
-    let page = 1;
-    const totalPage = ref(1)
-
-    const fetchApi = () => {
-        const fetchApi = async () => {
-            const result = await getProductList(page)
-            products.value = result['products'];
-            totalPage.value = result['totalPages']
-        }
-        fetchApi();
-    };
-
-    onMounted(fetchApi);
-
-    const handlePageChange = (newPage) =>{
-        page = newPage;  
-        fetchApi();
-    }
-</script>
 
 <template>
     <div class="pb-8 text-[15px] text-color-1 tracking-wider">Showing 1–9 of 28 results</div>
@@ -57,5 +33,30 @@ import { getProductList } from '../../../service/productsService';
             </article>
         </div>
     </div>
-    <el-pagination background layout="prev, pager, next" :total="totalPage * 10" @current-change="handlePageChange"/>
+<!--    <el-pagination background layout="prev, pager, next" :total="totalPage * 10" @current-change="handlePageChange"/>-->
 </template>
+
+<script>
+  import {getProductList} from "@/service/productsService.js";
+
+  export default {
+    data(){
+      return {
+        products : []
+      }
+    },
+    methods:{
+      async loadProducts() {
+        try {
+          const result = await getProductList();
+          this.products = result.data.data;
+        } catch (err) {
+          console.log("Lỗi khi lấy danh sách sản phẩm");
+        }
+      },
+    },
+    async created(){
+      await this.loadProducts();
+    }
+  }
+</script>

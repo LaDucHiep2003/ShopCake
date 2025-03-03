@@ -74,7 +74,7 @@
                     <RouterLink v-else :to="{ name : 'loginClient'}" class="border-[2px] flex justify-center items-center border-color-2 h-11 py-3 px-8 text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
                         <p class="text-xs font-bold tracking-wider">Login</p>
                     </RouterLink>
-                    <RouterLink v-if="dataUser.role === 'admin'" :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
+                    <RouterLink v-if="storeUser.user.role === 'admin'" :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
                       <span class="material-icons-sharp">leaderboard</span>
                     </RouterLink>
                 </div>
@@ -99,9 +99,9 @@
           'hidden': !openDropdown,
           'block': openDropdown
         }" class="w-full bg-color-white z-[5] text-left">
-<!--          <li class="block" v-for="item in ListCategory">-->
-<!--            <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>-->
-<!--          </li>-->
+          <li class="block" v-for="item in ListCategory">
+            <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>
+          </li>
           <li class="hover:text-color-white hover:bg-color-2 py-3 pl-5 text-color-4">
             <RouterLink to="/" class="text-xs leading-[1.2] font-medium tracking-wider">Grid Gallery</RouterLink>
           </li>
@@ -256,7 +256,6 @@ const router = useRouter();
 const ListCategory = ref([])
 const opensidebar = ref(false);
 const openDropdown = ref(false);
-const dataUser = ref([]);
 
 const handleOpenSidebar = () =>{
   opensidebar.value = !opensidebar.value;
@@ -267,8 +266,11 @@ const handleOpenDropdown = () =>{
 }
 
 const fetchApi = async ()=>{
-  const result = await getCart(cartId)
+  const result = await getCart({
+    cart_id : localStorage.getItem("cartId")
+  })
   if(result){
+    console.log(result)
     store.data = result['data']
     store.dataAll = result
   }
@@ -277,36 +279,13 @@ const fetchApi = async ()=>{
 const fetchListCategory = async () =>{
   const result = await getCategoryList()
   if(result){
-    ListCategory.value = result;
+    ListCategory.value = result.data.data;
   }
 }
 onMounted(() => {
   fetchApi();
   fetchListCategory();
-  loadUser();
 })
-
-const token = Cookies.get("token");
-
-const loadUser = async () =>{
-  try {
-    const response = await fetch('http://localhost:3000/getUser', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    if (response.ok) {
-      const data = await response.json();
-      storeUser.setUser(data.user);
-      dataUser.value = data.user;
-    } else {
-      const error = await response.json();
-    }
-  } catch (error) {
-    console.error('Lỗi:', error);
-  }
-}
 
 const handleIncre = async (index) => {
   store.dataAll.data[index].quantity++;
