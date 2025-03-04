@@ -1,7 +1,7 @@
 
 <template>
     <div class="bg-background-image-4 bg-center bg-cover min-h-[24.84375vw] overflow-hidden relative">
-        <div class="text-color-white text-[55px] flex justify-center items-center font-semibold tracking-wider py-[100px] absolute top-0 left-[-1px] right-[-1px] bottom-0">GALLERY</div>
+        <div class="text-color-white text-[55px] flex justify-center items-center font-semibold tracking-wider py-[100px] absolute top-0 left-[-1px] right-[-1px] bottom-0">{{ BreadCrumb }}</div>
     </div>
     <ul class="flex justify-center items-center gap-3 py-4 bg-color-8">
         <li class="text-color-4 inline text-sm font-semibold tracking-widest">

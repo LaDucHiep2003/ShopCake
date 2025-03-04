@@ -74,9 +74,9 @@
                     <RouterLink v-else :to="{ name : 'loginClient'}" class="border-[2px] flex justify-center items-center border-color-2 h-11 py-3 px-8 text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
                         <p class="text-xs font-bold tracking-wider">Login</p>
                     </RouterLink>
-                    <RouterLink v-if="storeUser.user.role === 'admin'" :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
-                      <span class="material-icons-sharp">leaderboard</span>
-                    </RouterLink>
+<!--                    <RouterLink v-if="storeUser.user.role === 'admin'" :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">-->
+<!--                      <span class="material-icons-sharp">leaderboard</span>-->
+<!--                    </RouterLink>-->
                 </div>
             </div>
         </div>
@@ -241,7 +241,7 @@
 import { computed, onMounted } from 'vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue'
-import { getCart } from '@/service/cartService';
+import {deleteProduct, getCart} from '@/service/cartService';
 import { changeQuantity } from '@/service/cartService';
 import { useUserStore, useProduct } from '@/stores/local';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
@@ -304,15 +304,14 @@ const handleIncre = async (index) => {
 };
 
 const handleDecre = async (index) => {
-  if(store.dataAll.data[index].quantity > 0){
+  if(store.dataAll.data[index].quantity > 1){
     store.dataAll.data[index].quantity--;
     store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
     store.dataAll.totalPrice -= store.dataAll.data[index].price;
     store.dataAll.quantity--;
   }
   else{
-    store.dataAll.data[index].quantity = 0
-    store.dataAll.data[index].totalPrice = 0;
+    handleDelete(store.dataAll.data[index].id, index);
   }
   const result = await changeQuantity({
     "product_id" : store.dataAll.data[index].id,
@@ -323,6 +322,14 @@ const handleDecre = async (index) => {
     console.log("ok");
   }
 };
+const handleDelete = async (id,index) =>{
+  const result = await deleteProduct({
+    'product_id' : id
+  });
+  if(result){
+    store.dataAll.data.splice(index, 1);
+  }
+}
 const route = useRoute();
 const BreakCurmp = computed(() => {
   return route.name ? route.name.toUpperCase() : '';

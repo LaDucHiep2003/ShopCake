@@ -1,32 +1,4 @@
-<script setup>
-    import TableCart from "../Cart/TableCart.vue"
-    import { useProduct } from '../../../stores/local';
-import { ref } from "vue";
-import { useRouter } from "vue-router";
 
-    const store = useProduct();
-    const router = useRouter()
-
-    const delivery = ref({
-        "first_name" : "",
-        "last_name" : "",
-        "company" : "",
-        "address": "",
-        "city" : "",
-        "email" : "",
-        "phone" : ""
-    })
-
-    const handleOrder = () =>{
-        console.log({
-            "delivery" : delivery.value,
-            "product" : store.dataAll.data
-        });
-
-        router.replace({name : 'success'})
-    }
-
-</script>
 <template>
     <div class="container mx-auto py-[100px]">
         <div class="grid grid-cols-2 gap-8">
@@ -34,15 +6,15 @@ import { useRouter } from "vue-router";
                 <h3 class="text-4xl font-medium text-color-1 tracking-wider">BILLING ADDRESS</h3>
                 <div class="my-8">
                     <div class="flex justify-between gap-3">
-                        <input v-model="delivery.first_name" type="text" placeholder="First Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                        <input v-model="delivery.last_name" type="text" placeholder="Last Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
+                        <input v-model="delivery.first_name" type="text" placeholder="First Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                        <input v-model="delivery.last_name" type="text" placeholder="Last Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
                     </div>
-                    <input v-model="delivery.company" type="text" placeholder="Company" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                    <input v-model="delivery.address" type="text" placeholder="Address" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                    <input v-model="delivery.city" type="text" placeholder="City/Town" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
+                    <input v-model="delivery.company" type="text" placeholder="Company" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                    <input v-model="delivery.address" type="text" placeholder="Address" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                    <input v-model="delivery.city" type="text" placeholder="City/Town" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
                     <div class="flex justify-between gap-3">
-                        <input v-model="delivery.email" type="text" placeholder="Email" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                        <input v-model="delivery.phone" type="text" placeholder="Phone" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
+                        <input v-model="delivery.email" type="text" placeholder="Email" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                        <input v-model="delivery.phone" type="text" placeholder="Phone" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
                     </div>
                 </div>
             </div>
@@ -50,15 +22,15 @@ import { useRouter } from "vue-router";
                 <h3 class="text-4xl font-medium text-color-1 tracking-wider">DELIVERY ADDRESS</h3>
                 <div class="my-8">
                     <div class="flex justify-between gap-3">
-                        <input type="text" placeholder="First Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                        <input type="text" placeholder="Last Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
+                        <input type="text" placeholder="First Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                        <input type="text" placeholder="Last Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
                     </div>
-                    <input type="text" placeholder="Company" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                    <input type="text" placeholder="Address" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                    <input type="text" placeholder="City/Town" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
+                    <input type="text" placeholder="Company" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                    <input type="text" placeholder="Address" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                    <input type="text" placeholder="City/Town" class="my-5 w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
                     <div class="flex justify-between gap-3">
-                        <input type="text" placeholder="Email" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
-                        <input type="text" placeholder="Phone" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15">
+                        <input type="text" placeholder="Email" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
+                        <input type="text" placeholder="Phone" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
                     </div>
                 </div>
             </div>
@@ -111,3 +83,44 @@ import { useRouter } from "vue-router";
         </div>
     </div>
 </template>
+<script setup>
+import TableCart from "../Cart/TableCart.vue"
+import { useProduct } from '@/stores/local';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import {checkout} from "@/service/orderService.js";
+
+const store = useProduct();
+const router = useRouter()
+
+const delivery = ref({
+  "first_name" : "",
+  "last_name" : "",
+  "company" : "",
+  "address": "",
+  "city" : "",
+  "email" : "",
+  "phone" : ""
+})
+
+const handleOrder = async () =>{
+  // console.log({
+  //   "cart_id" : localStorage.getItem("cartId"),
+  //   "delivery" : delivery.value,
+  //   "products" : store.dataAll.data,
+  //   "quantity" : store.dataAll.quantity,
+  //   "totalPrice" : store.dataAll.totalPrice
+  // });
+  const result = await checkout({
+    "cart_id" : localStorage.getItem("cartId"),
+    "delivery" : delivery.value,
+    "products" : store.dataAll.data,
+    "quantity" : store.dataAll.quantity,
+    "totalPrice" : store.dataAll.totalPrice
+  })
+  if(result){
+    router.replace({name : 'success'})
+  }
+}
+
+</script>

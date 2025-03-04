@@ -12,7 +12,7 @@ export const addProduct = async (option) => {
 }
 
 export const deleteProduct = async (option) => {
-    const result = await post("cart/deleteCart.php", option);
+    const result = await post("cart/deleteProduct", option);
     return result;
 }
 

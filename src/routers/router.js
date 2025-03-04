@@ -122,7 +122,7 @@ const routes = [
           name : 'checkout'
         },
         {
-          path : 'success',
+          path : 'success/:id',
           component : Success,
           name : 'success'
         },

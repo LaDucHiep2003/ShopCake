@@ -37,26 +37,12 @@
 </template>
 
 <script>
-  import {getProductList} from "@/service/productsService.js";
-
   export default {
-    data(){
-      return {
-        products : []
+    props:{
+      products:{
+        type: Array,
+        required: true
       }
-    },
-    methods:{
-      async loadProducts() {
-        try {
-          const result = await getProductList();
-          this.products = result.data.data;
-        } catch (err) {
-          console.log("Lỗi khi lấy danh sách sản phẩm");
-        }
-      },
-    },
-    async created(){
-      await this.loadProducts();
     }
   }
 </script>

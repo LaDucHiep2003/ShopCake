@@ -45,10 +45,9 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router';
-import { getCart } from '@/service/cartService';
-import { getProductDetail } from '../../../service/productsService';
-import { addProduct } from '../../../service/cartService';
-import { useProduct } from '../../../stores/local';
+import { getProductDetail } from '@/service/productsService';
+import { addProduct } from '@/service/cartService';
+import { useProduct } from '@/stores/local';
 
 const num = ref(1)
 const cartId = localStorage.getItem("cartId")
@@ -80,6 +79,7 @@ const addtoCart = async () =>{
     "quantity" : num.value
   })
   if(result){
+    num.value = 1;
     const index = store.data.findIndex((item) => item.id == products.value.id)
     store.dataAll.data[index].quantity = num.value
     store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price

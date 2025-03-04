@@ -1,61 +1,3 @@
-<script setup>
-    import { onMounted, ref } from 'vue'
-    import { getCart } from '@/service/cartService';
-    import { changeQuantity, deleteProduct } from '../../../service/cartService';
-    import { useProduct } from '../../../stores/local';
-
-    const cartId = localStorage.getItem("cartId")
-    const store = useProduct();
-
-    const handleIncre = async (index) => {
-        store.dataAll.data[index].quantity++;
-        store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
-        store.dataAll.totalPrice += store.dataAll.data[index].price;
-        store.dataAll.quantity++;
-
-        const result = await changeQuantity({
-            "product_id" : store.dataAll.data[index].id,
-            "quantity": store.dataAll.data[index].quantity,
-            "cartId": cartId
-        });
-        if(result){
-            console.log("ok");
-        }
-    };
-
-    const handleDecre = async (index) => {
-        if(store.dataAll.data[index].quantity > 0){
-            store.dataAll.data[index].quantity--;
-            store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
-            store.dataAll.totalPrice -= store.dataAll.data[index].price;
-            store.dataAll.quantity--;
-        }
-        else{
-            store.dataAll.data[index].quantity = 0
-            store.dataAll.data[index].totalPrice = 0;
-        }
-        const result = await changeQuantity({
-            "product_id" : store.dataAll.data[index].id,
-            "quantity": store.dataAll.data[index].quantity,
-            "cartId": cartId
-        });
-        if(result){
-            console.log("ok");
-        }
-    };
-
-    const handleDelete = (id,index) =>{
-        const fetchApi = async () => {
-            const result = await deleteProduct({
-                'product_id' : id
-            });
-            if(result){
-                store.dataAll.data.splice(index, 1);
-            }
-        }
-        fetchApi();
-    }
-</script>
 
 <template>
     <table class="w-full max-w-full bg-color-white border-collapse text-center uppercase border border-border-color-2">
@@ -96,23 +38,59 @@
                          hover:bg-color-2 hover:text-color-white cursor-pointer" @click="handleDelete(item.id,index)">Delete</div>
                 </td>
             </tr>
-            
         </tbody>
     </table>
-    <div class="flex justify-between items-center py-8">
-        <div class="flex items-center gap-5">
-            <div class="min-w-[185px] grow inline-block text-font-15 tracking-wider text-color-4 font-lato ml-4">
-                <input type="text" placeholder="Code" class="min-h-[70px] py-[22px] rounded-md px-[25px] focus:outline-none border border-border-color-2">
-            </div>
-            
-            <button class="min-w-[190px] min-h-[70px] text-sm font-bold text-color-white py-6 px-[50px] bg-color-2 rounded-lg hover:bg-color-6">APPLY</button>
-        </div>
-        <div class="flex items-center gap-8">
-            <div class="text-lg text-color-9 font-medium tracking-wider ">Total</div>
-            <div class="text-4xl text-color-1 tracking-wider ">${{ store.dataAll.totalPrice }}</div>
-            <RouterLink :to="{ name : 'checkout'}">
-                <button class="min-w-[190px] text-sm font-bold text-color-white py-5 px-[50px] bg-color-2 rounded-lg hover:bg-color-6">CHECKOUT</button>
-            </RouterLink>
-        </div>
-    </div>
 </template>
+<script setup>
+
+import { changeQuantity, deleteProduct } from '@/service/cartService';
+import { useProduct } from '@/stores/local';
+
+const cartId = localStorage.getItem("cartId")
+const store = useProduct();
+
+const handleIncre = async (index) => {
+  store.dataAll.data[index].quantity++;
+  store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
+  store.dataAll.totalPrice += store.dataAll.data[index].price;
+  store.dataAll.quantity++;
+
+  const result = await changeQuantity({
+    "product_id" : store.dataAll.data[index].id,
+    "quantity": store.dataAll.data[index].quantity,
+    "cartId": cartId
+  });
+  if(result){
+    console.log("ok");
+  }
+};
+
+const handleDecre = async (index) => {
+  if(store.dataAll.data[index].quantity > 1){
+    store.dataAll.data[index].quantity--;
+    store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
+    store.dataAll.totalPrice -= store.dataAll.data[index].price;
+    store.dataAll.quantity--;
+  }
+  else{
+    handleDelete(store.dataAll.data[index].id, index);
+  }
+  const result = await changeQuantity({
+    "product_id" : store.dataAll.data[index].id,
+    "quantity": store.dataAll.data[index].quantity,
+    "cartId": cartId
+  });
+  if(result){
+    console.log("ok");
+  }
+};
+
+const handleDelete = async (id,index) =>{
+  const result = await deleteProduct({
+    'product_id' : id
+  });
+  if(result){
+    store.dataAll.data.splice(index, 1);
+  }
+}
+</script>

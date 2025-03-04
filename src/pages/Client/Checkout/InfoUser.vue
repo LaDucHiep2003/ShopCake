@@ -1,10 +1,4 @@
-<script setup>
-    import { useProduct } from '../../../stores/local';
 
-    const store = useProduct();
-
-
-</script>
 <template>
     <table class="w-full max-w-full bg-color-white border-collapse text-center uppercase border border-border-color-2">
         <thead>
@@ -17,16 +11,33 @@
         <tbody>
             <tr>
                 <td class="w-2/6 min-w-[100px] px-[14px] pt-7 pb-3 text-lg text-color-1 tracking-spacing-2 text-start">
-                    La Đức Hiêp
+                  {{ dataUser.first_name }} {{ dataUser.last_name}}
                 </td>
                 <td class="w-2/6 pt-7 pb-3 tracking-spacing-2 text-lg">
-                    0865437203
+                  {{ dataUser.phone }}
                 </td>
                 <td class="w-2/6 min-w-[100px] px-[14px] pt-7 pb-3 text-lg text-color-1 tracking-spacing-2">
-                    Bắc giang
+                  {{ dataUser.address }}
                 </td>
             </tr>
             
         </tbody>
     </table>
 </template>
+<script setup>
+import {getCheckout} from "@/service/orderService.js";
+import {useRoute} from "vue-router";
+import {onMounted, ref} from "vue";
+
+const route = useRoute();
+const id = route.params.id;
+const dataUser = ref([]);
+
+const loadData = async () =>{
+  const result = await getCheckout(id)
+  if(result){
+    dataUser.value = result.orders.order_info;
+  }
+}
+onMounted(loadData);
+</script>

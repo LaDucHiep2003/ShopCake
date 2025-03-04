@@ -1,7 +1,4 @@
-<script setup>
-    import InfoUser from "./InfoUser.vue";
-    import TableCartSuccess from "./TableCartSuccess.vue";
-</script>
+
 <template>
     <div class="container mx-auto py-[50px]">
         <div class="p-5 bg-color-2 text-color-white font-semibold text-lg">Chúc mừng bạn đã đặt hàng thành công! chúng tôi sẽ xử lý đơn hàng của bạn trong thời gian sớm nhất</div>
@@ -13,3 +10,8 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import InfoUser from "./InfoUser.vue";
+import TableCartSuccess from "./TableCartSuccess.vue";
+</script>

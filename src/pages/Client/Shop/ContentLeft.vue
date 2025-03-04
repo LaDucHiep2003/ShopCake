@@ -1,17 +1,4 @@
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { CSSProperties } from 'vue'
 
-interface Mark {
-  style: CSSProperties
-  label: string
-}
-const value = ref([66, 635])
-</script>
-
-<style scoped>
-
-</style>
 <template>
     <div class="filter-shop">
         <p class="text-base text-color-1 font-semibold tracking-spacing-2 pb-4 border-b border-border-color-2">FILTER BY PRICE</p>
@@ -60,3 +47,15 @@ const value = ref([66, 635])
     </div>
     
 </template>
+
+<script lang="ts" setup>
+import { reactive, ref } from 'vue'
+import type { CSSProperties } from 'vue'
+
+interface Mark {
+  style: CSSProperties
+  label: string
+}
+const value = ref([66, 635])
+
+</script>
