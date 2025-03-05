@@ -32,7 +32,7 @@
                         <Message class="h-5 w-auto"/>
                         <p class="text-xs font-bold tracking-wider">GET IN TOUCH</p>
                     </div>
-                    <div class="text-right z-[10000]" v-if="storeUser.user" >
+                    <div class="text-right z-[1000]" v-if="storeUser.user" >
                         <Menu as="div" class="relative inline-block text-left">
                             <div>
                                 <MenuButton
@@ -74,9 +74,10 @@
                     <RouterLink v-else :to="{ name : 'loginClient'}" class="border-[2px] flex justify-center items-center border-color-2 h-11 py-3 px-8 text-color-1 rounded-lg hover:bg-color-2 hover:text-color-white">
                         <p class="text-xs font-bold tracking-wider">Login</p>
                     </RouterLink>
-<!--                    <RouterLink v-if="storeUser.user.role === 'admin'" :to="{ name : 'dashboard'}" class="border-[2px] border-color-2 h-11 flex justify-center items-center  py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">-->
-<!--                      <span class="material-icons-sharp">leaderboard</span>-->
-<!--                    </RouterLink>-->
+                  <RouterLink v-if="storeUser.user?.role === 'admin'" :to="{ name: 'dashboard' }"
+                              class="border-[2px] border-color-2 h-11 flex justify-center items-center py-3 px-5 text-color-1 rounded-lg hover:bg-color-2 text-color-primary hover:text-color-white">
+                    <span class="material-icons-sharp">leaderboard</span>
+                  </RouterLink>
                 </div>
             </div>
         </div>

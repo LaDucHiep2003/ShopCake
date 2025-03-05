@@ -3,10 +3,10 @@
     <div class="filter-shop">
         <p class="text-base text-color-1 font-semibold tracking-spacing-2 pb-4 border-b border-border-color-2">FILTER BY PRICE</p>
         <div class="slider-demo-block">
-            <el-slider v-model="value" range  max="999"/>
+            <el-slider v-model="value" range  max="200"/>
         </div>
         <div class="flex justify-between items-center">
-            <button class="text-sm font-bold text-color-white py-3 px-7 bg-color-2 rounded-lg hover:bg-color-6">FILTER</button>
+            <button @click="handleFilter" class="text-sm font-bold text-color-white py-3 px-7 bg-color-2 rounded-lg hover:bg-color-6">FILTER</button>
             <div class="flex justify-center gap-3 text-[15px] text-color-1 tracking-wider">Price: <p>{{ value[0] }}</p>- <p>{{ value[1] }}</p></div>
         </div>
         <p class="text-base text-color-1 font-semibold tracking-spacing-2 pb-4 border-b border-border-color-2 mt-10">CATEGORIES</p>
@@ -48,14 +48,41 @@
     
 </template>
 
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { CSSProperties } from 'vue'
-
-interface Mark {
-  style: CSSProperties
-  label: string
-}
-const value = ref([66, 635])
-
+<script>
+export default {
+  props: {
+    maxPrice: {
+      type: Number,
+      required: true
+    },
+    minPrice: {
+      type: Number,
+    },
+    filteredProducts :{
+      type : Function,
+    }
+  },
+  data() {
+    return {
+      value: [this.minPrice, this.maxPrice] // Gán giá trị từ props vào state
+    };
+  },
+  methods: {
+    handleFilter() {
+      this.$emit("update:minPrice", this.value[0]); // Gửi giá trị minPrice lên cha
+      this.$emit("update:maxPrice", this.value[1]); // Gửi giá trị maxPrice lên cha
+    }
+  },
+  watch: {
+    // Theo dõi props thay đổi và cập nhật value
+    minPrice(newVal) {
+      this.value[0] = newVal;
+    },
+    maxPrice(newVal) {
+      this.value[1] = newVal;
+    }
+  }
+};
 </script>
+
+
