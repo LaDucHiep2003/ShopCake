@@ -9,17 +9,22 @@ export const getCheckout = async (id) => {
     return result;
 }
 
-export const getOrderList = async () => {
-    const result = await get("checkout/read.php");
+export const deleteOrder = async (id) => {
+    const result = await patch(`order/delete/${id}`);
     return result;
 }
 
-export const getOrderListConfirmed = async () => {
-    const result = await get("checkout/confirmed.php");
+export const getOrderList = async () => {
+    const result = await get("order");
+    return result;
+}
+
+export const confirmedOrder = async () => {
+    const result = await get("order/confirmed");
     return result;
 }
 
 export const confirmOrder = async (option) => {
-    const result = await patch("checkout/confirmOrder.php", option);
+    const result = await patch(`order/confirm`, option);
     return result;
 }
