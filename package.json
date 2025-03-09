@@ -16,6 +16,7 @@
     "@splidejs/splide": "^4.1.4",
     "@splidejs/vue-splide": "^0.6.12",
     "@tinymce/tinymce-vue": "^5.1.1",
+    "chart.js": "^4.4.8",
     "element-plus": "^2.7.8",
     "js-cookie": "^3.0.5",
     "oh-vue-icons": "^1.0.0-rc3",
