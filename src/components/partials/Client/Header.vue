@@ -114,7 +114,7 @@
           SHOP </RouterLink>
       </li>
       <li class="hover:bg-color-2 mb-1 hover:text-color-white transition-all duration-300 ease-in-out"
-          :class=" BreakCurmp === 'blog' ? 'bg-color-2 text-color-white' : ''">
+          :class=" BreakCurmp === 'blogAdmin' ? 'bg-color-2 text-color-white' : ''">
         <RouterLink :to="{ name : 'blog'}" class="py-3 inline-block tracking-widest relative ml-3">
           BLOG </RouterLink>
       </li>
