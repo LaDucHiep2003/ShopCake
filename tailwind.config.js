@@ -39,7 +39,8 @@ export default {
         "background-image-4": "url('https://res.cloudinary.com/dsxkwbfyq/image/upload/v1722155343/breadcrumbs-bg_d5x83i.jpg')",
         "background-image-5": "url('https://res.cloudinary.com/dsxkwbfyq/image/upload/v1722607094/parallax-bg-1_oxzivd.jpg')",
         "background-image-6": "url('https://www.brighteyedbaker.com/wp-content/uploads/2023/08/Chocolate-Fudge-Cake-Recipe.jpg')",
-        "background-image-7": "url('https://th.bing.com/th/id/R.b149292f9aedf68e85c5c100d800defa?rik=LMgdzGqQ2Rv6ig&pid=ImgRaw&r=0')"
+        "background-image-7": "url('https://th.bing.com/th/id/R.b149292f9aedf68e85c5c100d800defa?rik=LMgdzGqQ2Rv6ig&pid=ImgRaw&r=0')",
+        "linear-gradient-1" : 'linear-gradient(90deg, #9054F7 0%, #2E8EF5 228.18%)',
       },
       letterSpacing : {
         "spacing-1": "0.2em",

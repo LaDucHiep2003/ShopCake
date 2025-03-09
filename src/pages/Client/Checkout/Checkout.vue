@@ -3,7 +3,7 @@
     <div class="container mx-auto py-[100px]">
         <div class="grid grid-cols-2 gap-8">
             <div>
-                <h3 class="text-4xl font-medium text-color-1 tracking-wider">BILLING ADDRESS</h3>
+                <h3 class="text-4xl font-medium text-color-1 tracking-wider">Địa chỉ giao hàng</h3>
                 <div class="my-8">
                     <div class="flex justify-between gap-3">
                         <input v-model="delivery.first_name" type="text" placeholder="First Name" class="w-full min-h-[60px] py-5 focus:outline-none border-b border-border-color-2 text-font-15 bg-transparent text-color-1">
@@ -41,20 +41,19 @@
         </label>
 
         <div class="mt-[80px]">
-            <h3 class="text-4xl font-medium text-color-1 tracking-wider mb-[50px]">YOUR SHOPPING CART</h3>
+            <h3 class="text-4xl font-medium text-color-1 tracking-wider mb-[50px]">Giỏ hàng của bạn</h3>
             <TableCart />
         </div>
-
         <div class="grid grid-cols-2 gap-5 checkout mt-[100px]">
             <div>
-                <h3 class="text-4xl font-medium text-color-1 tracking-wider">PAYMENT METHODS</h3>
+                <h3 class="text-4xl font-medium text-color-1 tracking-wider">Phương thức thanh toán</h3>
                 <div class="py-7 px-[26px] border border-border-color-2 mt-10">
                     <label class="mt-8 capitalize relative text-left pl-8 text-font-15 tracking-wide text-color-9 cursor-pointer flex items-center">
                         <input type="checkbox" class="absolute left-0 top-[2px] rounded-[3px] cursor-pointer w-5 h-5">
-                        <span class="text-color-1 text-lg tracking-widest font-medium">DIRECT BANK TRANSFER</span>
+                        <span class="text-color-1 text-lg tracking-widest font-medium">VN PAY</span>
                     </label>
                     <div class="details text-color-9 mt-1 h-0 max-h-0 opacity-0">
-                        Make your payment directly into our bank account. Please use your 
+                        Make your payment directly into our bank account. Please use your
                         Order ID as the payment reference. Your order will be shipped right away.
                     </div>
                 </div>

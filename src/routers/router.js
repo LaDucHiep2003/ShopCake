@@ -39,6 +39,7 @@ import Register from "../pages/Client/Auth/Register.vue";
 import ForgotPassword from "../pages/Client/Auth/ForgotPassword.vue";
 import OtpPassword from "../pages/Client/Auth/OtpPassword.vue";
 import ResetPassword from "../pages/Client/Auth/ResetPassword.vue";
+import BlogAdmin from "@/pages/Admin/Blog/Blog.vue";
 
 import TableOrder from "../pages/Admin/Order/TableOrder.vue"
 import OrderConfirmed from "../pages/Admin/Order/Confirmed.vue";
@@ -299,6 +300,15 @@ const routes = [
           path: 'order/confirmed',
           component: OrderConfirmed,
           name: 'order-confirmed',
+          meta: {
+            layout: 'admin',
+            needsAuth : true
+          }
+        },
+        {
+          path: 'blog',
+          component: BlogAdmin,
+          name: 'blogAdmin',
           meta: {
             layout: 'admin',
             needsAuth : true
