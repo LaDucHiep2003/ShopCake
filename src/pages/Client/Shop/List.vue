@@ -1,8 +1,8 @@
 
 <template>
     <div class="pb-8 text-[15px] text-color-1 tracking-wider">Showing 1–9 of 28 results</div>
-    <div v-if="products.length" class="grid grid-cols-3 gap-5">
-        <div class="pb-5" v-for="product in products" :key="product.id">
+    <div v-if="filteredProducts.length" class="grid grid-cols-3 gap-5">
+        <div class="pb-5" v-for="product in filteredProducts" :key="product.id">
             <article class="relative text-center px-4 pt-5 pb-10 max-w-[300px] mx-auto z-10 product">
                 <div class="transition-all duration-200 ease-in-out">
                     <div class="min-h-[200px] flex items-end justify-center">
@@ -40,8 +40,8 @@
 <script>
   export default {
     props:{
-      products:{
-        type: Function,
+      filteredProducts:{
+        type: Array,
         required: true
       }
     }

@@ -3,7 +3,7 @@
     <div class="filter-shop">
         <p class="text-base text-color-1 font-semibold tracking-spacing-2 pb-4 border-b border-border-color-2">FILTER BY PRICE</p>
         <div class="slider-demo-block">
-            <el-slider v-model="value" range  max="200"/>
+            <el-slider v-model="value" range  :max="200"/>
         </div>
         <div class="flex justify-between items-center">
             <button @click="handleFilter" class="text-sm font-bold text-color-white py-3 px-7 bg-color-2 rounded-lg hover:bg-color-6">FILTER</button>
@@ -15,7 +15,11 @@
             <div class="tracking-widest">(18)</div>
         </div>
         <div class="bg-color-8 flex min-h-16 items-center rounded-lg my-6">
-            <input type="text" placeholder="Search in shop" class="focus:outline-none w-full bg-color-8 py-4 pl-6 pr-14">
+            <input v-model="searchQuery"
+                   @input="handleSearch"
+                   type="text"
+                   placeholder="Search in shop"
+                   class="focus:outline-none w-full bg-color-8 py-4 pl-6 pr-14">
             <button class="h-14 w-14 px-1">
                 <Search class="h-7 w-auto"/>
             </button>
@@ -40,10 +44,9 @@
                     <div class="text-color-1 tracking-wider">Chocolate Pudding</div>
                     <div class="text-color-2">$25.00</div>
                 </div>
-
             </div> 
         </div>
-        
+
     </div>
     
 </template>
@@ -51,35 +54,21 @@
 <script>
 export default {
   props: {
-    maxPrice: {
-      type: Number,
-      required: true
-    },
-    minPrice: {
-      type: Number,
-    },
-    filteredProducts :{
-      type : Function,
-    }
+    maxPrice: Number,
+    minPrice: Number
   },
   data() {
     return {
-      value: [this.minPrice, this.maxPrice] // Gán giá trị từ props vào state
+      value: [this.minPrice, this.maxPrice],
+      searchQuery: ""
     };
   },
   methods: {
     handleFilter() {
-      this.$emit("update:minPrice", this.value[0]); // Gửi giá trị minPrice lên cha
-      this.$emit("update:maxPrice", this.value[1]); // Gửi giá trị maxPrice lên cha
-    }
-  },
-  watch: {
-    // Theo dõi props thay đổi và cập nhật value
-    minPrice(newVal) {
-      this.value[0] = newVal;
+      this.$emit("updatePriceRange", { minPrice: this.value[0], maxPrice: this.value[1] });
     },
-    maxPrice(newVal) {
-      this.value[1] = newVal;
+    handleSearch() {
+      this.$emit("updateSearchQuery", this.searchQuery); // Gửi từ khóa tìm kiếm lên component cha
     }
   }
 };
