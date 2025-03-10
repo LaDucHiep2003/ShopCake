@@ -37,11 +37,11 @@
           <div class="text-sm bg-color-17 font-normal mb-5 text-color-16 py-[10px] px-[14px] rounded-tr-md rounded-bl-md rounded-br-md border border-color-2">
             Chào bạn! Tôi là Trợ lý AI của bạn, bạn có cần tôi giúp đỡ gì trong công việc không ?
           </div>
-          <div class="w-1/2 ml-auto mb-3">
+          <div class="ml-auto mb-3">
             <div class="text-sm font-medium text-color-1 mb-1">Bạn</div>
             <div class="text-sm text-white font-normal bg-color-4 py-[10px] px-[14px] rounded-tl-md rounded-br-lg rounded-bl-lg">Báo cáo công việc của tôi</div>
           </div>
-          <div class="w-1/2 ml-auto mb-3">
+          <div class="ml-auto mb-3">
             <div class="text-sm font-medium text-color-1 mb-1">Bạn</div>
             <div class="text-sm text-white font-normal bg-color-4 py-[10px] px-[14px] rounded-tl-md rounded-br-lg rounded-bl-lg">Báo cáo công việc của tôi</div>
           </div>

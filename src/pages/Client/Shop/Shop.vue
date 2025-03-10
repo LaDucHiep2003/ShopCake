@@ -4,10 +4,14 @@
     <div class="container mx-auto py-10">
        <div class="flex justify-between gap-5">
             <div class="w-1/4">
-                <ContentLeft :minPrice="minPrice" :maxPrice="maxPrice" :filteredProducts="filteredProducts" />
+                <ContentLeft
+                    :minPrice="minPrice"
+                    :maxPrice="maxPrice"
+                    @updatePriceRange="updatePriceRange"
+                    @updateSearchQuery="updateSearchQuery"/>
             </div>
             <div class="flex-1">
-                <List :products="filteredProducts" />
+                <List :filteredProducts="filteredProducts" />
             </div>
         </div> 
     </div>
@@ -25,35 +29,39 @@ export default {
   data() {
     return {
       products: [],
-      filteredProducts: [], // Danh sách sản phẩm sau khi lọc
-      minPrice: 0,  // Giá thấp nhất
-      maxPrice: 50, // Giá cao nhất (tuỳ chỉnh theo dữ liệu)
+      filteredProducts: [],
+      minPrice: 0,
+      maxPrice: 100,
+      searchQuery: ""
     };
   },
   methods: {
-    // Tải danh sách sản phẩm từ API
     async loadProducts() {
       try {
         const result = await getProductList();
         this.products = result.data.data;
-        this.filterByPrice(); // Lọc sản phẩm sau khi tải
+        this.filteredProducts = result.data.data;
+        this.filteredProducts();
       } catch (err) {
         console.log("Lỗi khi lấy danh sách sản phẩm");
       }
     },
-    filterByPrice() {
+    filterProducts() {
       this.filteredProducts = this.products.filter(product =>
-          product.price >= this.minPrice && product.price <= this.maxPrice
+          product.price >= this.minPrice &&
+          product.price <= this.maxPrice &&
+          (this.searchQuery === "" || product.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
       );
     },
-  },
-  watch: {
-    minPrice() {
-      this.filterByPrice();
+    updatePriceRange({ minPrice, maxPrice }) {
+      this.minPrice = minPrice;
+      this.maxPrice = maxPrice;
+      this.filterProducts();
     },
-    maxPrice() {
-      this.filterByPrice();
-    },
+    updateSearchQuery(query) {
+      this.searchQuery = query;
+      this.filterProducts();
+    }
   },
   async created() {
     await this.loadProducts();

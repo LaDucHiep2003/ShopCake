@@ -21,7 +21,7 @@
           </div>
           <div class="text-color-1">
             <div class="text-sm font-medium ">Tổng số</div>
-            <div class="text-2xl font-bold">20</div>
+            <div class="text-2xl font-bold">{{ dataProducts.record_total }}</div>
           </div>
         </div>
         <div class="bg-[#FEEAE8] h-32 rounded-lg p-3 flex flex-col justify-between">
@@ -32,7 +32,7 @@
           </div>
           <div class="text-color-1">
             <div class="text-sm font-medium ">Chưa xác nhận</div>
-            <div class="text-2xl font-bold">2</div>
+            <div class="text-2xl font-bold">{{ dataOrders.length }}</div>
           </div>
         </div>
         <div class="bg-[#DCEFFE] h-32 rounded-lg p-3 flex flex-col justify-between">
@@ -44,7 +44,7 @@
           </div>
           <div class="text-color-1">
             <div class="text-sm font-medium ">Đã xác nhận</div>
-            <div class="text-2xl font-bold">8</div>
+            <div class="text-2xl font-bold">{{ dataOrdersConfirmed.length }}</div>
           </div>
         </div>
         <div class="bg-[#E7F9E9] h-32 rounded-lg p-3 flex flex-col justify-between">
@@ -54,14 +54,14 @@
             </svg>
           </div>
           <div class="text-color-1">
-            <div class="text-sm font-medium ">Đã hoàn thành</div>
-            <div class="text-2xl font-bold">10</div>
+            <div class="text-sm font-medium ">Tổng doanh thu tháng</div>
+            <div class="text-2xl font-bold">{{ totalRevenue }}$</div>
           </div>
         </div>
       </div>
       <div class="p-4 border border-color-2 rounded-2xl w-1/2">
         <div class="flex justify-between items-end mb-5">
-          <div class="text-base text-color-1 font-semibold">Đơn hàng theo quý <span class="text-color-3 ml-2">(2024)</span></div>
+          <div class="text-base text-color-1 font-semibold">Đơn hàng theo tháng <span class="text-color-3 ml-2">(2024)</span></div>
           <div class="flex gap-2">
             <div class="w-8 h-8 bg-white border border-color-2 rounded-lg flex justify-center items-center">
               <svg class="rotate-180" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -84,16 +84,25 @@
 <script>
 import { ref, onMounted } from "vue";
 import Chart from "chart.js/auto";
+import {getProductList} from "@/service/productsService.js";
+import {confirmedOrder, getOrderList} from "@/service/orderService.js";
 
 export default {
+  data(){
+    return{
+      dataProducts : [],
+      dataOrders : [],
+      dataOrdersConfirmed : [],
+      totalRevenue : []
+    }
+  },
   setup() {
     const chartCanvas = ref(null);
-
     onMounted(() => {
       new Chart(chartCanvas.value, {
         type: "bar",
         data: {
-          labels: ["Quý 1", "Quý 2", "Quý 3", "Quý 4"],
+          labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4"],
           datasets: [
             { label: "Đã xác nhận", data: [32, 24, 34, 36], backgroundColor: "#17B26A", borderRadius : 4 },
             { label: "Đang đang xác nhận", data: [12, 16, 22, 6], backgroundColor: "#0990F7", borderRadius : 4 },
@@ -118,5 +127,31 @@ export default {
     });
     return { chartCanvas };
   },
+  methods:{
+    async loadProducts() {
+      const result = await getProductList();
+      if(result){
+        this.dataProducts = result.data;
+      }
+    },
+    async loadOrders() {
+      const result = await getOrderList();
+      if(result){
+        this.dataOrders = result.data;
+      }
+    },
+    async loadOrdersConfirmed() {
+      const result = await confirmedOrder();
+      if(result){
+        this.dataOrdersConfirmed = result.orders;
+        this.totalRevenue = this.dataOrdersConfirmed.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+      }
+    },
+  },
+  async created () {
+    await this.loadProducts();
+    await  this.loadOrders();
+    await this.loadOrdersConfirmed();
+  }
 };
 </script>
