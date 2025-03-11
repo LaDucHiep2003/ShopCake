@@ -1,6 +1,6 @@
 <template>
   <h1 class="text-2xl font-bold text-color-dark max-md:text-xl max-lg:text-center mb-5">Dashboard</h1>
-  <div class="bg-white min-h-screen rounded-xl font-jakarta">
+  <div class="bg-color-white-2 min-h-screen rounded-xl font-jakarta">
     <div class="py-4 px-3 border-b border-color-7">
       <div class="text-base font-semibold text-color-1 ">Biểu đồ thống kê</div>
     </div>

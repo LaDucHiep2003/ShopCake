@@ -47,7 +47,7 @@
         <div class="grid grid-cols-2 gap-5 checkout mt-[100px]">
             <div>
                 <h3 class="text-4xl font-medium text-color-1 tracking-wider">Phương thức thanh toán</h3>
-                <div class="py-7 px-[26px] border border-border-color-2 mt-10">
+                <div @click="handlePayment" class="py-7 px-[26px] border border-border-color-2 mt-10">
                     <label class="mt-8 capitalize relative text-left pl-8 text-font-15 tracking-wide text-color-9 cursor-pointer flex items-center">
                         <input type="checkbox" class="absolute left-0 top-[2px] rounded-[3px] cursor-pointer w-5 h-5">
                         <span class="text-color-1 text-lg tracking-widest font-medium">VN PAY</span>
@@ -87,7 +87,7 @@ import TableCart from "../Cart/TableCart.vue"
 import { useProduct } from '@/stores/local';
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import {checkout} from "@/service/orderService.js";
+import {checkout, payment} from "@/service/orderService.js";
 
 const store = useProduct();
 const router = useRouter()
@@ -103,13 +103,6 @@ const delivery = ref({
 })
 
 const handleOrder = async () =>{
-  // console.log({
-  //   "cart_id" : localStorage.getItem("cartId"),
-  //   "delivery" : delivery.value,
-  //   "products" : store.dataAll.data,
-  //   "quantity" : store.dataAll.quantity,
-  //   "totalPrice" : store.dataAll.totalPrice
-  // });
   const result = await checkout({
     "cart_id" : localStorage.getItem("cartId"),
     "delivery" : delivery.value,
@@ -119,6 +112,18 @@ const handleOrder = async () =>{
   })
   if(result){
     router.replace({name : 'success'})
+  }
+}
+const handlePayment = async () =>{
+  const orderId = 12345; // Thay bằng ID đơn hàng thực tế
+  const amount = store.dataAll.totalPrice; // Thay bằng số tiền thực tế (VND)
+
+  const result = await payment({
+    orderId : orderId,
+    amount : amount
+  })
+  if (result.payUrl) {
+    window.location.href = result.payUrl; // Redirect tới trang thanh toán của VNPAY
   }
 }
 
