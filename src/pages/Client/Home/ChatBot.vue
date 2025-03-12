@@ -1,6 +1,6 @@
 <template>
   <div class="w-96 max-h-[500px] bg-white p-4 rounded-tr-2xl rounded-tl-2xl transition-all duration-300 ease-in-out overflow-y-auto">
-    <div class="py-2 border-b border-color-7 flex justify-between items-center max-h-[74px]">
+    <div class="py-2 border-b border-color-7 flex justify-between items-center max-h-[74px] sticky top-0 left-0 bg-white">
       <div class="flex items-center gap-3">
         <img src="@/assets/images/Avatar_AI.png" alt="AI">
         <div class="text-base font-semibold text-color-1 ">Trợ lý AI</div>
@@ -21,36 +21,28 @@
       </div>
     </div>
     <div class="mt-3">
-      <div class="flex items-start gap-2">
-        <img src="@/assets/images/Avatar_AI.png" alt="AI" class="w-10 h-10">
-        <div class="w-full">
-          <div class="flex justify-between items-center mb-2">
-            <div class="text-sm font-medium text-color-1 ">Trợ lý AI</div>
-            <div class="text-xs text-color-6 font-normal">2:20pm</div>
+      <div v-for="(message, index) in messages" :key="index">
+        <div v-if="message.role === 'bot'" class="flex items-start gap-2">
+          <img src="@/assets/images/Avatar_AI.png" alt="AI" class="w-10 h-10">
+          <div class="w-full">
+            <div class="flex justify-between items-center mb-2">
+              <div class="text-sm font-medium text-color-1 ">Trợ lý AI</div>
+              <div class="text-xs text-color-6 font-normal">{{ timeAnswer }}</div>
+            </div>
+            <div class="text-sm bg-color-17 font-normal mb-5 text-color-16 py-[10px] px-[14px] rounded-tr-md rounded-bl-md rounded-br-md border border-color-2">
+              {{ message.text }}
+            </div>
           </div>
-          <div class="text-sm bg-color-17 font-normal mb-5 text-color-16 py-[10px] px-[14px] rounded-tr-md rounded-bl-md rounded-br-md border border-color-2">
-            Chào bạn! Tôi là Trợ lý AI của bạn, bạn có cần tôi giúp đỡ gì trong công việc không ?
-          </div>
-          <div class="text-sm bg-color-17 font-normal mb-5 text-color-16 py-[10px] px-[14px] rounded-tr-md rounded-bl-md rounded-br-md border border-color-2">
-            Chào bạn! Tôi là Trợ lý AI của bạn, bạn có cần tôi giúp đỡ gì trong công việc không ?
-          </div>
-          <div class="text-sm bg-color-17 font-normal mb-5 text-color-16 py-[10px] px-[14px] rounded-tr-md rounded-bl-md rounded-br-md border border-color-2">
-            Chào bạn! Tôi là Trợ lý AI của bạn, bạn có cần tôi giúp đỡ gì trong công việc không ?
-          </div>
-          <div class="ml-auto mb-3">
-            <div class="text-sm font-medium text-color-1 mb-1">Bạn</div>
-            <div class="text-sm text-white font-normal bg-color-4 py-[10px] px-[14px] rounded-tl-md rounded-br-lg rounded-bl-lg">Báo cáo công việc của tôi</div>
-          </div>
-          <div class="ml-auto mb-3">
-            <div class="text-sm font-medium text-color-1 mb-1">Bạn</div>
-            <div class="text-sm text-white font-normal bg-color-4 py-[10px] px-[14px] rounded-tl-md rounded-br-lg rounded-bl-lg">Báo cáo công việc của tôi</div>
-          </div>
+        </div>
+        <div v-else class="ml-auto mb-3 w-5/6">
+          <div class="text-sm font-medium text-color-1 mb-1">Bạn</div>
+          <div class="text-sm text-white font-normal bg-color-4 py-[10px] px-[14px] rounded-tl-md rounded-br-lg rounded-bl-lg">{{ message.text }}</div>
         </div>
       </div>
       <div class="border border-color-4 rounded-xl mt-10">
         <div class="flex justify-between items-center px-3 py-5">
-          <input type="text" class="focus:outline-none w-full text-sm text-color-1" placeholder="Nhập nội dung...">
-          <div class="flex gap-2 items-center">
+          <input v-model="userInput" type="text" class="focus:outline-none w-full text-sm text-color-1" placeholder="Nhập nội dung...">
+          <div @click="sendMessage" class="flex gap-2 items-center">
             <svg class="cursor-pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.9997 22V18.839" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9998 14.8481V14.8481C9.75662 14.8481 7.93774 13.0218 7.93774 10.7682V6.08095C7.93774 3.82732 9.75662 2 11.9998 2C14.2441 2 16.0619 3.82732 16.0619 6.08095V10.7682C16.0619 13.0218 14.2441 14.8481 11.9998 14.8481Z" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -103,6 +95,37 @@
 
 <script>
 export default {
+  data() {
+    return {
+      userInput: "",
+      messages: [{ role : 'bot', text : 'Chào bạn! Tôi là Trợ lý AI của bạn, bạn có cần tôi giúp đỡ gì trong công việc không ?'}],
+      timeAnswer : new Date().toLocaleTimeString()
+    };
+  },
+  methods: {
+    async sendMessage() {
+      if (!this.userInput.trim()) return;
+      try {
+        const res = await fetch("http://localhost:8000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: this.userInput,
+            max_tokens: 512,
+            temperature: 0.8,
+            similarity_threshold: 0.8,
+          }),
+        });
+        const data = await res.json();
+        this.messages.push({ role: "user", text: this.userInput});
+        this.messages.push({ role: "bot", text: data.response });
+        this.userInput = "";
+        this.timeAnswer = new Date().toLocaleTimeString();
+      } catch (error) {
+        console.error("Lỗi khi gửi request:", error);
+      }
+    },
+  },
   props:{
     handleChatbot :{
       type : Function,

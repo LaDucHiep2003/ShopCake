@@ -18,7 +18,7 @@
       </div>
       <div class="flex gap-8 text-right ">
         <div class="max-md:hidden text-color-dark">
-          <p>Hey, <b>Hiep</b></p>
+          <p>Hey, <b>{{user.fullName }}</b></p>
           <small>Admin</small>
         </div>
         <div class="h-8 w-8">
@@ -30,6 +30,11 @@
 </template>
 <script>
   export default {
+    data(){
+      return{
+        user : null
+      }
+    },
     props:{
       toggleSidebar :{
         type : Function,
@@ -43,6 +48,13 @@
         type : Boolean,
         required : true
       }
-    }
+    },
+    mounted() {
+      // Lấy dữ liệu từ localStorage khi trang tải lên
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        this.user = JSON.parse(storedUser);
+      }
+    },
   }
 </script>
