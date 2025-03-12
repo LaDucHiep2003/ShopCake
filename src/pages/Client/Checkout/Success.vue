@@ -1,17 +1,42 @@
 
 <template>
     <div class="container mx-auto py-[50px]">
-        <div class="p-5 bg-color-2 text-color-white font-semibold text-lg">Chúc mừng bạn đã đặt hàng thành công! chúng tôi sẽ xử lý đơn hàng của bạn trong thời gian sớm nhất</div>
-        <div class="mt-[80px]">
+        <div v-if="!statusPayment" class="p-5 bg-red-600 text-color-white font-semibold text-lg">{{message}}</div>
+        <div v-else>
+          <div class="p-5 bg-color-2 text-color-white font-semibold text-lg">Chúc mừng bạn đã đặt hàng thành công! chúng tôi sẽ xử lý đơn hàng của bạn trong thời gian sớm nhất</div>
+          <div class="mt-[80px]">
             <h3 class="text-2xl font-medium text-color-1 tracking-wider mb-[50px]">Thông tin đơn hàng</h3>
             <TableCartSuccess />
             <h3 class="text-2xl font-medium text-color-1 tracking-wider mb-[50px]">Thông tin Cá nhân</h3>
             <InfoUser />
+          </div>
         </div>
     </div>
 </template>
 
-<script setup>
+<script>
 import InfoUser from "./InfoUser.vue";
 import TableCartSuccess from "./TableCartSuccess.vue";
+
+export default {
+  data() {
+    return {
+      message: "" ,
+      statusPayment : true
+    };
+  },
+  created() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("vnp_ResponseCode") === "00") {
+      this.message = "Thanh toán thành công!";
+    } else {
+      this.message = "Thanh toán thất bại vui lòng thử lại sau!";
+      this.statusPayment = false
+    }
+  },
+  components:{
+    InfoUser,
+    TableCartSuccess
+  }
+}
 </script>

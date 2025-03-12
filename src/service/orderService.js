@@ -28,3 +28,7 @@ export const confirmOrder = async (option) => {
     const result = await patch(`order/confirm`, option);
     return result;
 }
+export const payment = async (option) =>{
+    const result = await post("order/payment", option);
+    return result;
+}
