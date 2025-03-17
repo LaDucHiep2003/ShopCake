@@ -20,8 +20,8 @@
                   <RouterLink :to="`/product/${product.id}`">{{ product.title }}</RouterLink>
                 </div>
                 <div>
-                  <div class="line-through text-color-12 inline-block text-font-15">${{ product.oldPrice }}</div>
-                  <div class="text-color-2 inline-block text-font-15 font-bold ml-4">${{ product.price }}</div>
+                  <div v-if="products.oldPrice" class="line-through text-color-12 inline-block text-font-15">{{ product.oldPrice }}VND</div>
+                  <div class="text-color-2 inline-block text-font-15 font-bold ml-4">{{ formatPrice(product.price )}}VND</div>
                 </div>
               </div>
               <span
@@ -87,7 +87,9 @@ const splideOptions = {
     },
   },
 };
-
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
 onMounted(loadProducts)
 </script>
 

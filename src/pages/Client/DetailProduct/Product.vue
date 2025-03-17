@@ -11,7 +11,7 @@
                 <div>
                     <div>
                         <div class="text-4xl text-color-1 font-medium tracking-wider">{{ products.title }}</div>
-                        <div class="text-2xl text-color-2 font-medium tracking-wider mt-3">${{ products.price }}</div>
+                        <div class="text-2xl text-color-2 font-medium tracking-wider mt-3">{{ formatPrice(products.price) }} VND</div>
                         <div class="font-lato text-[15px] pb-5 text-color-1 tracking-wider mt-5 border-b border-border-color-2" v-html="products.description">
                         </div>
                     </div>
@@ -62,6 +62,9 @@ const handleDecre = () =>{
     num.value--;
   }
 }
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
 
 
 const route = useRoute();
@@ -72,24 +75,36 @@ const fetchApi = async () => {
   products.value = result.detail;
 };
 onMounted(fetchApi);
-const addtoCart = async () =>{
+const addtoCart = async () => {
   const result = await addProduct({
-    "cartId" : cartId,
-    "product_id": products.value.id,
-    "quantity" : num.value
-  })
-  if(result){
+    cartId: cartId,
+    product_id: products.value.id,
+    quantity: num.value
+  });
+
+  if (result) {
     num.value = 1;
-    const index = store.data.findIndex((item) => item.id == products.value.id)
-    store.dataAll.data[index].quantity = num.value
-    store.dataAll.data[index].totalPrice = store.dataAll.data[index].quantity * store.dataAll.data[index].price
-    store.dataAll.totalPrice -= store.dataAll.data[index].price * num.value;
-    store.dataAll.totalPrice = store.dataAll.data.reduce((total, item) => {
-      return total + item.totalPrice;
-    }, 0);
-    store.dataAll.quantity = store.dataAll.data.reduce((total, item) => {
-      return total + item.quantity;
-    }, 0);
+
+    // Kiểm tra sản phẩm đã tồn tại trong giỏ chưa
+    const index = store.dataAll.data.findIndex(item => item.id === products.value.id);
+
+    store.$patch((state) => {
+      if (index !== -1) {
+        state.dataAll.data[index].quantity += num.value;
+        state.dataAll.data[index].totalPrice = state.dataAll.data[index].quantity * state.dataAll.data[index].price;
+      } else {
+        // Nếu sản phẩm chưa có, thêm mới vào giỏ
+        state.dataAll.data.push({
+          ...products.value,
+          quantity: num.value,
+          totalPrice: products.value.price * num.value
+        });
+      }
+
+      // Cập nhật tổng số lượng và tổng giá tiền của giỏ hàng
+      state.dataAll.totalPrice = state.dataAll.data.reduce((total, item) => total + item.totalPrice, 0);
+      state.dataAll.quantity = state.dataAll.data.reduce((total, item) => total + item.quantity, 0);
+    });
   }
-}
+};
 </script>

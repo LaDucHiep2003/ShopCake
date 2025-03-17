@@ -13,7 +13,7 @@
         </div>
         <div class="flex items-center gap-8">
           <div class="text-lg text-color-9 font-medium tracking-wider ">Total</div>
-          <div class="text-4xl text-color-1 tracking-wider ">${{ store.dataAll.totalPrice }}</div>
+          <div class="text-4xl text-color-1 tracking-wider ">{{ formatPrice(store.dataAll.totalPrice) }} VND</div>
           <RouterLink :to="{ name : 'checkout'}">
             <button class="min-w-[190px] text-sm font-bold text-color-white py-5 px-[50px] bg-color-2 rounded-lg hover:bg-color-6">CHECKOUT</button>
           </RouterLink>
@@ -25,4 +25,7 @@
 import TableCart from './TableCart.vue';
 import {useProduct} from "@/stores/local.js";
 const store = useProduct();
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
 </script>
