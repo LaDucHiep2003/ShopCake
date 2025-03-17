@@ -7,11 +7,11 @@ import { registerGlobalComponents } from "./utils/inport"
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import VueSplide from '@splidejs/vue-splide';
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import { FaFlag, RiZhihuFill, CoFacebookF,BiTwitter  } from "oh-vue-icons/icons";
 import { GiCakeSlice,FaArrowRight  } from "oh-vue-icons/icons";
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
+import VueSplide from '@splidejs/vue-splide';
 
 const pinia = createPinia()
 addIcons(FaFlag, RiZhihuFill, GiCakeSlice, FaArrowRight, CoFacebookF, BiTwitter);
