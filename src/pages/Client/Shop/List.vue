@@ -13,7 +13,7 @@
                     </div>
                     <div>
                         <div v-if="product.oldPrice" class="line-through text-color-12 inline-block text-font-15">${{ product.oldPrice }}</div>
-                        <div class="text-color-2 inline-block text-font-15 font-bold ml-4">${{ product.price }}</div>
+                        <div class="text-color-2 inline-block text-font-15 font-bold ml-4">{{ formatPrice(product.price)}} VND</div>
                     </div>
                 </div>
                 <span class="transition-all duration-200 ease-in-out bg-color-2 inline-block text-center absolute top-6 right-4 py-[5px] px-3 text-sm font-semibold tracking-wide uppercase text-color-white rounded-md">Sale</span>
@@ -37,13 +37,15 @@
 <!--    <el-pagination background layout="prev, pager, next" :total="totalPage * 10" @current-change="handlePageChange"/>-->
 </template>
 
-<script>
-  export default {
-    props:{
-      filteredProducts:{
-        type: Array,
-        required: true
-      }
-    }
-  }
+<script setup>
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
+defineProps({
+  filteredProducts: {
+    type: Array,
+    required: true,
+  },
+});
 </script>
+

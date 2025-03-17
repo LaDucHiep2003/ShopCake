@@ -20,7 +20,7 @@
                     </div>
                 </td>
                 <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">
-                    ${{ item.price }}
+                  {{ formatPrice(item.price) }}
                 </td>
                 <td class="pt-7 pb-3 tracking-spacing-2 text-2xl">
                     {{ item.quantity }}
@@ -53,6 +53,8 @@ const loadData = async () =>{
     dataProducts.value = result.orders.order_items;
   }
 }
-
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
 onMounted(loadData);
 </script>

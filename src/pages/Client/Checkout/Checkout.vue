@@ -36,11 +36,11 @@
                     <a href="#" class="max-w-[146px] w-full inline-block text-center bg-color-10 ">
                       <img :src="item.image" alt="Image">
                     </a>
-                    <a href="#" class="ml-8 tracking-wider font-semibold text-2xl text-color-1">{{ item.title }}</a>
+                    <a href="#" class="ml-8 tracking-wider font-semibold text-xl text-color-1">{{ item.title }}</a>
                   </div>
                 </td>
-                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">
-                  ${{ item.price }}
+                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-xl text-color-1 tracking-spacing-2">
+                  {{ formatPrice(item.price) }}
                 </td>
                 <td class="pt-7 pb-3 tracking-spacing-2">
                   <div class="flex justify-center items-center">
@@ -48,7 +48,7 @@
                            class="no-spinner text-xl text-color-1 rounded-md text-center focus:outline-none w-1/6">
                   </div>
                 </td>
-                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">{{ item.totalPrice }}VND</td>
+                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-xl text-color-1 tracking-spacing-2">{{ formatPrice(item.totalPrice) }}</td>
               </tr>
             </tbody>
           </table>
@@ -58,7 +58,7 @@
             <h3 class="text-4xl font-medium text-color-1 tracking-wider">Phương thức thanh toán</h3>
             <div class="py-7 px-[26px] border border-border-color-2 mt-10">
               <label class="capitalize relative text-left pl-8 text-font-15 tracking-wide text-color-9 cursor-pointer flex items-center">
-                <input v-model="methodPayment" value="vnPay" type="radio" name="payment" class="absolute left-0 top-[2px] rounded-[3px] cursor-pointer w-5 h-5">
+                <input v-model="methodPayment" value="vnPay" type="radio" name="payment" class="absolute left-0 top-[2xp] rounded-[3px] cursor-pointer w-5 h-5">
                 <span class="text-color-1 text-lg tracking-widest font-medium">VN PAY</span>
               </label>
               <label class="mt-8 capitalize relative text-left pl-8 text-font-15 tracking-wide text-color-9 cursor-pointer flex items-center">
@@ -91,7 +91,7 @@
                 <div class="border border-border-color-2 mt-10">
                     <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
                         <div class="text-color-1 text-lg tracking-wider">CART SUBTOTAL</div>
-                        <div class="text-color-1 text-lg tracking-wider">{{ store.dataAll.totalPrice }} <span class="font-semibold">VND</span></div>
+                        <div class="text-color-1 text-lg tracking-wider">{{ formatPrice(store.dataAll.totalPrice)}} <span class="font-semibold">VND</span></div>
                     </div>
                     <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
                         <div class="text-color-1 text-lg tracking-wider">SHIPPING</div>
@@ -99,7 +99,7 @@
                     </div>
                     <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
                         <div class="text-color-1 text-lg tracking-wider">TOTAL</div>
-                        <div class="text-color-1 text-lg tracking-wider">{{ store.dataAll.totalPrice }} <span class="font-semibold">VND</span></div>
+                        <div class="text-color-1 text-lg tracking-wider">{{formatPrice(store.dataAll.totalPrice)}} <span class="font-semibold">VND</span></div>
                     </div>
                 </div>
             </div>
@@ -130,7 +130,9 @@ const delivery = ref({
   "email" : "",
   "phone" : ""
 })
-
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
 const handleOrder = async () =>{
   if(methodPayment.value === ''){
     ElNotification({

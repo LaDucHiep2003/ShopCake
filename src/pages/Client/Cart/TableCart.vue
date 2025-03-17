@@ -20,7 +20,7 @@
                     </div>
                 </td>
                 <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">
-                    ${{ item.price }}
+                    {{ formatPrice(item.price) }}
                 </td>
                 <td class="pt-7 pb-3 tracking-spacing-2">
                     <div class="flex justify-center items-center">
@@ -32,7 +32,7 @@
                             rounded-md cursor-pointer" @click="handleIncre(index)">+</span>
                     </div>
                 </td>
-                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">${{ item.totalPrice }}</td>
+                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">{{ formatPrice(item.totalPrice) }}</td>
                 <td class="pt-3">
                     <div class="bg-color-white px-[14px] py-2 border-2 border-color-2 rounded-lg text-color-1 font-semibold
                          hover:bg-color-2 hover:text-color-white cursor-pointer" @click="handleDelete(item.id,index)">Delete</div>
@@ -84,7 +84,9 @@ const handleDecre = async (index) => {
     console.log("ok");
   }
 };
-
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
 const handleDelete = async (id,index) =>{
   const result = await deleteProduct({
     'product_id' : id
