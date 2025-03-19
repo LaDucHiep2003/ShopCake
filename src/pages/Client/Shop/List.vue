@@ -38,6 +38,8 @@
 </template>
 
 <script setup>
+import {computed, ref} from "vue";
+
 const formatPrice = (price) => {
   return new Intl.NumberFormat('vi-VN').format(price);
 };
@@ -47,5 +49,22 @@ defineProps({
     required: true,
   },
 });
+// const currentPage = ref(1);
+// const pageSize = ref(9); // Số sản phẩm trên mỗi trang
+//
+// // Tính tổng số trang dựa trên số lượng sản phẩm
+// const totalPage = computed(() => Math.ceil(props.filteredProducts.length / pageSize.value));
+//
+// // Lọc danh sách sản phẩm theo trang hiện tại
+// const paginatedProducts = computed(() => {
+//   const start = (currentPage.value - 1) * pageSize.value;
+//   const end = start + pageSize.value;
+//   return props.filteredProducts.slice(start, end);
+// });
+//
+// // Xử lý khi chuyển trang
+// const handlePageChange = (page) => {
+//   currentPage.value = page;
+// };
 </script>
 

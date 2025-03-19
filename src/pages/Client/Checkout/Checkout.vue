@@ -79,7 +79,7 @@
                 <p class="text-lg text-color-1 font-medium">{{ paymentData.transactionNo }}</p>
 
                 <p class="text-lg text-color-9 font-semibold">Số tiền:</p>
-                <p class="text-lg text-color-1 font-medium">{{ paymentData.amount }} VND</p>
+                <p class="text-lg text-color-1 font-medium">{{ formatPrice(paymentData.amount) }} VND</p>
 
                 <p class="text-lg text-color-9 font-semibold">Thời gian:</p>
                 <p class="text-lg text-color-1 font-medium">{{ paymentData.payDate }}</p>
@@ -154,7 +154,7 @@ const handleOrder = async () =>{
   }
 }
 const handlePayment = async () =>{
-  const orderId = 12345;
+  const orderId = 2;
   const amount = store.dataAll.totalPrice;
 
   const result = await payment({
@@ -179,6 +179,7 @@ onMounted(() => {
     paymentData.value.transactionNo = params.get("vnp_TransactionNo") || "Không có";
     paymentData.value.amount = (parseInt(params.get("vnp_Amount")) / 100) || "Không có"; // Chia 100 vì VNPAY trả về x100
     paymentData.value.payDate = params.get("vnp_PayDate") || "Không có";
+    store.dataAll.totalPrice = 0
   }
 });
 

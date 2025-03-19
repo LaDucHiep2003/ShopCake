@@ -39,9 +39,13 @@ export default {
     async loadProducts() {
       try {
         const result = await getProductList();
-        this.products = result.data.data;
-        this.filteredProducts = result.data.data;
-        this.filteredProducts();
+        if(result){
+          console.log(result)
+          this.products = result.data.data;
+          this.filteredProducts = result.data.data;
+          this.filteredProducts();
+        }
+
       } catch (err) {
         console.log("Lỗi khi lấy danh sách sản phẩm");
       }
