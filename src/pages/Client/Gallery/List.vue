@@ -1,18 +1,3 @@
-<script setup>
-    import { onMounted, ref } from 'vue';
-    import { getCategoryList } from '../../../service/categoryService';
-
-    const ListCategory = ref([])
-
-    const fetchListCategory = async () =>{
-        const result = await getCategoryList()
-        if(result){
-            ListCategory.value = result;
-        }
-    }
-
-    onMounted(fetchListCategory);
-</script>
 
 
 <template>
@@ -38,3 +23,18 @@
         </div>
     </div>
 </template>
+<script setup>
+import { onMounted, ref } from 'vue';
+import { getCategoryList } from '@/service/categoryService';
+
+const ListCategory = ref([])
+
+const fetchListCategory = async () =>{
+  const result = await getCategoryList()
+  if(result){
+    ListCategory.value = result.data.data;
+  }
+}
+
+onMounted(fetchListCategory);
+</script>

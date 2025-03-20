@@ -2,7 +2,7 @@
   <aside :class="{
       'max-md:hidden': !openSidebar,
       'max-md:block': openSidebar,
-      'fixed top-0 left-0 md:pl-5 w-[14rem] max-md:left-[-100%] max-md:bg-color-background max-md:w-[18rem] max-md:z-[3] max-md:shadow-shadow-3 max-md:pr-card-padding': true
+      'fixed top-0 left-0 md:pl-5 w-[14rem] max-md:left-[-100%] max-md:bg-color-background max-md:w-[18rem] max-md:z-20 max-md:shadow-shadow-3 max-md:pr-card-padding': true
     }">
     <div class="flex item-center justify-between mt-6">
       <div class="flex gap-3 max-md:ml-4 ">

@@ -21,9 +21,33 @@
             <tr class="border-b border-color-light">
               <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-1 text-color-dark whitespace-nowrap">STT</th>
               <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-1 text-color-dark whitespace-nowrap">Hình ảnh</th>
-              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Tên sản phẩm</th>
-              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Giá</th>
-              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-1 text-color-dark whitespace-nowrap">Vị trí</th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">
+                <div class="flex gap-2 items-center justify-center">
+                  Tên sản phẩm
+                  <svg @click="sortBy('title')" class="cursor-pointer" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.62402 2.25024V9.62525M8.62402 9.62525L10.875 6.87512M8.62402 9.62525L6.375 6.87512" stroke="#475467" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.37402 9.75012V2.37512M3.37402 2.37512L5.625 5.12524M3.37402 2.37512L1.125 5.12524" stroke="#98A2B3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">
+                <div class="flex gap-2 items-center justify-center">
+                  Giá
+                  <svg @click="sortBy('price')" class="cursor-pointer" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.62402 2.25024V9.62525M8.62402 9.62525L10.875 6.87512M8.62402 9.62525L6.375 6.87512" stroke="#475467" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.37402 9.75012V2.37512M3.37402 2.37512L5.625 5.12524M3.37402 2.37512L1.125 5.12524" stroke="#98A2B3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </th>
+              <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-1 text-color-dark whitespace-nowrap">
+                <div class="flex gap-2 items-center justify-center">
+                  Vị trí
+                  <svg @click="sortBy('position')" class="cursor-pointer" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.62402 2.25024V9.62525M8.62402 9.62525L10.875 6.87512M8.62402 9.62525L6.375 6.87512" stroke="#475467" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.37402 9.75012V2.37512M3.37402 2.37512L5.625 5.12524M3.37402 2.37512L1.125 5.12524" stroke="#98A2B3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </th>
               <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Trạng thái</th>
               <th class="p-card-padding max-lg:p-5 max-md:text-xs max-md:p-2 text-color-dark whitespace-nowrap">Hành động</th>
               <th></th>
@@ -56,7 +80,9 @@
       </table>
       </div>
     </div>
+    <el-pagination background layout="prev, pager, next" :total="totalPage*10" @change="handlePageChange" />
   </div>
+
 </template>
 
 <script>
@@ -69,6 +95,9 @@ export default {
       products : [],
       searchQuery: "",
       allProducts: [],
+      totalPage: 0,
+      sortKey: "",
+      sortAscending: true
     }
   },
   methods:{
@@ -83,11 +112,12 @@ export default {
        await this.loadProducts();
      }
     },
-    async loadProducts() {
+    async loadProducts(page = 1) {
       try {
-        const result = await getProductList();
+        const result = await getProductList(page);
         this.products = result.data.data;
         this.allProducts = result.data.data;
+        this.totalPage = result.data.total_page
       } catch (err) {
         console.log("Lỗi khi lấy danh sách sản phẩm");
       }
@@ -100,6 +130,27 @@ export default {
             product.title.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       }
+    },
+    handlePageChange(page) {
+      this.loadProducts(page);
+    },
+    sortBy(key) {
+      if (this.sortKey === key) {
+        this.sortAscending = !this.sortAscending; // Đảo chiều nếu bấm lại cùng cột
+      } else {
+        this.sortKey = key;
+        this.sortAscending = true; // Nếu bấm vào cột khác, đặt về sắp xếp tăng dần
+      }
+
+      this.products.sort((a, b) => {
+        let valA = a[key];
+        let valB = b[key];
+
+        if (typeof valA === "string") valA = valA.toLowerCase();
+        if (typeof valB === "string") valB = valB.toLowerCase();
+
+        return this.sortAscending ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+      });
     },
   },
   async created(){

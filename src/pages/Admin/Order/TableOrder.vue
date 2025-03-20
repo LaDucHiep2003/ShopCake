@@ -33,7 +33,7 @@
           <tbody>
           <tr v-for="(item,index) in orders">
             <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap" >{{ index + 1 }}</td>
-            <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap">{{ item.first_name }} {{ item.last_name }}</td>
+            <td @click="handleDetail(item.id)" class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap cursor-pointer">{{ item.first_name }} {{ item.last_name }}</td>
             <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap">{{ item.phone }}</td>
             <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap">{{ item.address }}</td>
             <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap">{{ item.totalQuantity }}</td>
@@ -56,11 +56,70 @@
       </div>
     </div>
   </div>
+
+  <div
+      v-if="openOrderDetail"
+      :class="{
+    'opacity-100 scale-100 pointer-events-auto': openOrderDetail,
+    'opacity-0 scale-95 pointer-events-none': !openOrderDetail,
+  }"
+      class="fixed top-0 left-0 z-[101] right-0 bottom-0 flex justify-center items-center transition-all duration-300 ease-in-out transform"
+      style="background: rgba(0, 0, 0, 0.5)"
+  >
+    <div class="w-[700px] h-[650px] max-md:h-full bg-white p-4 rounded-2xl transition-all duration-300 ease-in-out overflow-y-auto"
+         style="scrollbar-width: none;">
+      <div class=" flex justify-between items-center gap-2 mb-5">
+        <div class="focus:outline-none border border-color-2 w-full py-2 px-4
+          rounded-lg text-xl font-medium text-color-3">
+          Mã đơn hàng : {{ dataOrderDetail.orders.order_info.id || "N/A" }}
+        </div>
+        <svg @click="handleDetail" class="cursor-pointer" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 5L5 15M5 5L15 15" stroke="#667085" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
+        <div class="flex-1">First Name :</div> <div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.first_name }}</div>
+      </div>
+      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
+        <div class="flex-1">Last Name :</div>  <div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.last_name }}</div>
+      </div>
+      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
+        <div class="flex-1">Address :</div>  <div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.address }}</div>
+      </div>
+      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
+        <div class="flex-1"> Phone : </div><div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.phone }}</div>
+      </div>
+      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
+        <div class="flex-1"> Products : </div>
+      </div>
+      <div>
+        <div v-for="item in dataOrderDetail.orders.order_items" class="flex gap-2 flex-wrap">
+          <article class="relative text-center max-w-[300px] mx-auto z-10 h-auto border border-color-2">
+            <div class="transition-all duration-200 ease-in-out">
+              <div class="min-h-[150px] flex items-end justify-center">
+                <img :src="item.image" :alt="item.title" class="w-[120px] h-[140px]" />
+              </div>
+              <div class="font-medium text-lg text-color-1 mt-2">
+                <div>{{ item.title }}</div>
+              </div>
+              <div class="font-medium text-lg text-color-1 mt-2">
+                <div>Số lượng : {{ item.quantity }}</div>
+              </div>
+              <div class="font-medium text-lg text-color-1 mt-2">
+                <div>Tổng tiền : {{ item.quantity }}</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { ElNotification } from 'element-plus';
-import {confirmOrder, deleteOrder, getOrderList} from "@/service/orderService.js";
+import {confirmOrder, deleteOrder, getCheckout, getOrderList} from "@/service/orderService.js";
+import OrderDetail from "@/pages/Admin/Order/OrderDetail.vue";
 
 export default {
   data(){
@@ -68,7 +127,12 @@ export default {
       orders : [],
       searchQuery: "",
       allOrders: [],
+      openOrderDetail : false,
+      dataOrderDetail : {}
     }
+  },
+  components:{
+    OrderDetail
   },
   methods:{
     async handleDelete (id){
@@ -108,7 +172,15 @@ export default {
       if(result){
         await this.loadOrders();
       }
-    }
+    },
+    async handleDetail(id){
+      this.openOrderDetail = !this.openOrderDetail;
+      const result = await getCheckout(id);
+      if(result){
+        this.dataOrderDetail = result;
+        console.log(result)
+      }
+    },
   },
   async created(){
     await this.loadOrders();

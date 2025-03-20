@@ -1,6 +1,6 @@
 
 <template>
-    <header class="border-b border-[#ddd] max-lg:bg-color-white max-lg:shadow-shadow-1 max-lg:sticky max-lg:top-0 max-lg:left-0 ">
+    <header class="border-b border-[#ddd] max-lg:bg-color-white max-lg:shadow-shadow-1 max-lg:sticky max-lg:top-0 max-lg:left-0 z-20">
         <div class="container mx-auto">
             <div class="flex justify-between items-center py-10 max-lg:py-2">
                 <div class="flex gap-2 items-center max-lg:hidden">
@@ -85,7 +85,7 @@
   <div :class="{
       'hidden': !opensidebar,
       'block': opensidebar,
-      'fixed left-[-100%] w-[18rem] bg-color-white pt-4 h-screen' : true}" class="sidebarclient lg:hidden">
+      'fixed left-[-100%] w-[18rem] bg-color-white pt-4 h-screen z-20' : true}" class="sidebarclient lg:hidden">
     <ul class="text-color-1 text-xs font-semibold" >
       <li class="hover:bg-color-2 mb-1 hover:text-color-white" :class=" BreakCurmp === 'HOME' ? 'bg-color-2 text-color-white' : ''">
         <RouterLink :to="{ name : 'Home'}" class="py-3 inline-block tracking-widest relative ml-3">HOME </RouterLink>
