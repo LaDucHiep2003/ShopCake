@@ -1,21 +1,25 @@
-
-
 <template>
-    <div class="container mx-auto py-10">
-       <div class="flex justify-between gap-5">
-            <div class="w-1/4">
-                <ContentLeft
-                    :minPrice="minPrice"
-                    :maxPrice="maxPrice"
-                    @updatePriceRange="updatePriceRange"
-                    @updateSearchQuery="updateSearchQuery"/>
-            </div>
-            <div class="flex-1">
-                <List :filteredProducts="filteredProducts" />
-            </div>
-        </div> 
+  <div class="container mx-auto py-10">
+    <div class="flex justify-between gap-5">
+      <div class="w-1/4 max-lg:hidden">
+        <ContentLeft
+            :minPrice="minPrice"
+            :maxPrice="maxPrice"
+            @updatePriceRange="updatePriceRange"
+            @updateSearchQuery="updateSearchQuery"/>
+      </div>
+      <div class="flex-1">
+        <List
+            :filteredProducts="filteredProducts"
+            :totalPage="totalPage"
+            :currentPage="currentPage"
+            @page-change="handlePageChange"
+        />
+      </div>
     </div>
+  </div>
 </template>
+
 <script>
 import List from "@/pages/Client/Shop/List.vue";
 import ContentLeft from "@/pages/Client/Shop/ContentLeft.vue";
@@ -32,18 +36,28 @@ export default {
       filteredProducts: [],
       minPrice: 0,
       maxPrice: 100,
-      searchQuery: ""
+      searchQuery: "",
+      currentPage: 1,
+      totalPage: 2,
+      totalProduct: 0,
+      limit: 9,
     };
   },
   methods: {
-    async loadProducts() {
+    async loadProducts(page = 1) {
       try {
-        const result = await getProductList();
-        this.products = result.data.data;
-        this.filteredProducts = result.data.data;
-        this.filteredProducts();
+        const result = await getProductList(page);
+        if (result) {
+          console.log(result)
+          this.products = result.data.data;
+          this.filteredProducts = [...this.products];
+          this.totalPage = result.data.total_page;
+          this.totalProduct = result.data.record_total;
+          this.limit = result.data.limit;
+          this.currentPage = page;
+        }
       } catch (err) {
-        console.log("Lỗi khi lấy danh sách sản phẩm");
+        console.error("Lỗi khi lấy danh sách sản phẩm", err);
       }
     },
     filterProducts() {
@@ -61,7 +75,10 @@ export default {
     updateSearchQuery(query) {
       this.searchQuery = query;
       this.filterProducts();
-    }
+    },
+    handlePageChange(page) {
+      this.loadProducts(page);
+    },
   },
   async created() {
     await this.loadProducts();

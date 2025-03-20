@@ -1,6 +1,6 @@
 
 <template>
-    <header class="border-b border-[#ddd] max-lg:bg-color-white max-lg:shadow-shadow-1 max-lg:sticky max-lg:top-0 max-lg:left-0 ">
+    <header class="border-b border-[#ddd] max-lg:bg-color-white max-lg:shadow-shadow-1 max-lg:sticky max-lg:top-0 max-lg:left-0 z-20">
         <div class="container mx-auto">
             <div class="flex justify-between items-center py-10 max-lg:py-2">
                 <div class="flex gap-2 items-center max-lg:hidden">
@@ -85,7 +85,7 @@
   <div :class="{
       'hidden': !opensidebar,
       'block': opensidebar,
-      'fixed left-[-100%] w-[18rem] bg-color-white pt-4 h-screen' : true}" class="sidebarclient lg:hidden">
+      'fixed left-[-100%] w-[18rem] bg-color-white pt-4 h-screen z-20' : true}" class="sidebarclient lg:hidden">
     <ul class="text-color-1 text-xs font-semibold" >
       <li class="hover:bg-color-2 mb-1 hover:text-color-white" :class=" BreakCurmp === 'HOME' ? 'bg-color-2 text-color-white' : ''">
         <RouterLink :to="{ name : 'Home'}" class="py-3 inline-block tracking-widest relative ml-3">HOME </RouterLink>
@@ -200,9 +200,9 @@
                             <div :class="active ? 'active' : ''" class="cart-inline" >
                                 <div class="p-5">
                                     <div class="text-lg font-semibold  text-color-1 tracking-wider ">IN CART: {{ store.dataAll.quantity }} PRODUCTS</div>
-                                    <div class="text-base tracking-spacing-2 font-semibold text-color-1">TOTAL PRICE: ${{ store.dataAll.totalPrice }}</div>
+                                    <div class="text-base tracking-spacing-2 font-semibold text-color-1">TOTAL PRICE: {{ formatPrice(store.dataAll.totalPrice) }} VND</div>
                                 </div>
-                                <div class="flex items-center p-5 border-t border-border-color-2 gap-5" v-for="(item, index) in store.dataAll.data" :key="item.id">
+                                <div class="flex items-center p-3 border-t border-border-color-2 gap-5" v-for="(item, index) in store.dataAll.data" :key="item.id">
                                     <img :src="item.image" alt="Image" class="w-[100px] h-[90px]">
                                     <div>
                                         <div class="text-base text-color-1 font-semibold">{{ item.title }}</div>
@@ -215,7 +215,7 @@
                                                 <span class="h-9 w-9 text-3xl bg-color-white border border-border-color-2 text-color-1 text-center rounded-md cursor-pointer" 
                                                     @click="handleIncre(index)">+</span>
                                             </div>
-                                            <div class="text-base text-color-1 font-semibold">${{ item.price }}</div>
+                                            <div class="text-base text-color-1 font-semibold">{{ formatPrice(item.price) }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -283,6 +283,11 @@ const fetchListCategory = async () =>{
     ListCategory.value = result.data.data;
   }
 }
+
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
+
 onMounted(() => {
   fetchApi();
   fetchListCategory();

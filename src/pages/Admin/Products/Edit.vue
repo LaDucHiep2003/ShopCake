@@ -36,8 +36,11 @@
       <el-form-item label="Giá cũ">
         <el-input v-model.number="sizeForm.oldPrice" />
       </el-form-item>
+<!--      <el-form-item label="Ảnh">-->
+<!--        <el-button size="small" type="primary" @click="openUploadWidget()">Chọn ảnh</el-button>-->
+<!--      </el-form-item>-->
       <el-form-item label="Ảnh">
-        <el-button size="small" type="primary" @click="openUploadWidget()">Chọn ảnh</el-button>
+        <el-input v-model.number="sizeForm.image" />
       </el-form-item>
       <el-form-item label="Vị trí">
         <el-input v-model.number="sizeForm.position" />
