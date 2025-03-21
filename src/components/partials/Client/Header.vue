@@ -151,9 +151,10 @@
                             :class=" BreakCurmp === 'GALLERY' ? 'before:bg-color-2 before:w-full' : ''"
                             >
                         GALLERY </RouterLink>
-                        <ul class="navbar absolute p-[30px] ml-[-30px] w-[250px] bg-color-white z-[5] text-left block opacity-0 invisible">
-                            <li class="block py-3" v-for="item in ListCategory">
-                                <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2">{{ item.title }}</a>
+                        <ul class="navbar absolute p-[30px]  bg-color-white z-[5] text-left opacity-0 invisible w-[400px] grid grid-cols-2 gap-2">
+                            <li class="block text-center" v-for="item in ListCategory">
+                                <img :src="item.thumbnail" :alt="item.title" class="h-20 mx-auto">
+                                <a href="#" class="text-sm text-color-4 leading-[1.2] font-semibold tracking-wider hover:text-color-2 mt-2 text-center">{{ item.title }}</a>
                             </li>
                         </ul>
                     </li>

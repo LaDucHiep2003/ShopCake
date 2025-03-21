@@ -6,6 +6,7 @@ export const useProduct = defineStore('product', ()=> {
     const data = ref([])
     const dataAll = ref([])
 
+
     return { data , dataAll} ;
 });
 

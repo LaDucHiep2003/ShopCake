@@ -35,7 +35,7 @@ export default {
       products: [],
       filteredProducts: [],
       minPrice: 0,
-      maxPrice: 100,
+      maxPrice: 1000000,
       searchQuery: "",
       currentPage: 1,
       totalPage: 2,
