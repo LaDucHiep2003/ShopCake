@@ -39,7 +39,7 @@
 html {
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
-body{
+body .layoutAdmin{
     width: 100vw;
     height: 100vh;
     background-color: var(--color-background);

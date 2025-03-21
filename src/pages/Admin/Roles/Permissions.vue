@@ -90,6 +90,18 @@ const tableData = [
     permission : "category_delete"
   },
   {
+    title : "Xem đơn hàng",
+    permission : "order_view"
+  },
+  {
+    title : "Thêm đơn hàng",
+    permission : "order_create"
+  },
+  {
+    title : "Xóa đơn hàng",
+    permission : "order_delete"
+  },
+  {
     title : "Xem tài khoản",
     permission : "account_view"
   },

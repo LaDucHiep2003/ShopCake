@@ -149,6 +149,9 @@ const handleOrder = async () =>{
       "totalPrice" : store.dataAll.totalPrice
     })
     if(result){
+      store.$patch((state) => {
+        state.dataAll = [];
+      })
       router.replace({ path: `/success/${result.order_id}` });
     }
   }

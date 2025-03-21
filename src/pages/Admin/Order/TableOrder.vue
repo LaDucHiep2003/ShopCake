@@ -66,7 +66,7 @@
       class="fixed top-0 left-0 z-[101] right-0 bottom-0 flex justify-center items-center transition-all duration-300 ease-in-out transform"
       style="background: rgba(0, 0, 0, 0.5)"
   >
-    <div class="w-[700px] h-[650px] max-md:h-full bg-white p-4 rounded-2xl transition-all duration-300 ease-in-out overflow-y-auto"
+    <div class="w-2/3 h-[650px] max-md:h-full bg-white p-4 rounded-2xl transition-all duration-300 ease-in-out overflow-y-auto"
          style="scrollbar-width: none;">
       <div class=" flex justify-between items-center gap-2 mb-5">
         <div class="focus:outline-none border border-color-2 w-full py-2 px-4
@@ -92,25 +92,41 @@
       <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
         <div class="flex-1"> Products : </div>
       </div>
-      <div>
-        <div v-for="item in dataOrderDetail.orders.order_items" class="flex gap-2 flex-wrap">
-          <article class="relative text-center max-w-[300px] mx-auto z-10 h-auto border border-color-2">
-            <div class="transition-all duration-200 ease-in-out">
-              <div class="min-h-[150px] flex items-end justify-center">
-                <img :src="item.image" :alt="item.title" class="w-[120px] h-[140px]" />
-              </div>
-              <div class="font-medium text-lg text-color-1 mt-2">
-                <div>{{ item.title }}</div>
-              </div>
-              <div class="font-medium text-lg text-color-1 mt-2">
-                <div>Số lượng : {{ item.quantity }}</div>
-              </div>
-              <div class="font-medium text-lg text-color-1 mt-2">
-                <div>Tổng tiền : {{ item.quantity }}</div>
-              </div>
+      <table class="w-full max-w-full bg-color-white border-collapse text-center uppercase border border-border-color-2">
+        <thead>
+        <tr class="border border-border-color-2">
+          <td class="pl-8 pr-6 text-left text-lg py-5 bg-color-white font-medium text-color-4">PRODUCT NAME</td>
+          <td class=" text-lg py-5 bg-color-white font-medium text-color-4 px-6">PRICE</td>
+          <td class=" text-lg py-5 bg-color-white font-medium text-color-4 px-6">QUANTITY</td>
+          <td class=" text-lg py-5 bg-color-white font-medium text-color-4 px-6">TOTAL</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in dataOrderDetail.orders.order_items">
+          <td class="max-w-[500px] w-1/2 pt-7 pl-8 pr-[14px] pb-3">
+            <div class="flex items-center">
+              <a href="#" class="max-w-[146px] w-full inline-block text-center bg-color-10 ">
+                <img :src="item.image" alt="Image">
+              </a>
+              <a href="#" class="ml-8 tracking-wider font-semibold text-xl text-color-1">{{ item.title }}</a>
             </div>
-          </article>
-        </div>
+          </td>
+          <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-xl text-color-1 tracking-spacing-2">
+            {{ item.price }}
+          </td>
+          <td class="pt-7 pb-3 tracking-spacing-2">
+            <div class="flex justify-center items-center">
+              <input type="number" v-model="item.quantity" min="1" max="100"
+                     class="no-spinner text-xl text-color-1 rounded-md text-center focus:outline-none w-1/6">
+            </div>
+          </td>
+          <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-xl text-color-1 tracking-spacing-2">{{ formatPrice(item.price * item.quantity) }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="grid grid-cols-2 items-center gap-3 mt-10">
+        <div @click="handleDetail" class="py-[10px] px-4 bg-[#F2F4F7] rounded-md text-base font-semibold cursor-pointer text-color-1 text-center">Hủy</div>
+        <div class="py-[10px] px-4 bg-[#7F56D9] rounded-md text-base font-semibold cursor-pointer text-white text-center">Xác nhận</div>
       </div>
     </div>
   </div>
@@ -181,6 +197,9 @@ export default {
         console.log(result)
       }
     },
+    formatPrice(price){
+      return new Intl.NumberFormat('vi-VN').format(price);
+    }
   },
   async created(){
     await this.loadOrders();

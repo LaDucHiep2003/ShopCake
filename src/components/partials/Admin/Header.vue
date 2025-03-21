@@ -19,7 +19,7 @@
       <div class="flex gap-8 text-right ">
         <div class="max-md:hidden text-color-dark">
           <p>Hey, <b>{{user.fullName }}</b></p>
-          <small>Admin</small>
+          <small>{{ user.roleTitle }}</small>
         </div>
         <div class="h-8 w-8">
           <img src="@/assets/images/profile-1.jpg" alt="Profile" class="rounded-full">

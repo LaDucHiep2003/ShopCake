@@ -5,6 +5,11 @@ export const getProductList = async (page) => {
     return result;
 }
 
+export const getProductRandom = async () => {
+    const result = await get(`products/random`);
+    return result;
+}
+
 export const getProductListDeleted = async (page) => {
     const result = await get(`products/deleted.php?page=${page}`);
     return result;

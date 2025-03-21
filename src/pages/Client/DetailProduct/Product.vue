@@ -83,8 +83,6 @@ const addtoCart = async () => {
   });
 
   if (result) {
-    num.value = 1;
-
     // Kiểm tra sản phẩm đã tồn tại trong giỏ chưa
     const index = store.dataAll.data.findIndex(item => item.id === products.value.id);
 
@@ -100,11 +98,11 @@ const addtoCart = async () => {
           totalPrice: products.value.price * num.value
         });
       }
-
       // Cập nhật tổng số lượng và tổng giá tiền của giỏ hàng
       state.dataAll.totalPrice = state.dataAll.data.reduce((total, item) => total + item.totalPrice, 0);
       state.dataAll.quantity = state.dataAll.data.reduce((total, item) => total + item.quantity, 0);
     });
+    num.value = 1;
   }
 };
 </script>

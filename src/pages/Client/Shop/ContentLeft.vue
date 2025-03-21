@@ -3,7 +3,7 @@
     <div class="filter-shop">
         <p class="text-base text-color-1 font-semibold tracking-spacing-2 pb-4 border-b border-border-color-2">FILTER BY PRICE</p>
         <div class="slider-demo-block">
-            <el-slider v-model="value" range  :max="200"/>
+            <el-slider v-model="value" range  :max="1000000"/>
         </div>
         <div class="flex justify-between items-center">
             <button @click="handleFilter" class="text-sm font-bold text-color-white py-3 px-7 bg-color-2 rounded-lg hover:bg-color-6">FILTER</button>

@@ -25,20 +25,20 @@
                 <td class="pt-7 pb-3 tracking-spacing-2 text-2xl">
                     {{ item.quantity }}
                 </td>
-                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">$55</td>
+                <td class="w-[13%] min-w-[100px] px-[14px] pt-7 pb-3 text-2xl text-color-1 tracking-spacing-2">{{ formatPrice(item.price * item.quantity) }}</td>
             </tr>
         </tbody>
     </table>
     <div class="flex justify-end items-center py-8 gap-8">
         <div class="text-lg text-color-9 font-medium tracking-wider ">Tổng</div>
-        <div class="text-4xl text-color-1 tracking-wider ">$55</div>
+        <div class="text-4xl text-color-1 tracking-wider ">{{ formatPrice(totalPrice) }}</div>
     </div>
 </template>
 <script setup>
 import { useProduct } from '@/stores/local';
 import {getCheckout} from "@/service/orderService.js";
 import {useRoute} from "vue-router";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 const route = useRoute();
 const id = route.params.id;
@@ -56,5 +56,10 @@ const loadData = async () =>{
 const formatPrice = (price) => {
   return new Intl.NumberFormat('vi-VN').format(price);
 };
+const totalPrice = computed(() => {
+  return dataProducts.value.reduce((total, item) => {
+    return total + item.price * item.quantity;
+  }, 0);
+});
 onMounted(loadData);
 </script>
