@@ -48,6 +48,12 @@
             <el-radio border value="inactive">Dừng hoạt động</el-radio>
             </el-radio-group>
         </el-form-item>
+        <el-form-item label="Sản phẩm nổi tiếng">
+          <el-radio-group v-model="sizeForm.popular">
+            <el-radio border :value="true">Có</el-radio>
+            <el-radio border :value="false">Không</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item class="flex justify-center">
             <el-button type="primary" @click="onSubmit">Tạo</el-button>
             <el-button>Hủy</el-button>
@@ -105,6 +111,7 @@
     position : '',
     oldPrice : '',
     parentId : '',
+    popular : false
   })
 
 

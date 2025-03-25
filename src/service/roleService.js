@@ -8,6 +8,10 @@ export const getRoleDetail = async (id) => {
     const result = await get(`roles/${id}`);
     return result;
 }
+export const getRolebyUser = async (id) => {
+    const result = await get(`getRolebyUser/${id}`);
+    return result;
+}
 export const createRole = async (option) => {
     const result = await post("create/role",option);
     return result;

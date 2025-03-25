@@ -9,6 +9,11 @@ export const getCheckout = async (id) => {
     return result;
 }
 
+export const getHistoryOrder = async (id) => {
+    const result = await get(`order/history/${id}`);
+    return result;
+}
+
 export const deleteOrder = async (id) => {
     const result = await patch(`order/delete/${id}`);
     return result;

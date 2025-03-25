@@ -19,12 +19,16 @@
           </RouterLink>
         </div>
       </div>
+      <HistoryOrder />
     </div>
 </template>
 <script setup>
 import TableCart from './TableCart.vue';
 import {useProduct} from "@/stores/local.js";
+import HistoryOrder from "@/pages/Client/Cart/HistoryOrder.vue"
 const store = useProduct();
+
+
 const formatPrice = (price) => {
   return new Intl.NumberFormat('vi-VN').format(price);
 };
