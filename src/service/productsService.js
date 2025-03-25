@@ -10,6 +10,10 @@ export const getProductRandom = async () => {
     return result;
 }
 
+export const getPopularProducts = async () => {
+    const result = await get(`products/popular`);
+    return result;
+}
 export const getProductListDeleted = async (page) => {
     const result = await get(`products/deleted.php?page=${page}`);
     return result;

@@ -161,6 +161,17 @@ const isChecked = (id, permissionName) => {
 const handleUpdate = async () => {
   try {
     await UpdatePermissions(permission.value);
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      let parsedUser = JSON.parse(userData);
+
+      // Cập nhật lại permissions của user
+      const updatedPermissions = permission.value.flatMap(p => p.permission);
+      parsedUser.permissions = updatedPermissions.join(",");
+
+      // Lưu lại vào localStorage
+      localStorage.setItem("user", JSON.stringify(parsedUser));
+    }
     ElNotification({
       title: 'Success',
       message: 'Cập nhật thành công',
@@ -169,7 +180,6 @@ const handleUpdate = async () => {
   } catch (error) {
     console.error("Lỗi khi cập nhật quyền:", error);
   }
-  console.log(permission.value)
 };
 
 </script>
