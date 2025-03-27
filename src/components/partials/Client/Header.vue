@@ -272,7 +272,6 @@ const fetchApi = async ()=>{
     cart_id : localStorage.getItem("cartId")
   })
   if(result){
-    console.log(result)
     store.data = result['data']
     store.dataAll = result
   }

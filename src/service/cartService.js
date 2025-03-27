@@ -23,6 +23,10 @@ export const getCart = async (option) => {
 
 
 export const changeQuantity = async (option) => {
-    const result = patch("cart/changeQuantity", option)
+    const result = patch("card/changeQuantity", option)
+    return result;
+}
+export const updateCard = async (option) => {
+    const result = patch("card/update", option)
     return result;
 }

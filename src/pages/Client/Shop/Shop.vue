@@ -6,13 +6,19 @@
             :minPrice="minPrice"
             :maxPrice="maxPrice"
             @updatePriceRange="updatePriceRange"
-            @updateSearchQuery="updateSearchQuery"/>
+            @updateSearchQuery="updateSearchQuery"
+            :ListCategory="ListCategory"
+            :TotalCategory="TotalCategory"
+            @updateCategoryFilter="updateCategoryFilter"
+        />
       </div>
       <div class="flex-1">
         <List
             :filteredProducts="filteredProducts"
             :totalPage="totalPage"
             :currentPage="currentPage"
+            :totalProduct="totalProduct"
+            :limit="limit"
             @page-change="handlePageChange"
         />
       </div>
@@ -24,6 +30,7 @@
 import List from "@/pages/Client/Shop/List.vue";
 import ContentLeft from "@/pages/Client/Shop/ContentLeft.vue";
 import { getProductList } from "@/service/productsService.js";
+import {getCategoryList} from "@/service/categoryService.js";
 
 export default {
   components: {
@@ -33,6 +40,8 @@ export default {
   data() {
     return {
       products: [],
+      ListCategory : [],
+      TotalCategory: 0,
       filteredProducts: [],
       minPrice: 0,
       maxPrice: 1000000,
@@ -41,6 +50,7 @@ export default {
       totalPage: 2,
       totalProduct: 0,
       limit: 9,
+      selectedCategories : [],
     };
   },
   methods: {
@@ -48,7 +58,6 @@ export default {
       try {
         const result = await getProductList(page);
         if (result) {
-          console.log(result)
           this.products = result.data.data;
           this.filteredProducts = [...this.products];
           this.totalPage = result.data.total_page;
@@ -58,6 +67,13 @@ export default {
         }
       } catch (err) {
         console.error("Lỗi khi lấy danh sách sản phẩm", err);
+      }
+    },
+    async loadCategory(){
+      const result = await getCategoryList();
+      if(result){
+        this.ListCategory = result.data.data;
+        this.TotalCategory = result.data.record_total;
       }
     },
     filterProducts() {
@@ -79,9 +95,13 @@ export default {
     handlePageChange(page) {
       this.loadProducts(page);
     },
+    updateCategoryFilter (categories){
+      this.selectedCategories = categories;
+    }
   },
   async created() {
     await this.loadProducts();
+    await this.loadCategory();
   },
 };
 </script>

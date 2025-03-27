@@ -55,103 +55,64 @@
           </div>
           <div class="text-color-1">
             <div class="text-sm font-medium ">Tổng doanh thu tháng</div>
-            <div class="text-2xl font-bold">{{ totalRevenue }}$</div>
+            <div class="text-2xl font-bold">{{ formatPrice(totalRevenue) }}</div>
           </div>
         </div>
       </div>
-      <div class="p-4 border border-color-2 rounded-2xl w-1/2">
-        <div class="flex justify-between items-end mb-5">
-          <div class="text-base text-color-1 font-semibold">Đơn hàng theo tháng <span class="text-color-3 ml-2">(2024)</span></div>
-          <div class="flex gap-2">
-            <div class="w-8 h-8 bg-white border border-color-2 rounded-lg flex justify-center items-center">
-              <svg class="rotate-180" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.50023 5L11.911 9.41075C12.1888 9.6885 12.3276 9.82742 12.3276 10C12.3276 10.1726 12.1888 10.3115 11.911 10.5892L7.50023 15" stroke="#667085" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="w-8 h-8 bg-white border border-color-2 rounded-lg flex justify-center items-center">
-              <svg  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.50023 5L11.911 9.41075C12.1888 9.6885 12.3276 9.82742 12.3276 10C12.3276 10.1726 12.1888 10.3115 11.911 10.5892L7.50023 15" stroke="#667085" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <canvas ref="chartCanvas"></canvas>
+      <div class="grid grid-cols-2 w-full gap-5">
+        <OrderOnMonth />
+        <TotalPriceOnMonth />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-import Chart from "chart.js/auto";
 import {getProductList} from "@/service/productsService.js";
 import {confirmedOrder, getOrderList} from "@/service/orderService.js";
-
+import OrderOnMonth from "@/pages/Admin/Dashboard/OrderOnMonth.vue";
+import TotalPriceOnMonth from "@/pages/Admin/Dashboard/TotalPriceOnMonth.vue";
 export default {
+  components:{
+    OrderOnMonth,
+    TotalPriceOnMonth
+  },
   data(){
     return{
       dataProducts : [],
       dataOrders : [],
       dataOrdersConfirmed : [],
-      totalRevenue : []
+      totalRevenue : [],
     }
   },
-  setup() {
-    const chartCanvas = ref(null);
-    onMounted(() => {
-      new Chart(chartCanvas.value, {
-        type: "bar",
-        data: {
-          labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4"],
-          datasets: [
-            { label: "Đã xác nhận", data: [32, 24, 34, 36], backgroundColor: "#17B26A", borderRadius : 4 },
-            { label: "Đang đang xác nhận", data: [12, 16, 22, 6], backgroundColor: "#0990F7", borderRadius : 4 },
-            { label: "Chưa xác nhận", data: [4, 10, 3, 2], backgroundColor: "#F04438", borderRadius : 4 }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { position: "bottom" } },
-          scales: {
-            y: {
-              beginAtZero: true,
-              min: 0,
-              max: 40,
-              ticks: {
-                stepSize: 10
-              }
-            }
-          }
-        }
-      });
-    });
-    return { chartCanvas };
-  },
-  methods:{
+  methods: {
     async loadProducts() {
       const result = await getProductList();
-      if(result){
+      if (result) {
         this.dataProducts = result.data;
       }
     },
     async loadOrders() {
       const result = await getOrderList();
-      if(result){
+      if (result) {
         this.dataOrders = result.data;
       }
     },
     async loadOrdersConfirmed() {
       const result = await confirmedOrder();
-      if(result){
+      if (result) {
         this.dataOrdersConfirmed = result.orders;
         this.totalRevenue = this.dataOrdersConfirmed.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
       }
+    },
+    formatPrice(price) {
+      return new Intl.NumberFormat('vi-VN').format(price);
     },
   },
   async created () {
     await this.loadProducts();
     await  this.loadOrders();
     await this.loadOrdersConfirmed();
-  }
+  },
 };
 </script>

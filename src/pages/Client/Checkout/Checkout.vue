@@ -108,6 +108,7 @@
             <button class="min-w-[190px] text-sm font-bold text-color-white py-5 px-[50px] bg-color-2 rounded-lg
                 hover:bg-color-6" @click="handleOrder">ORDER NOW</button>
         </div>
+      <div @click="handlePaymentMomo">Payment</div>
     </div>
 </template>
 <script setup>
@@ -115,7 +116,7 @@ import { ElNotification } from 'element-plus'
 import { useProduct } from '@/stores/local';
 import {onMounted, ref} from "vue";
 import { useRouter } from "vue-router";
-import {checkout, payment} from "@/service/orderService.js";
+import {checkout, payment, paymentMomo} from "@/service/orderService.js";
 
 const store = useProduct();
 const router = useRouter();
@@ -162,6 +163,16 @@ const handlePayment = async () =>{
 
   const result = await payment({
     orderId : orderId,
+    amount : amount
+  })
+  if (result.payUrl) {
+    window.location.href = result.payUrl;
+  }
+}
+const handlePaymentMomo = async () =>{
+  const amount = 100000;
+
+  const result = await paymentMomo({
     amount : amount
   })
   if (result.payUrl) {

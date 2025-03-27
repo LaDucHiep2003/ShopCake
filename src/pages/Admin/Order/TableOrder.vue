@@ -40,10 +40,7 @@
             <td class="h-10 border-b border-color-light text-color-dark max-md:text-xs whitespace-nowrap">{{ item.totalPrice }}</td>
             <td class="h-10 border-b border-color-light text-color-dark">
               <button
-                  :class="{'bg-color-primary': item.confirm,
-                            'bg-color-danger' : !item.confirm
-                    }"
-                  class="px-2 py-1 text-color-white rounded-lg text-sm font-semibold max-md:text-xs max-md:px-2" v-text="item.confirm ? 'Đã xác nhận' : 'Chưa xác nhận'"></button>
+                  class="px-2 py-1 text-color-white rounded-lg text-sm font-semibold max-md:text-xs max-md:px-2 bg-color-danger">Chưa xác nhận</button>
             </td>
             <td class="h-10 border-b border-color-light text-color-dark whitespace-nowrap">
               <button @click="handleConfirm(item.id)" class="px-2 font-semibold py-1 bg-color-13 text-color-white rounded-lg max-md:text-xs max-md:px-2
@@ -68,30 +65,49 @@
   >
     <div class="w-2/3 h-[650px] max-md:h-full bg-white p-4 rounded-2xl transition-all duration-300 ease-in-out overflow-y-auto"
          style="scrollbar-width: none;">
-      <div class=" flex justify-between items-center gap-2 mb-5">
-        <div class="focus:outline-none border border-color-2 w-full py-2 px-4
-          rounded-lg text-xl font-medium text-color-3">
-          Mã đơn hàng : {{ dataOrderDetail.orders.order_info.id || "N/A" }}
+      <div class="flex justify-between items-center mb-6">
+        <div
+            class="border border-gray-300 w-full py-3 px-5 rounded-lg text-xl font-semibold text-gray-700 bg-gray-100">
+          Mã đơn hàng: {{ dataOrderDetail.orders.order_info.id }}
         </div>
-        <svg @click="handleDetail" class="cursor-pointer" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            @click="handleDetail"
+            class="cursor-pointer hover:scale-110 transition-transform"
+            width="24"
+            height="24"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
           <path d="M15 5L5 15M5 5L15 15" stroke="#667085" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
-        <div class="flex-1">First Name :</div> <div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.first_name }}</div>
+      <div class="space-y-4">
+        <div class="flex items-center gap-3 text-lg font-medium text-gray-700">
+          <span class="w-1/3">First Name:</span>
+          <div class="text-gray-900 bg-gray-100 py-2 px-4 rounded-lg w-2/3">
+            {{ dataOrderDetail.orders.order_info.first_name }}
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-lg font-medium text-gray-700">
+          <span class="w-1/3">Last Name:</span>
+          <div class="text-gray-900 bg-gray-100 py-2 px-4 rounded-lg w-2/3">
+            {{ dataOrderDetail.orders.order_info.last_name }}
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-lg font-medium text-gray-700">
+          <span class="w-1/3">Address:</span>
+          <div class="text-gray-900 bg-gray-100 py-2 px-4 rounded-lg w-2/3">
+            {{ dataOrderDetail.orders.order_info.address }}
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-lg font-medium text-gray-700">
+          <span class="w-1/3">Phone:</span>
+          <div class="text-gray-900 bg-gray-100 py-2 px-4 rounded-lg w-2/3">
+            {{ dataOrderDetail.orders.order_info.phone }}
+          </div>
+        </div>
       </div>
-      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
-        <div class="flex-1">Last Name :</div>  <div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.last_name }}</div>
-      </div>
-      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
-        <div class="flex-1">Address :</div>  <div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.address }}</div>
-      </div>
-      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
-        <div class="flex-1"> Phone : </div><div class="text-color-1 w-2/3">{{ dataOrderDetail.orders.order_info.phone }}</div>
-      </div>
-      <div class="w-full py-2 px-4 rounded-lg text-xl font-medium text-color-2 flex gap-2 items-center">
-        <div class="flex-1"> Products : </div>
-      </div>
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 mt-6">Sản phẩm trong đơn hàng</h2>
       <table class="w-full max-w-full bg-color-white border-collapse text-center uppercase border border-border-color-2">
         <thead>
         <tr class="border border-border-color-2">
