@@ -4,7 +4,10 @@ export const getCategoryList = async () => {
     const result = await get(`category`);
     return result;
 }
-
+export const getProductInCategory = async (id) => {
+    const result = await get(`category/product/${id}`);
+    return result;
+}
 export const getCategoryDetail = async (id) => {
     const result = await get(`category/${id}`);
     return result;

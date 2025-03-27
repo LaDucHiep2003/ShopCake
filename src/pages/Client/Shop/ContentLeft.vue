@@ -12,11 +12,18 @@
         <p class="text-base text-color-1 font-semibold tracking-spacing-2 pb-4 border-b border-border-color-2 mt-10">CATEGORIES</p>
       <label class="flex items-center justify-between custom-checkbox gap-2 w-full max-md:p-3 max-md:px-2 mt-3">
         <div class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" class="hidden" checked>
+          <input type="checkbox" class="hidden" v-model="selectAll" @change="toggleSelectAll">
           <span class="checkmark w-5 h-5 rounded-sm relative"></span>
-          <div class="text-[15px] text-color-4 fomt-medium">All</div>
+          <div class="text-[15px] text-color-4 font-medium">All</div>
         </div>
-        <div class="tracking-widest text-[15px] text-color-4 fomt-medium">(18)</div>
+        <div class="tracking-widest text-[15px] text-color-4 font-medium">{{ TotalCategory }}</div>
+      </label>
+      <label v-for="item in ListCategory" :key="item.id" class="flex items-center justify-between custom-checkbox gap-2 w-full max-md:p-3 max-md:px-2 mt-3">
+        <div class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" class="hidden" v-model="selectedCategories" :value="item.id" @change="updateCategoryFilter">
+          <span class="checkmark w-5 h-5 rounded-sm relative"></span>
+          <div class="text-[15px] text-color-4 font-medium">{{ item.title }}</div>
+        </div>
       </label>
         <div class="bg-color-8 flex min-h-16 items-center rounded-lg my-6">
             <input v-model="searchQuery"
@@ -35,7 +42,7 @@
               <img :src="item.image" alt="Image" class="bg-color-10">
             </div>
             <div class="text-[15px]">
-              <div class="text-color-1 tracking-wider hover:text-color-2 font-medium">{{ item.title }}</div>
+              <RouterLink :to="`product/${item.id}`" class="text-color-1 tracking-wider hover:text-color-2 font-medium">{{ item.title }}</RouterLink>
               <div class="text-color-2 font-semibold">{{ formatPrice(item.price) }} đ</div>
             </div>
           </div>
@@ -51,13 +58,17 @@ import {getPopularProducts} from "@/service/productsService.js";
 export default {
   props: {
     maxPrice: Number,
-    minPrice: Number
+    minPrice: Number,
+    TotalCategory: Number,
+    ListCategory : Array
   },
   data() {
     return {
       value: [this.minPrice, this.maxPrice],
       searchQuery: "",
-      popularProducts : []
+      popularProducts : [],
+      selectedCategories: [],
+      selectAll: true
     };
   },
   methods: {
@@ -75,6 +86,18 @@ export default {
     },
     formatPrice(price){
       return new Intl.NumberFormat('vi-VN').format(price);
+    },
+    updateCategoryFilter() {
+      this.selectAll = this.selectedCategories.length === 0;
+      this.$emit("updateCategoryFilter", this.selectedCategories);
+    },
+    toggleSelectAll() {
+      if (this.selectAll) {
+        this.selectedCategories = [];
+      } else {
+        this.selectedCategories = this.ListCategory.map(item => item.id);
+      }
+      this.updateCategoryFilter();
     }
   },
   async created(){

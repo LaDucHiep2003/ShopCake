@@ -3,7 +3,7 @@
         <div class="container mx-auto py-10">
             <div class="grid grid-cols-2">
                 <div class="">
-                    <img :src="products.image" 
+                    <img :src="products.image"
                         alt="Image"
                         class="bg-color-10"
                     >

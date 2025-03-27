@@ -37,6 +37,7 @@
 import { login } from '@/service/auth.js';
 import Cookies from 'js-cookie';
 import {useUserStore} from "@/stores/local.js";
+import {updateCard} from "@/service/cartService.js";
 
 export default {
   data() {
@@ -75,6 +76,12 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
+          const cartId = localStorage.getItem("cartId");
+          const result = await updateCard({
+            user_id : data.user.id,
+            id : cartId
+          })
+          localStorage.setItem("cartId",result)
           const userStore = useUserStore(); // Lấy store từ Pinia
           userStore.setUser(data.user);
         } else {
