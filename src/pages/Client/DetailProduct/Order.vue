@@ -1,5 +1,4 @@
 
-
 <template>
     <div class="container mx-auto py-5">
         <div class="grid grid-cols-3 gap-5">

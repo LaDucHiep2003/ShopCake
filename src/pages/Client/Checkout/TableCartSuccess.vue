@@ -50,7 +50,7 @@ const loadData = async () =>{
   const result = await getCheckout(id)
   if(result){
     dataUser.value = result.orders.order_info;
-    dataProducts.value = result.orders.order_items;
+    dataProducts.value = JSON.parse(localStorage.getItem('selectedCartItems')) || [];
   }
 }
 const formatPrice = (price) => {

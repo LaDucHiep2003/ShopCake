@@ -37,27 +37,42 @@
 </template>
 
 <script>
-import {getProductRandom} from "@/service/productsService.js";
+import { getProductRandom } from "@/service/productsService.js";
 
 export default {
-  data(){
-    return{
-      products : []
+  data() {
+    return {
+      products: []
+    };
+  },
+  props: {
+    parentId: {
+      type: Number
     }
   },
-  methods:{
-    async loadProducts(){
-      const result = await getProductRandom();
-      if(result){
-        this.products = result.data
+  watch: {
+    parentId(newVal) {
+      if (newVal) {
+        this.loadProducts();
+      }
+    }
+  },
+  methods: {
+    async loadProducts() {
+      console.log("parentId:", this.parentId);
+      const result = await getProductRandom(this.parentId);
+      if (result) {
+        this.products = result.data;
       }
     },
-    formatPrice(price){
-      return new Intl.NumberFormat('vi-VN').format(price);
+    formatPrice(price) {
+      return new Intl.NumberFormat("vi-VN").format(price);
     }
   },
-  async created(){
-    await this.loadProducts();
+  created() {
+    if (this.parentId) {
+      this.loadProducts();
+    }
   }
-}
+};
 </script>

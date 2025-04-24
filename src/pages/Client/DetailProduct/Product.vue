@@ -66,13 +66,13 @@ const formatPrice = (price) => {
   return new Intl.NumberFormat('vi-VN').format(price);
 };
 
-
 const route = useRoute();
 const id = route.params.id;
 const products = ref([]);
 const fetchApi = async () => {
   const result = await getProductDetail(id)
   products.value = result.detail;
+  console.log(result)
 };
 onMounted(fetchApi);
 const addtoCart = async () => {

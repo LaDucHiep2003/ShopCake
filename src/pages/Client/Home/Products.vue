@@ -8,7 +8,7 @@
       <Splide
           :options="splideOptions"
           aria-label="New Products"
-          class="mt-10 overflow-visible"
+          class="mt-10 overflow-hidden"
       >
         <SplideSlide v-for="(product, index) in products" :key="index">
             <article class="relative text-center px-4 pt-5 pb-10 max-w-[300px] mx-auto z-10 product h-auto">

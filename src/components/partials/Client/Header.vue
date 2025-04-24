@@ -196,7 +196,7 @@
                         <div class="relative cursor-pointer">
                             <div class="flex items-start gap-1" @click="activeCard">
                                 <ShoppingCart class="h-7 w-auto"/>
-                                <p class="text-xs text-color-2 font-medium"> {{ store.dataAll.quantity }}</p>
+                                <p class="text-xs text-color-2 font-medium"> {{ cartTotal }}</p>
                             </div>
                             <div :class="active ? 'active' : ''" class="cart-inline" >
                                 <div class="p-5">
@@ -259,6 +259,8 @@ const ListCategory = ref([])
 const opensidebar = ref(false);
 const openDropdown = ref(false);
 
+const cartTotal = computed(() => store.dataAll?.data?.length || 0);
+
 const handleOpenSidebar = () =>{
   opensidebar.value = !opensidebar.value;
 }
@@ -272,11 +274,9 @@ const fetchApi = async ()=>{
     cart_id : localStorage.getItem("cartId")
   })
   if(result){
-    store.data = result['data']
     store.dataAll = result
   }
 }
-
 const fetchListCategory = async () =>{
   const result = await getCategoryList()
   if(result){

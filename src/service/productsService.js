@@ -5,8 +5,8 @@ export const getProductList = async (page) => {
     return result;
 }
 
-export const getProductRandom = async () => {
-    const result = await get(`products/random`);
+export const getProductRandom = async (parentId) => {
+    const result = await get(`products/random/${parentId}`);
     return result;
 }
 

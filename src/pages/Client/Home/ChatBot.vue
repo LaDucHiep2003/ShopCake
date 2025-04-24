@@ -3,7 +3,7 @@
     <div class="py-2 border-b border-color-7 flex justify-between items-center max-h-[74px] sticky top-0 left-0 bg-white">
       <div class="flex items-center gap-3">
         <img src="@/assets/images/Avatar_AI.png" alt="AI">
-        <div class="text-base font-semibold text-color-1 ">Trợ lý AI</div>
+        <div class="text-base font-semibold text-color-1 ">Chat bot</div>
       </div>
       <div class="flex gap-3 items-center">
         <div class="w-9 h-9 rounded-lg border border-color-2 flex justify-center items-center">
@@ -105,6 +105,7 @@ export default {
   methods: {
     async sendMessage() {
       if (!this.userInput.trim()) return;
+      this.messages.push({ role: "user", text: this.userInput});
       try {
         const res = await fetch("http://localhost:8000/chat", {
           method: "POST",
@@ -117,7 +118,6 @@ export default {
           }),
         });
         const data = await res.json();
-        this.messages.push({ role: "user", text: this.userInput});
         this.messages.push({ role: "bot", text: data.response });
         this.userInput = "";
         this.timeAnswer = new Date().toLocaleTimeString();

@@ -33,7 +33,7 @@ import ChatBot from "@/pages/Client/Home/ChatBot.vue";
 export default {
   data(){
     return{
-      openChatbot : false
+      openChatbot : true
     }
   },
   components:{

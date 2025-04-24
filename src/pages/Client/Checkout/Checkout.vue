@@ -30,7 +30,7 @@
                 </tr>
               </thead>
             <tbody>
-              <tr v-for="(item, index) in store.dataAll.data">
+              <tr v-for="(item, index) in dataProducts">
                 <td class="max-w-[500px] w-1/2 pt-7 pl-8 pr-[14px] pb-3">
                   <div class="flex items-center">
                     <a href="#" class="max-w-[146px] w-full inline-block text-center bg-color-10 ">
@@ -91,7 +91,7 @@
                 <div class="border border-border-color-2 mt-10">
                     <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
                         <div class="text-color-1 text-lg tracking-wider">CART SUBTOTAL</div>
-                        <div class="text-color-1 text-lg tracking-wider">{{ formatPrice(store.dataAll.totalPrice)}} <span class="font-semibold">VND</span></div>
+                        <div class="text-color-1 text-lg tracking-wider">{{ formatPrice(totalPrice) }} <span class="font-semibold">VND</span></div>
                     </div>
                     <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
                         <div class="text-color-1 text-lg tracking-wider">SHIPPING</div>
@@ -99,7 +99,7 @@
                     </div>
                     <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
                         <div class="text-color-1 text-lg tracking-wider">TOTAL</div>
-                        <div class="text-color-1 text-lg tracking-wider">{{formatPrice(store.dataAll.totalPrice)}} <span class="font-semibold">VND</span></div>
+                        <div class="text-color-1 text-lg tracking-wider">{{formatPrice(totalPrice)}} <span class="font-semibold">VND</span></div>
                     </div>
                 </div>
             </div>
@@ -112,15 +112,29 @@
     </div>
 </template>
 <script setup>
-import { ElNotification } from 'element-plus'
-import { useProduct } from '@/stores/local';
+import {ElNotification} from 'element-plus'
+import {useProduct} from '@/stores/local';
 import {onMounted, ref} from "vue";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 import {checkout, payment, paymentMomo} from "@/service/orderService.js";
 
 const store = useProduct();
 const router = useRouter();
 const methodPayment = ref('');
+const dataProducts = ref([]);
+const totalPrice = ref(0);
+const totalQuantity = ref(0);
+
+const loadProducts = () =>{
+  const selectedItems = JSON.parse(localStorage.getItem('selectedCartItems')) || [];
+  dataProducts.value = selectedItems;
+  totalPrice.value = selectedItems.reduce((sum, item) => {
+    return sum + (item.price * item.quantity);
+  }, 0);
+  totalQuantity.value = dataProducts.value.reduce((sum, item) => {
+    return sum + item.quantity;
+  }, 0);
+}
 
 const delivery = ref({
   "first_name" : "",
@@ -135,30 +149,45 @@ const formatPrice = (price) => {
   return new Intl.NumberFormat('vi-VN').format(price);
 };
 const handleOrder = async () =>{
-  if(methodPayment.value === ''){
+  const requiredFields = ["first_name", "last_name", "address", "city", "email", "phone"];
+  const missingFields = requiredFields.filter(field => !delivery.value[field].trim());
+
+  if (missingFields.length > 0) {
+    ElNotification({
+      title: "Lỗi",
+      message: "Vui lòng nhập đầy đủ thông tin giao hàng",
+      type: "error",
+    });
+    return;
+  }
+  if(methodPayment.value === '' && statusPayment === false){
     ElNotification({
       title: 'Lỗi',
       message: 'Vui lòng chọn phương thức thanh toán',
       type: 'error',
     })
-  }else{
+  }else {
     const result = await checkout({
       "cart_id" : localStorage.getItem("cartId"),
       "delivery" : delivery.value,
-      "products" : store.dataAll.data,
-      "quantity" : store.dataAll.quantity,
-      "totalPrice" : store.dataAll.totalPrice
+      "products" : dataProducts.value,
+      "quantity" : totalQuantity.value,
+      "totalPrice" : totalPrice.value
     })
-    if(result){
+    if (result) {
       store.$patch((state) => {
-        state.dataAll = [];
+        const orderedIds = dataProducts.value.map(item => item.id);
+        state.dataAll.data = state.dataAll.data.filter(
+            item => !orderedIds.includes(item.id)
+        );
       })
-      router.replace({ path: `/success/${result.order_id}` });
+      localStorage.removeItem("selectedCartItems");
+      router.replace({path: `/success/${result.order_id}`});
     }
   }
 }
 const handlePayment = async () =>{
-  const orderId = 2;
+  const orderId = 100;
   const amount = store.dataAll.totalPrice;
 
   const result = await payment({
@@ -187,6 +216,7 @@ const paymentData = ref({
 });
 
 onMounted(() => {
+  loadProducts();
   const params = new URLSearchParams(window.location.search);
   if (params.get("vnp_ResponseCode") === "00") {
     statusPayment.value = true;

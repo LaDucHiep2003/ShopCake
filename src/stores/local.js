@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 
 
 export const useProduct = defineStore('product', ()=> {
     const data = ref([])
     const dataAll = ref([])
-
 
     return { data , dataAll} ;
 });
