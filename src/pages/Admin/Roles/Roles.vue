@@ -68,7 +68,7 @@ export default {
     },
     searchRoles() {
       if (!this.searchQuery) {
-        this.roles = this.allRoles; // Nếu không có từ khóa, hiển thị danh sách gốc
+        this.roles = this.allRoles;
       } else {
         this.roles = this.allRoles.filter((role) =>
             role.title.toLowerCase().includes(this.searchQuery.toLowerCase())

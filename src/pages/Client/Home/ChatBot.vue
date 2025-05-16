@@ -98,27 +98,46 @@ export default {
   data() {
     return {
       userInput: "",
-      messages: [{ role : 'bot', text : 'Chào bạn! Tôi là Trợ lý AI của bạn, bạn có cần tôi giúp đỡ gì trong công việc không ?'}],
+      messages: [{ role : 'bot', text : 'Chào bạn! Cửa hàng chúng tôi luôn bán những loại bánh ngọt ngon và chất lượng nhất. Tôi có thể giúp gì cho bạn ?'}],
       timeAnswer : new Date().toLocaleTimeString()
     };
   },
   methods: {
+    // async sendMessage() {
+    //   if (!this.userInput.trim()) return;
+    //   this.messages.push({ role: "user", text: this.userInput});
+    //   try {
+    //     const res = await fetch("http://localhost:8000/chat", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({
+    //         prompt: this.userInput,
+    //         max_tokens: 512,
+    //         temperature: 0.8,
+    //         similarity_threshold: 0.8,
+    //       }),
+    //     });
+    //     const data = await res.json();
+    //     this.messages.push({ role: "bot", text: data.response });
+    //     this.userInput = "";
+    //     this.timeAnswer = new Date().toLocaleTimeString();
+    //   } catch (error) {
+    //     console.error("Lỗi khi gửi request:", error);
+    //   }
+    // },
     async sendMessage() {
       if (!this.userInput.trim()) return;
       this.messages.push({ role: "user", text: this.userInput});
       try {
-        const res = await fetch("http://localhost:8000/chat", {
+        const res = await fetch("http://127.0.0.1:8000/api", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            prompt: this.userInput,
-            max_tokens: 512,
-            temperature: 0.8,
-            similarity_threshold: 0.8,
+            msg : this.userInput
           }),
         });
         const data = await res.json();
-        this.messages.push({ role: "bot", text: data.response });
+        this.messages.push({ role: "bot", text: data.res });
         this.userInput = "";
         this.timeAnswer = new Date().toLocaleTimeString();
       } catch (error) {

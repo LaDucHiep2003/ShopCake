@@ -5,6 +5,15 @@ export const getProductList = async (page) => {
     return result;
 }
 
+export const getProductOfCategory = async (params) => {
+    const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(([_, value]) => value !== null && value !== undefined && value !== "")
+    );
+    const query = new URLSearchParams(filteredParams).toString();
+    const result = await get(`products?${query}`);
+    return result;
+}
+
 export const getProductRandom = async (parentId) => {
     const result = await get(`products/random/${parentId}`);
     return result;

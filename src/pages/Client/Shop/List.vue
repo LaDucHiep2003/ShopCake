@@ -1,7 +1,7 @@
 
 <template>
     <div class="pb-8 text-[15px] text-color-1 tracking-wider">Showing {{startItem}}–{{endItem}} of {{ totalProduct }} results</div>
-    <div v-if="filteredProducts.length" class="grid grid-cols-3 gap-5 max-md:grid-cols-2">
+      <div v-if="filteredProducts.length" class="grid grid-cols-3 gap-5 max-md:grid-cols-2">
         <div class="pb-5" v-for="product in filteredProducts" :key="product.id">
             <article class="relative text-center px-4 pt-5 pb-10 max-w-[300px] mx-auto z-10 product bg-color-10">
                 <div class="transition-all duration-200 ease-in-out">

@@ -21,48 +21,42 @@
             </span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Tổng quan</h3>
       </RouterLink>
-      <RouterLink v-if="hasPermission('product_view')" to="/admin/product" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+      <RouterLink to="/admin/product" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14" :class="{ active: $route.name === 'product' || $route.name === 'create-product' || $route.name === 'edit-product'}">
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">inventory</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Sản phẩm</h3>
       </RouterLink>
-      <RouterLink v-if="hasPermission('category_view')" to="/admin/category" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+      <RouterLink to="/admin/category" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'category'|| $route.name === 'create-category' || $route.name === 'edit-category'}">
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">category</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Danh mục</h3>
       </RouterLink>
-      <RouterLink v-if="hasPermission('blog_view')" to="/admin/blog" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+      <RouterLink to="/admin/blog" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'blog'}">
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">library_books</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Bài viết</h3>
       </RouterLink>
-      <RouterLink v-if="hasPermission('order_view')" :to="{ name : 'order'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+      <RouterLink  :to="{ name : 'order'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'order' || $route.name === 'order-confirmed'}">
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">list_alt</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Đơn hàng</h3>
       </RouterLink>
-      <RouterLink v-if="hasPermission('role_view')" :to="{ name : 'roles'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+      <RouterLink :to="{ name : 'roles'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'roles' || $route.name === 'create-role' || $route.name === 'edit-role' }">
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">account_tree</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Nhóm quyền</h3>
       </RouterLink>
-      <RouterLink v-if="hasPermission('permissions')" :to="{ name : 'permissions'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
-              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
-                  :class="{ active: $route.name === 'permissions' }">
-        <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">add_task</span>
-        <h3 class="text-sm max-lg:hidden max-md:inline">Phân quyền</h3>
-      </RouterLink>
-      <RouterLink v-if="hasPermission('account_view')" :to="{ name : 'accounts'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+      <RouterLink :to="{ name : 'accounts'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'accounts' || $route.name === 'create-accounts' || $route.name === 'edit-accounts' }">
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">manage_accounts</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Tài khoản</h3>
       </RouterLink>
-      <RouterLink :to="{ name : 'permissions'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+      <RouterLink to="/" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'Home' }">
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">settings</span>
@@ -79,29 +73,6 @@
 
 <script>
 export default {
-  data(){
-    return{
-      user : null,
-      permissions : []
-    }
-  },
-  methods:{
-    async loadUser(){
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        const parsedUser = JSON.parse(userData);
-        this.user = parsedUser;
-
-        // Chuyển permissions từ chuỗi thành mảng
-        if (parsedUser.permissions) {
-          this.permissions = parsedUser.permissions.split(",");
-        }
-      }
-    },
-    hasPermission(permission){
-      return this.permissions.includes(permission);
-    }
-  },
   props:{
     toggleSidebar :{
       type : Function,
@@ -113,7 +84,6 @@ export default {
     }
   },
   async created(){
-    await this.loadUser();
   }
 }
 </script>

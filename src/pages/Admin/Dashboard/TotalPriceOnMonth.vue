@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 border border-color-2 rounded-2xl">
     <div class="flex justify-between items-end mb-5">
-      <div class="text-base text-color-1 font-semibold">Doanh thu theo tháng <span class="text-color-3 ml-2">(2024)</span></div>
+      <div class="text-base text-color-1 font-semibold">Doanh thu theo tháng <span class="text-color-3 ml-2">(2025)</span></div>
       <div class="flex gap-2">
         <div class="w-8 h-8 bg-white border border-color-2 rounded-lg flex justify-center items-center">
           <svg class="rotate-180" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

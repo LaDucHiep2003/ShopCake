@@ -20,7 +20,6 @@ import EditCategory from "../pages/Admin/Category/Edit.vue";
 import Roles from "../pages/Admin/Roles/Roles.vue";
 import CreateRole from "../pages/Admin/Roles/Create.vue";
 import EditRole from "../pages/Admin/Roles/Edit.vue";
-import Permissions from "../pages/Admin/Roles/Permissions.vue";
 import Accounts from "../pages/Admin/Accounts/Accounts.vue";
 import Detail from "../pages/Client/DetailProduct/Detail.vue";
 import CreateAccount from "../pages/Admin/Accounts/Create.vue";
@@ -252,15 +251,6 @@ const routes = [
           }
         },
         {
-          path: 'roles/permissions',
-          component: Permissions,
-          name: 'permissions',
-          meta: {
-            layout: 'admin',
-            needsAuth : true
-          }
-        },
-        {
           path: 'accounts',
           component: Accounts,
           name: 'accounts',
@@ -337,23 +327,24 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = Cookies.get('token');
   const storeUser = useUserStore()
-      console.log(storeUser.$state.user)
-  if(to.meta.needsAuth && storeUser.$state.user.role !== "admin"){
-    next("/admin/auth/login");
-  }else{
-    if(!localStorage.getItem('cartId')){
-      const fetchApi = async () => {
-        const result = await addCart()
-        if(result){
-          console.log(result)
-          localStorage.setItem("cartId",result.cart.id);
-          next();
+      if (to.meta.needsAuth) {
+        if (!token || storeUser.$state.user.role !== 'admin') {
+          return next({ name: 'login' })
         }
-      } 
-      fetchApi();
-    }
-    next();
-  }
+        return next();
+      }else {
+        if (!localStorage.getItem('cartId')) {
+          const fetchApi = async () => {
+            const result = await addCart();
+            if (result) {
+              localStorage.setItem("cartId", result.cart.id);
+            }
+            next();
+          };
+          return fetchApi();
+        }
+        return next();
+      }
 }
 );
 
