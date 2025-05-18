@@ -51,6 +51,23 @@ export default {
 
   methods: {
     async handleSubmit() {
+      const { email, password } = this.data;
+      if (!email || !password) {
+        alert("Vui lòng nhập đầy đủ email và mật khẩu.");
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert("Email không đúng định dạng.");
+        return;
+      }
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      if (!passwordRegex.test(password)) {
+        alert(
+            "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ thường, chữ in hoa, chữ số và ký tự đặc biệt."
+        );
+        return;
+      }
       try {
         const result = await login(this.data);
         if (result.message === "success") {
@@ -82,7 +99,7 @@ export default {
             id : cartId
           })
           localStorage.setItem("cartId",result)
-          const userStore = useUserStore(); // Lấy store từ Pinia
+          const userStore = useUserStore();
           userStore.setUser(data.user);
         } else {
           const error = await response.json();

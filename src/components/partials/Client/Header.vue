@@ -346,6 +346,7 @@ const activeCard = () =>{
 
 const logout = () =>{
   Cookies.remove("token");
+  localStorage.removeItem("cartId");
   storeUser.logout();
 }
 </script>

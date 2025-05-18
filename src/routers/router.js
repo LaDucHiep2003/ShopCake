@@ -40,11 +40,16 @@ import OtpPassword from "../pages/Client/Auth/OtpPassword.vue";
 import ResetPassword from "../pages/Client/Auth/ResetPassword.vue";
 import BlogAdmin from "@/pages/Admin/Blog/Blog.vue";
 
+import DiscountsList from "@/pages/Admin/Discounts/DiscountsList.vue";
+
 import TableOrder from "../pages/Admin/Order/TableOrder.vue"
 import OrderConfirmed from "../pages/Admin/Order/Confirmed.vue";
 
 import { addCart } from "../service/cartService";
 import { useUserStore } from "../stores/local";
+import CreateDiscount from "@/pages/Admin/Discounts/CreateDiscount.vue";
+import EditDiscount from "@/pages/Admin/Discounts/EditDiscount.vue";
+import DiscountByCategory from "@/pages/Admin/Discounts/DiscountByCategory.vue";
 const routes = [
     {
         path :"/",
@@ -299,6 +304,42 @@ const routes = [
           path: 'blog',
           component: BlogAdmin,
           name: 'blogAdmin',
+          meta: {
+            layout: 'admin',
+            needsAuth : true
+          }
+        },
+        {
+          path : "discounts",
+          name: "discounts",
+          component : DiscountsList,
+          meta : {
+            layout : "admin",
+            needsAuth : true
+          },
+        },
+        {
+          path : "discounts/category",
+          name: "discounts-category",
+          component : DiscountByCategory,
+          meta : {
+            layout : "admin",
+            needsAuth : true
+          },
+        },
+        {
+          path: 'discounts/create',
+          component: CreateDiscount,
+          name: 'create-discount',
+          meta: {
+            layout: 'admin',
+            needsAuth : true
+          }
+        },
+        {
+          path: 'edit/discounts/:id',
+          component: EditDiscount,
+          name: 'edit-discount',
           meta: {
             layout: 'admin',
             needsAuth : true

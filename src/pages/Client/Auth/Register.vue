@@ -59,16 +59,31 @@ const data = ref(
       "phone": "",
       "password" : "",
       "confirm" : "",
-      "roleId" : null
+      "roleId" : 2,
     }
 )
 
 const handleSubmit = async () =>{
+  if (!data.value.email || !data.value.password || !data.value.fullName || !data.value.phone || !data.value.confirm) {
+    alert("Vui lòng nhập đầy đủ thông tin");
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(data.value.email)) {
+    alert("Email không đúng định dạng.");
+    return;
+  }
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  if (!passwordRegex.test(data.value.password)) {
+    alert(
+        "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ thường, chữ in hoa, chữ số và ký tự đặc biệt."
+    );
+    return;
+  }
   if(data.value.password !== data.value.confirm){
     alert("Mật khẩu xác nhận không trùng khớp")
     return;
   }
-  console.log(data.value)
   const result = await register(data.value)
   if(result.message == "Đăng ký tài khoản thành công"){
     router.replace({name : 'loginClient'})

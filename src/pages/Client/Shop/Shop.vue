@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="flex-1">
-        <div class="pb-8 text-[15px] text-color-1 tracking-wider">Showing {{5}}–{{5}} of {{ 5 }} results</div>
+        <div class="pb-8 text-[15px] text-color-1 tracking-wider">Showing {{startItem}}–{{endItem}} of {{this.products.record_total}} results</div>
         <div v-if="products.data" class="grid grid-cols-3 gap-5 max-md:grid-cols-2">
           <div class="pb-5" v-for="product in products.data" :key="product.id">
             <article class="relative text-center px-4 pt-5 pb-10 max-w-[300px] mx-auto z-10 product bg-color-10">
@@ -143,7 +143,6 @@ export default {
           min_price: this.dataSearchPrice[0],
           max_price: this.dataSearchPrice[1],
         };
-        console.log(params)
         const result = await getProductOfCategory(params);
         if (result) {
           this.products = result.data;
@@ -176,6 +175,12 @@ export default {
           this.ListCategory.data.length > 0 &&
           this.selectedCategories.length === this.ListCategory.data.length
       );
+    },
+    startItem(){
+      return (this.products.current_page - 1) * this.products.limit + 1;
+    },
+    endItem(){
+      return Math.min(this.products.current_page * this.products.limit, this.products.record_total);
     }
   },
   async created() {

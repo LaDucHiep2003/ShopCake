@@ -44,6 +44,12 @@
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">list_alt</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Đơn hàng</h3>
       </RouterLink>
+      <RouterLink :to="{ name : 'discounts'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
+                  :class="{ active: $route.name === 'discounts' || $route.name === 'create-discount' || $route.name === 'edit-discount'|| $route.name === 'discounts-category' }">
+        <span class="material-icons-sharp">discount</span>
+        <h3 class="text-sm max-lg:hidden max-md:inline">Mã giảm giá</h3>
+      </RouterLink>
       <RouterLink :to="{ name : 'roles'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'roles' || $route.name === 'create-role' || $route.name === 'edit-role' }">

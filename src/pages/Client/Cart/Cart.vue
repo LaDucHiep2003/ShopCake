@@ -1,5 +1,3 @@
-
-
 <template>
     <div class="container mx-auto">
       <table class="w-full max-w-full bg-color-white border-collapse text-center uppercase border border-border-color-2">
@@ -64,10 +62,9 @@
       <div class="flex justify-between items-center py-8">
         <div class="flex items-center gap-5">
           <div class="min-w-[185px] grow inline-block text-font-15 tracking-wider text-color-4 font-lato">
-            <input type="text" placeholder="Code" class="min-h-[70px] py-[22px] rounded-md px-[25px] focus:outline-none border border-border-color-2">
+            <input v-model="codeDiscount" type="text" placeholder="Code" class="min-h-[70px] py-[22px] rounded-md px-[25px] focus:outline-none border border-border-color-2">
           </div>
-
-          <button class="min-w-[190px] min-h-[70px] text-sm font-bold text-color-white py-6 px-[50px] bg-color-2 rounded-lg hover:bg-color-6">APPLY</button>
+          <button @click="applyDiscounts" class="min-w-[190px] min-h-[70px] text-sm font-bold text-color-white py-6 px-[50px] bg-color-2 rounded-lg hover:bg-color-6">APPLY</button>
         </div>
         <div class="flex items-center gap-8">
           <div class="text-lg text-color-9 font-medium tracking-wider ">Total</div>
@@ -86,6 +83,7 @@ import { changeQuantity, deleteProduct } from '@/service/cartService';
 import { useProduct } from '@/stores/local';
 import {useRouter} from "vue-router";
 import {computed, ref, watch} from "vue";
+import {applyDiscount} from "@/service/DiscountsServive.js";
 
 const store = useProduct();
 
@@ -97,6 +95,9 @@ const cartId = localStorage.getItem("cartId")
 const selectedItems = ref([]);
 const router = useRouter();
 const checkAll = ref(false);
+const codeDiscount = ref('');
+const discountAmount = ref(0);
+const userId = JSON.parse(localStorage.getItem('user')).id
 
 // Theo dõi thay đổi `checkAll` để set tất cả sản phẩm
 const toggleCheckAll = () => {
@@ -107,25 +108,23 @@ const toggleCheckAll = () => {
   }
 };
 
-// Tự động cập nhật `checkAll` nếu số lượng đã chọn thay đổi
 watch(() => selectedItems.value.length, () => {
   checkAll.value = selectedItems.value.length === store.dataAll.data.length;
 });
 const totalSelectedPrice = computed(() => {
-  return selectedItems.value.reduce((acc, item) => {
+  const total = selectedItems.value.reduce((acc, item) => {
     return acc + (item.price * item.quantity);
   }, 0);
+  return total - discountAmount.value;
 });
 const goToCheckout = () => {
   if (selectedItems.value.length === 0) {
     alert("Please select at least one product to proceed to checkout.");
     return;
   }
-
-  // Có thể dùng localStorage hoặc router params nếu muốn truyền dữ liệu
   localStorage.setItem('selectedCartItems', JSON.stringify(selectedItems.value));
-
-  router.push('/checkout'); // Đường dẫn tới trang thanh toán
+  localStorage.setItem('discountAmount', JSON.stringify(discountAmount.value));
+  router.push('/checkout');
 };
 
 const handleIncre = async (index) => {
@@ -169,6 +168,21 @@ const handleDelete = async (id,index) =>{
   });
   if(result){
     store.dataAll.data.splice(index, 1);
+  }
+}
+
+const applyDiscounts = async () =>{
+  const result = await applyDiscount({
+    code : codeDiscount.value,
+    orderTotal : totalSelectedPrice.value,
+    userId : userId
+  });
+  if(result){
+    alert(result.message)
+    if(result.success === true){
+      localStorage.setItem('discountId', result.discount_id);
+      discountAmount.value = result.discount_value
+    }
   }
 }
 </script>

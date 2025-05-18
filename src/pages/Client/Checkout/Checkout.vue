@@ -97,6 +97,10 @@
                         <div class="text-color-1 text-lg tracking-wider">SHIPPING</div>
                         <div class="text-color-1 text-lg tracking-wider">FREE</div>
                     </div>
+                  <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
+                    <div class="text-color-1 text-lg tracking-wider">Discount</div>
+                    <div class="text-color-1 text-lg tracking-wider">{{ formatPrice(discountAmount) }} VND</div>
+                  </div>
                     <div class="flex justify-between py-[22px] pl-6 pr-[50px] border-b border-border-color-2">
                         <div class="text-color-1 text-lg tracking-wider">TOTAL</div>
                         <div class="text-color-1 text-lg tracking-wider">{{formatPrice(totalPrice)}} <span class="font-semibold">VND</span></div>
@@ -124,13 +128,17 @@ const methodPayment = ref('');
 const dataProducts = ref([]);
 const totalPrice = ref(0);
 const totalQuantity = ref(0);
+const discountAmount = localStorage.getItem('discountAmount') || 0;
+const userId = JSON.parse(localStorage.getItem('user')).id
+const discountId = localStorage.getItem("discountId");
 
 const loadProducts = () =>{
   const selectedItems = JSON.parse(localStorage.getItem('selectedCartItems')) || [];
   dataProducts.value = selectedItems;
-  totalPrice.value = selectedItems.reduce((sum, item) => {
+  const total =  selectedItems.reduce((sum, item) => {
     return sum + (item.price * item.quantity);
   }, 0);
+  totalPrice.value = total - discountAmount;
   totalQuantity.value = dataProducts.value.reduce((sum, item) => {
     return sum + item.quantity;
   }, 0);
@@ -172,7 +180,9 @@ const handleOrder = async () =>{
       "delivery" : delivery.value,
       "products" : dataProducts.value,
       "quantity" : totalQuantity.value,
-      "totalPrice" : totalPrice.value
+      "totalPrice" : totalPrice.value,
+      "discount_id" : discountId,
+      "user_id" : userId
     })
     if (result) {
       store.$patch((state) => {
@@ -182,6 +192,8 @@ const handleOrder = async () =>{
         );
       })
       localStorage.removeItem("selectedCartItems");
+      localStorage.removeItem("discountAmount");
+      localStorage.removeItem("discountId");
       router.replace({path: `/success/${result.order_id}`});
     }
   }
