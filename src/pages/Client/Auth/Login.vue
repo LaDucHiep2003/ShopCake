@@ -1,21 +1,33 @@
 
 <template>
-    <div class="text-color-white h-[100vh] flex justify-center items-center bg-contain bg-background-image-7">
-        <div class="bg-slate-900 border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
+    <div class="text-color-white h-[100vh] flex justify-center items-center bg-contain bg-background-image-6">
+        <div class="bg-slate-900 border-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative w-1/3">
             <h1 class="text-4xl text-color-white font-bold text-center mb-6">Login</h1>
             <div class="relative my-5">
-                <input v-model="data.email" type="email" class="block w-72 py-2 px-0 text-sm text-color-white bg-transparent border-0 border-b-2 
+                <input v-model="data.email" type="email" class="block w-full py-2 px-0 text-sm text-color-white bg-transparent border-0 border-b-2
                     border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-color-white focus:border-blue-600 peer ">
-                <label for="" class="absolute text-base text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] 
-                    peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
+                <label for="" class="absolute text-base text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+                    peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
                     peer-focus:scale-75 peer-focus:translate-y-6">Your Mail</label>
             </div>
             <div class="relative my-5">
-                <input v-model="data.password" type="password" class="block w-72 py-2 px-0 text-sm text-color-white bg-transparent border-0 border-b-2 
-                    border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-color-white focus:border-blue-600 peer">
-                <label for="" class="absolute text-base text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] 
-                    peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-                    peer-focus:scale-75 peer-focus:translate-y-6">Your Password</label>
+              <input
+                  :type="showPassword ? 'text' : 'password'"
+                  v-model="data.password"
+                  class="block w-full py-2 px-0 text-sm text-color-white bg-transparent border-0 border-b-2
+           border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-color-white focus:border-blue-600 peer"
+              />
+              <label
+                  class="absolute text-base text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+           peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+           peer-focus:scale-75 peer-focus:translate-y-6">
+                Your Password
+              </label>
+              <!-- Toggle hiển thị mật khẩu -->
+              <button type="button" @click="showPassword = !showPassword"
+                      class="absolute right-2 top-2 text-white text-sm focus:outline-none">
+                {{ showPassword ? 'Ẩn' : 'Hiện' }}
+              </button>
             </div>
             <div class="flex justify-between items-center">
                 <div class="flex gap-2 items-center">
@@ -24,7 +36,9 @@
                 </div>
                 <RouterLink :to="{name : 'forgot-password'}" class="text-sm text-blue-500">Forgot Password?</RouterLink>
             </div>
-            <button @click="handleSubmit" class="w-full mb-4 text-lg mt-6 rounded-full bg-color-white text-emerald-800 hover:bg-emerald-600 hover:text-color-white py-2 transition-colors duration-300">Login</button>
+          <div class="w-full" id="recaptcha-box"></div>
+
+          <button @click="handleSubmit" class="w-full mb-4 text-lg mt-6 rounded-full bg-color-white text-emerald-800 hover:bg-emerald-600 hover:text-color-white py-2 transition-colors duration-300">Login</button>
             <div class="mt-4">
                 <span class="text-sm">New Here? <RouterLink :to="{ name : 'register'}" class="text-blue-500"> Create a Account</RouterLink></span>
             </div>
@@ -45,15 +59,20 @@ export default {
       data: {
         email: "",
         password: "",
+        captchaToken: null,
       },
+      showPassword: false,
     };
   },
-
   methods: {
     async handleSubmit() {
-      const { email, password } = this.data;
+      const { email, password, captchaToken } = this.data;
       if (!email || !password) {
         alert("Vui lòng nhập đầy đủ email và mật khẩu.");
+        return;
+      }
+      if(!captchaToken){
+        alert("Vui lòng xác mình capcha");
         return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -75,9 +94,8 @@ export default {
           await this.getUser(result.jwt);
           this.$router.push({ name: 'Home' });
         } else {
-          alert('Tài khoản không đúng hoặc sai mật khẩu');
+          alert(result.message);
         }
-        console.log(this.data)
       } catch (error) {
         console.error('Đã xảy ra lỗi:', error);
         alert('Đã xảy ra lỗi, vui lòng thử lại.');
@@ -107,8 +125,30 @@ export default {
       } catch (error) {
         console.error('Lỗi:', error);
       }
-    }
+    },
   },
+  mounted() {
+    window.onCaptchaVerified = (token) => {
+      this.data.captchaToken = token;
+    };
+    const renderRecaptcha = () => {
+      window.grecaptcha.render('recaptcha-box', {
+        sitekey: '6LdCyEArAAAAACmwH0G3AkvqJAvqX8o0thAyBWGn',
+        callback: 'onCaptchaVerified' // Dùng string để gọi hàm toàn cục
+      });
+    };
+
+    if (window.grecaptcha) {
+      renderRecaptcha();
+    } else {
+      const interval = setInterval(() => {
+        if (window.grecaptcha) {
+          clearInterval(interval);
+          renderRecaptcha();
+        }
+      }, 500);
+    }
+  }
 };
 </script>
 
