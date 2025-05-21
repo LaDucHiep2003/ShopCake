@@ -10,7 +10,7 @@
     >
       <div class="flex items-center gap-2">
         <img src="@/assets/images/Avatar_AI.png" alt="AI" class="w-8 h-8 rounded-full" />
-        <div class="text-base font-semibold text-color-1">Trợ lý AI</div>
+        <div class="text-base font-semibold text-color-1">Chat bot</div>
       </div>
       <div class="flex gap-2 items-center">
         <div

@@ -120,6 +120,7 @@ export default {
       const result = await getCategoryList();
       if(result){
         this.ListCategory = result.data;
+        this.selectedCategories = result.data.data.map((cat) => cat.id);
       }
     },
     async loadPopularProducts(){

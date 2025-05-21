@@ -9,6 +9,12 @@
         label-width="auto"
         size="large"
     >
+      <el-form-item label="Title">
+        <el-input v-model="sizeForm.title" class="bg-color-white-2" />
+      </el-form-item>
+      <el-form-item label="Description">
+        <el-input v-model="sizeForm.description" type="textarea" class="bg-color-white-2" />
+      </el-form-item>
       <el-form-item label="Mã">
         <el-input v-model="sizeForm.code" class="bg-color-white-2" />
       </el-form-item>
@@ -94,6 +100,8 @@ onMounted(() => {
 
 
 const sizeForm = reactive({
+  title : '',
+  description : '',
   code : '',
   type : '',
   value : 0,
@@ -108,6 +116,8 @@ const sizeForm = reactive({
 function onSubmit() {
   console.log(sizeForm)
   const errorMessages = {
+    title : 'Vui lòng nhập tiêu đề',
+    description : "Vui lòng nhập mô tả",
     code : 'Vui lòng nhập mã',
     type : 'Vui lòng nhập kiểu mã giảm giá',
     value : 'Vui lòng nhập giá trị',
