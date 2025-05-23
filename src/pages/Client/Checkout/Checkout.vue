@@ -121,6 +121,7 @@ import {useProduct} from '@/stores/local';
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import {checkout, payment, paymentMomo} from "@/service/orderService.js";
+import { v4 as uuidv4 } from 'uuid';
 
 const store = useProduct();
 const router = useRouter();
@@ -168,6 +169,15 @@ const handleOrder = async () =>{
     });
     return;
   }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(delivery.value.email)) {
+    ElNotification({
+      title: "Lỗi",
+      message: "Địa chỉ email không hợp lệ",
+      type: "error",
+    });
+    return;
+  }
   if(methodPayment.value === '' && statusPayment === false){
     ElNotification({
       title: 'Lỗi',
@@ -199,7 +209,7 @@ const handleOrder = async () =>{
   }
 }
 const handlePayment = async () =>{
-  const orderId = 100;
+  const orderId = uuidv4();
   const amount = store.dataAll.totalPrice;
 
   const result = await payment({
@@ -213,9 +223,7 @@ const handlePayment = async () =>{
 const handlePaymentMomo = async () =>{
   const amount = 100000;
 
-  const result = await paymentMomo({
-    amount : amount
-  })
+  const result = await paymentMomo(amount)
   if (result.payUrl) {
     window.location.href = result.payUrl;
   }

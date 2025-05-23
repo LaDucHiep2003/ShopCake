@@ -67,7 +67,7 @@
             <div class="text-xs font-medium text-color-1 mb-1">Bạn</div>
             <div
                 class="text-sm text-white font-normal bg-color-4 py-[6px] px-[10px]
-                     rounded-tl-md rounded-br-lg rounded-bl-lg"
+                     rounded-tl-md rounded-br-lg rounded-bl-lg user-message"
             >
               {{ msg.text }}
             </div>
@@ -104,6 +104,10 @@ export default {
     }
   },
   data() {
+    // Lấy dữ liệu user từ localStorage và kiểm tra an toàn
+    const user = localStorage.getItem('user');
+    const userId = user ? JSON.parse(user).id : null; // Nếu không có user, gán id là null
+
     return {
       userInput: "",
       sessionId: "",
@@ -112,15 +116,50 @@ export default {
           sender: "Chatbot",
           text: "Chào bạn! Tôi là Trợ lý AI của Bakery, cần hỗ trợ đặt bánh không?"
         }
-      ]
+      ],
+      id: userId // Gán id từ userId đã kiểm tra
     };
   },
   created() {
     // Lấy hoặc tạo session_id khi component được tạo
     this.sessionId = localStorage.getItem('session_id') || this.generateUUID();
     localStorage.setItem('session_id', this.sessionId);
+
+    // Thêm CSS để ẩn ID trong tin nhắn người dùng
+    this.addUserMessageCSS();
   },
   methods: {
+    addUserMessageCSS() {
+      // Tạo style element
+      const style = document.createElement('style');
+      style.type = 'text/css';
+
+      // Thêm CSS để làm cho ký tự đầu tiên trong tin nhắn người dùng trở nên trong suốt
+      // và không chiếm không gian
+      const css = `
+        .user-message {
+          position: relative;
+        }
+        .user-message::first-letter {
+          opacity: 0;
+          position: absolute;
+          width: 0;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      `;
+
+      // Thêm CSS vào style element
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      // Thêm style vào head
+      document.head.appendChild(style);
+    },
+
     // Tạo UUID đơn giản (không cần thư viện)
     generateUUID() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -135,10 +174,11 @@ export default {
       // Tạo ID riêng cho lượt chat này
       const chatId = this.generateUUID();
 
-      // Thêm tin nhắn người dùng
+      // Thêm tin nhắn người dùng - Gắn ID vào đầu tin nhắn
+      // ID sẽ bị ẩn bằng CSS
       this.messages.push({
         sender: "You",
-        text: content,
+        text: this.id + content,
         time: new Date().toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})
       });
       this.userInput = "";
@@ -158,7 +198,8 @@ export default {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            msg: content,
+            // Gửi tin nhắn với ID (backend sẽ trích xuất ID)
+            msg: this.id + content,
             chat_id: chatId,
             session_id: this.sessionId
           })

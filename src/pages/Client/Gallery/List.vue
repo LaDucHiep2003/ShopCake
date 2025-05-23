@@ -12,14 +12,13 @@
                             <div class="p-3 bg-color-2 rounded-radius-1 transition-all duration-300 ease-linear hover:bg-color-1">
                                 <Search class="h-6 w-auto text-color-white"/>
                             </div>
-                            <div class="p-3 bg-color-2 rounded-radius-1 transition-all duration-300 ease-linear hover:bg-color-1">
+                            <RouterLink :to="`/shop?category=${item.id}`" class="p-3 bg-color-2 rounded-radius-1 transition-all duration-300 ease-linear hover:bg-color-1">
                                 <ShoppingCart class="h-6 w-auto text-color-white"/>
-                            </div>
+                            </RouterLink>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </template>

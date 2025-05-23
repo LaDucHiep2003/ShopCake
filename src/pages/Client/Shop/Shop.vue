@@ -117,10 +117,15 @@ export default {
   },
   methods: {
     async loadCategory(){
+      const category = this.$route.query.category;
       const result = await getCategoryList();
       if(result){
         this.ListCategory = result.data;
-        this.selectedCategories = result.data.data.map((cat) => cat.id);
+        if(category){
+          this.selectedCategories.push(category)
+        }else{
+          this.selectedCategories = result.data.data.map((cat) => cat.id);
+        }
       }
     },
     async loadPopularProducts(){

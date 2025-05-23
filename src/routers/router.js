@@ -50,6 +50,8 @@ import { useUserStore } from "../stores/local";
 import CreateDiscount from "@/pages/Admin/Discounts/CreateDiscount.vue";
 import EditDiscount from "@/pages/Admin/Discounts/EditDiscount.vue";
 import DiscountByCategory from "@/pages/Admin/Discounts/DiscountByCategory.vue";
+import BannerList from "@/pages/Admin/Banner/BannerList.vue";
+import CreateBanner from "@/pages/Admin/Banner/CreateBanner.vue";
 const routes = [
     {
         path :"/",
@@ -340,6 +342,24 @@ const routes = [
           path: 'edit/discounts/:id',
           component: EditDiscount,
           name: 'edit-discount',
+          meta: {
+            layout: 'admin',
+            needsAuth : true
+          }
+        },
+        {
+          path: 'banners',
+          component: BannerList,
+          name: 'banners',
+          meta: {
+            layout: 'admin',
+            needsAuth : true
+          }
+        },
+        {
+          path: 'banners/create',
+          component: CreateBanner,
+          name: 'create-banner',
           meta: {
             layout: 'admin',
             needsAuth : true

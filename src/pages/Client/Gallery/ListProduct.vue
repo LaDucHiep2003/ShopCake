@@ -1,28 +1,3 @@
-<script setup>
-    import { onMounted, ref } from 'vue';
-    import { getProductCategory } from '@/service/productsService';
-
-    const props = defineProps({
-        productId: {
-            type: String,
-            required: true
-        },
-    })
-
-    const data = ref([])
-    const fetchApi = () => {
-        const fetchApi = async () => {
-            const result = await getProductCategory(props.productId)
-            if(result){
-                data.value = result;
-            }
-        }
-        fetchApi();
-    };
-
-    onMounted(fetchApi);
-</script>
-
 <template>
     <div class="container mx-auto grid grid-cols-3 gap-5">       
         <div class="pb-5" v-for="product in data" :key="product.id">
@@ -57,3 +32,27 @@
         </div>
     </div>
 </template>
+<script setup>
+import { onMounted, ref } from 'vue';
+import { getProductCategory } from '@/service/productsService';
+
+const props = defineProps({
+  productId: {
+    type: String,
+    required: true
+  },
+})
+
+const data = ref([])
+const fetchApi = () => {
+  const fetchApi = async () => {
+    const result = await getProductCategory(props.productId)
+    if(result){
+      data.value = result;
+    }
+  }
+  fetchApi();
+};
+
+onMounted(fetchApi);
+</script>

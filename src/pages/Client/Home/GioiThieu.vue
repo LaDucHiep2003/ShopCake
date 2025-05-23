@@ -1,5 +1,6 @@
 
 <template>
+
   <Splide
       :options="splideOptions"
       aria-label="New Products"
@@ -16,8 +17,79 @@
       </div>
     </SplideSlide>
     <SplideSlide v-for="item in dataBanner" :key="item.id">
+      <TransitionRoot appear :show="isOpen" as="template">
+        <Dialog as="div" class="relative z-[100]">
+          <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0"
+              enter-to="opacity-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100"
+              leave-to="opacity-0"
+          >
+            <div class="fixed inset-0 bg-black/25" />
+          </TransitionChild>
+
+          <div class="fixed inset-0 overflow-y-auto">
+            <div
+                class="flex min-h-full items-center justify-center p-4 text-center"
+            >
+              <TransitionChild
+                  as="template"
+                  enter="duration-300 ease-out"
+                  enter-from="opacity-0 scale-95"
+                  enter-to="opacity-100 scale-100"
+                  leave="duration-200 ease-in"
+                  leave-from="opacity-100 scale-100"
+                  leave-to="opacity-0 scale-95"
+              >
+                <DialogPanel
+                    class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+                >
+                  <DialogTitle
+                      as="h3"
+                      class="text-2xl font-medium leading-6 text-gray-900 text-center"
+                  >
+                    NHẬP MÃ: {{ selectedDiscount?.code || '' }}
+                  </DialogTitle>
+                  <div class="mt-3 flex gap-3 items-center font-medium">
+                    <p class="text-sm text-gray-500">
+                      Mã khuyến mãi:
+                    </p>
+                    <span>{{ selectedDiscount?.code }}</span>
+                  </div>
+                  <div class="mt-3 font-medium">
+                    <p class="text-sm text-gray-500">
+                      Điều kiện : Giá trị đơn hàng tối thiểu {{ formatPrice(selectedDiscount?.min_order_amount) || 'Không có thông tin' }}.
+                    </p>
+                  </div>
+                  <div class="mt-4 flex justify-between items-center gap-5">
+                    <button
+                        type="button"
+                        class="inline-flex w-1/2 justify-center rounded-md border border-transparent bg-blue-100 px-5 py-3 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        @click="closeModal"
+                    >
+                      Đóng
+                    </button>
+                    <button
+                        type="button"
+                        class="inline-flex justify-center w-1/2 rounded-md border border-transparent bg-[#cd3344] px-5 py-3 text-sm font-medium text-white hover:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        @click="copyCode(selectedDiscount.code)"
+                    >
+                      {{ copied ? 'Đã sao chép' : 'Sao chép' }}
+                    </button>
+                  </div>
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </TransitionRoot>
       <div class="max-h-[500px] relative">
-        <img :src="item.image_url" alt="">
+        <RouterLink :to="`/shop?category=${item.category_id}`">
+          <img :src="item.image_url" alt="" class="w-full h-auto" />
+        </RouterLink>
         <div class="absolute right-0 top-1/3 bg-[#f1f1f1] py-1.5 px-2.5 w-5/12">
           <div class="flex flex-wrap -mx-2 justify-center">
             <div v-for="discount in dataDiscount" class="p-[5px] w-5/12">
@@ -30,8 +102,8 @@
                       <div class="text-[#727272] text-xs pb-2">{{ discount.description }}</div>
                     </div>
                     <div class="flex flex-wrap justify-between items-center">
-                      <button class="py-1 px-4 rounded-full mb-1 text-white bg-[#cd3344] text-xs">Sao chép</button>
-                      <div class="text-xs text-[#2E72D2] mb-1 cursor-pointer">Điều kiện</div>
+                      <button @click.stop="copyCode(discount.code)" class="py-1 px-4 rounded-full mb-1 text-white bg-[#cd3344] text-xs">{{ discount.copied ? 'Đã sao chép' : 'Sao chép' }}</button>
+                      <div @click.stop="openModal(discount)" class="text-xs text-[#2E72D2] mb-1 cursor-pointer">Điều kiện</div>
                     </div>
                   </div>
                 </div>
@@ -66,6 +138,14 @@ import { getBanners } from '@/service/BannerService.js';
 import '@splidejs/vue-splide/css';
 import {onMounted, ref} from "vue";
 import {getDiscountList} from "@/service/DiscountsServive.js";
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from '@headlessui/vue'
+
 const splideOptions = {
   type: 'loop',
   perPage: 1,
@@ -79,11 +159,15 @@ const splideOptions = {
 
 const dataBanner = ref([]);
 const dataDiscount = ref([]);
+const selectedDiscount = ref(null);
+const copied = ref(false);
+const isOpen = ref(false)
 
 const loadBanner= async () =>{
   const result = await getBanners();
   if(result){
     dataBanner.value = result.data.data;
+    console.log(result)
   }
 }
 const loadDiscounts= async () =>{
@@ -97,6 +181,29 @@ onMounted(() =>{
   loadDiscounts();
 })
 
+function closeModal() {
+  isOpen.value = false;
+  selectedDiscount.value = null;
+  copied.value = false;
+}
+function openModal(discount) {
+  isOpen.value = true;
+  selectedDiscount.value = discount;
+  copied.value = false;
+}
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('vi-VN').format(price);
+};
+const copyCode = async (code) =>{
+  await navigator.clipboard.writeText(code);
+  if (selectedDiscount.value && selectedDiscount.value.code === code) {
+    copied.value = true;
+  }
+  dataDiscount.value = dataDiscount.value.map(discount => ({
+    ...discount,
+    copied: discount.code === code
+  }))
+}
 </script>
 
 <style scoped>

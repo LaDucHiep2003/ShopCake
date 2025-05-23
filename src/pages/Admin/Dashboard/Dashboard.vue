@@ -64,8 +64,6 @@
         <TotalPriceOnMonth />
       </div>
     </div>
-    <iframe title="test" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=4dbdd74c-1a1d-4525-9539-6a64dde2d0b2&appId=c87b723d-7a76-404a-b960-7ce7357f043e&autoAuth=true&ctid=e7572e92-7aee-4713-a3c4-ba64888ad45f" frameborder="0" allowFullScreen="true"></iframe>
-    <Products />
   </div>
 </template>
 

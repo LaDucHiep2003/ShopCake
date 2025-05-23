@@ -87,15 +87,15 @@
     }
 
   const options = ref([])
-    
+
     const fetchCategorys = () => {
-        const fetchApi = async () => {
-            const result = await getCategoryList()
-          console.log(result)
-            options.value = result.data.data.map(item => ({ value: item.id, label: item.title }));
-        }
-        fetchApi();
-    };    
+      const fetchApi = async () => {
+        const result = await getCategoryList()
+        console.log(result)
+        options.value = result.data.data.map(item => ({ value: item.id, label: item.title }));
+      }
+      fetchApi();
+    };
 
     onMounted(() => {
         fetchCategorys()

@@ -32,12 +32,6 @@
         <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">category</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Danh mục</h3>
       </RouterLink>
-      <RouterLink to="/admin/blog" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
-              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
-                  :class="{ active: $route.name === 'blog'}">
-        <span class="material-icons-sharp text-2xl transition-all duration-300 ease-out">library_books</span>
-        <h3 class="text-sm max-lg:hidden max-md:inline">Bài viết</h3>
-      </RouterLink>
       <RouterLink  :to="{ name : 'order'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
                   :class="{ active: $route.name === 'order' || $route.name === 'order-confirmed'}">
@@ -49,6 +43,12 @@
                   :class="{ active: $route.name === 'discounts' || $route.name === 'create-discount' || $route.name === 'edit-discount'|| $route.name === 'discounts-category' }">
         <span class="material-icons-sharp">discount</span>
         <h3 class="text-sm max-lg:hidden max-md:inline">Mã giảm giá</h3>
+      </RouterLink>
+      <RouterLink :to="{ name : 'banners'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
+              ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
+                  :class="{ active: $route.name === 'banners' || $route.name === 'create-banner' || $route.name === 'edit-discount' }">
+        <span class="material-icons-sharp">discount</span>
+        <h3 class="text-sm max-lg:hidden max-md:inline">Banner</h3>
       </RouterLink>
       <RouterLink :to="{ name : 'roles'}" class="flex gap-4 items-center relative h-14 transition-all duration-300 text-color-info-dark
               ease-in-out ml-8 hover:text-color-primary max-lg:w-[5.6rem] max-md:w-full max-md:h-14"
